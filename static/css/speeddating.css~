@@ -1,0 +1,5 @@
+body {
+    padding-top: 70px;
+    background: #14537C url('/static/images/background.png') repeat-x top;
+    
+}

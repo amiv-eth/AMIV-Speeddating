@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block anmeldung %}class="active"{% endblock %}
+
+<h1>{% block title %}Anmeldung{% endblock %}</h1>
+
+
+
+{% block content %}
+
+<div>
+  <h2>Speed Dating Fragebogen</h2>
+  <p>
+    Wir freuen uns, dass du an unserem Speed-Dating teilnehmen möchtest. Hier noch ein paar Informationen zum Fragebogen:
+  </p>
+  <ul>
+    <li>Mit einem <strong>Sternchen (*) markierte Fragen sind obligatorisch</strong> und müssen beantwortet werden.</li>
+    <li>Fragen die kein Sternchen haben sind freiwillig und müssen nicht unbedingt beantwortet werden.</li>
+    <li>Je mehr Termine du angibst, desto höher sind deine Chancen dabei zu sein.</li>
+    <li>Sämtliche Angaben sind sind zur internen Verwendung und werden nicht veröffentlicht. </li>
+  </ul>
+  <p class="formInfo">
+    Viel Spass beim ausfüllen und falls du Fragen hast, schreib einfach eine Mail an speeddating@amiv.ethz.ch. <br><br>
+    
+					Dein Speed-Dating Team
+  </p>
+</div>
+
+
+<form action = "http://localhost:5000/signup" method = "POST">
+  <div class = "form-group">
+    <label for = "name">Name </label>
+    <input type = "text" class="form-control" placeholder="Name" name = "name">
+  </div>
+  <div class = "form-group">
+    <label for = "prename">Vorname </label>
+    <input type = "text" class="form-control" placeholder="Vorname" name = "prename">
+  </div>
+    <button type = "submit" class="btn btn-default">Submit</button>
+</form>
+
+
+{% endblock %}
