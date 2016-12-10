@@ -1,0 +1,408 @@
+
+
+	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+	<html>
+	<head>
+<title>
+
+			speeddating :: an der ETH &amp; Uni Z&uuml;rich
+</title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8"><link href="style.css" rel="stylesheet" type="text/css">
+		<!-- calendar stuff -->
+		      <link rel="stylesheet" type="text/css" href="calendar/calendar-blue2.css" />
+		      <script type="text/javascript" src="calendar/calendar.js"></script>
+		      <script type="text/javascript" src="calendar/calendar-en.js"></script>
+		      <script type="text/javascript" src="calendar/calendar-setup.js"></script>
+		<!-- END calendar stuff -->
+
+	    <!-- expand/collapse function -->
+	    <SCRIPT type=text/javascript>
+		<!--
+		function collapseElem(obj)
+		{
+			var el = document.getElementById(obj);
+			el.style.display = 'none';
+		}
+
+
+		function expandElem(obj)
+		{
+			var el = document.getElementById(obj);
+			el.style.display = '';
+		}
+
+
+		//-->
+		</SCRIPT>
+		<!-- expand/collapse function -->
+
+
+		<!-- expand/collapse function -->
+		    <SCRIPT type=text/javascript>
+			<!--
+
+			// collapse all elements, except the first one
+			function collapseAll()
+			{
+				var numFormPages = 2;
+
+				for(i=2; i <= numFormPages; i++)
+				{
+					currPageId = ('mainForm_' + i);
+					collapseElem(currPageId);
+				}
+			}
+
+
+			//-->
+			</SCRIPT>
+		<!-- expand/collapse function -->
+
+
+		 <!-- validate -->
+		<SCRIPT type=text/javascript>
+		<!--
+			function validateField(fieldId, fieldBoxId, fieldType, required)
+			{
+				fieldBox = document.getElementById(fieldBoxId);
+				fieldObj = document.getElementById(fieldId);
+
+				if(fieldType == 'text'  ||  fieldType == 'textarea'  ||  fieldType == 'password'  ||  fieldType == 'file'  ||  fieldType == 'phone'  || fieldType == 'website')
+				{	
+					if(required == 1 && fieldObj.value == '')
+					{
+						fieldObj.setAttribute("class","mainFormError");
+						fieldObj.setAttribute("className","mainFormError");
+						fieldObj.focus();
+						return false;					
+					}
+
+				}
+
+
+				else if(fieldType == 'menu'  || fieldType == 'country'  || fieldType == 'state')
+				{	
+					if(required == 1 && fieldObj.selectedIndex == 0)
+					{				
+						fieldObj.setAttribute("class","mainFormError");
+						fieldObj.setAttribute("className","mainFormError");
+						fieldObj.focus();
+						return false;					
+					}
+
+				}
+
+
+				else if(fieldType == 'email')
+				{	
+					if((required == 1 && fieldObj.value=='')  ||  (fieldObj.value!=''  && !validate_email(fieldObj.value)))
+					{				
+						fieldObj.setAttribute("class","mainFormError");
+						fieldObj.setAttribute("className","mainFormError");
+						fieldObj.focus();
+						return false;					
+					}
+
+				}
+
+
+
+			}
+
+			function validate_email(emailStr)
+			{		
+				apos=emailStr.indexOf("@");
+				dotpos=emailStr.lastIndexOf(".");
+
+				if (apos<1||dotpos-apos<2) 
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+
+
+			function validateDate(fieldId, fieldBoxId, fieldType, required,  minDateStr, maxDateStr)
+			{
+				retValue = true;
+
+				fieldBox = document.getElementById(fieldBoxId);
+				fieldObj = document.getElementById(fieldId);	
+				dateStr = fieldObj.value;
+
+
+				if(required == 0  && dateStr == '')
+				{
+					return true;
+				}
+
+
+				if(dateStr.charAt(2) != '/'  || dateStr.charAt(5) != '/' || dateStr.length != 10)
+				{
+					retValue = false;
+				}	
+
+				else	// format's okay; check max, min
+				{
+					currDays = parseInt(dateStr.substr(0,2),10) + parseInt(dateStr.substr(3,2),10)*30  + parseInt(dateStr.substr(6,4),10)*365;
+					//alert(currDays);
+
+					if(maxDateStr != '')
+					{
+						maxDays = parseInt(maxDateStr.substr(0,2),10) + parseInt(maxDateStr.substr(3,2),10)*30  + parseInt(maxDateStr.substr(6,4),10)*365;
+						//alert(maxDays);
+						if(currDays > maxDays)
+							retValue = false;
+					}
+
+					if(minDateStr != '')
+					{
+						minDays = parseInt(minDateStr.substr(0,2),10) + parseInt(minDateStr.substr(3,2),10)*30  + parseInt(minDateStr.substr(6,4),10)*365;
+						//alert(minDays);
+						if(currDays < minDays)
+							retValue = false;
+					}
+				}
+
+				if(retValue == false)
+				{
+					fieldObj.setAttribute("class","mainFormError");
+					fieldObj.setAttribute("className","mainFormError");
+					fieldObj.focus();
+					return false;
+				}
+			}
+		//-->
+function handleKeyPress(e,form){
+var key=e.keyCode || e.which;
+if (key==13){
+if (validatePage1()) { collapseElem('mainForm_1'); expandElem('mainForm_2');}
+}
+}
+
+function disableEnterKey(e)
+{
+
+     var key;      
+     if(window.event)
+          key = window.event.keyCode; //IE
+     else
+          key = e.which; //firefox      
+
+     return (key != 13);
+}
+		</SCRIPT>
+		<!-- end validate -->
+
+
+
+<style type="text/css">
+
+			@import url("screen.css") screen;
+
+		</style>
+	</head>
+
+	<body onLoad="collapseAll()" OnKeyPress="return disableKeyPress(event)">
+
+	<div id="content-wrapper">
+
+
+
+
+		<div id="formHeader-blub">
+				<h2 class="formInfo">Speed Dating Fragebogen</h2>
+				<p class="formInfo"><br>Wir freuen uns, dass du dich für eine Teilnahme am Speed-Dating 
+interessierst. Damit du dabei bist und wir deine Speed-Dates bestimmen können, bitten wir dich diesen Fragebogen 
+seriös auszufüllen. Es bleibt dir überlassen, welche Fragen du nicht beantworten möchtest. Den Fragebogen musst du 
+dann bis zum 2. Mai um 23:59 abschickt haben.<br>
+<br>
+Wir möchten hier nochmals darauf hinweisen, dass dieser Fragebogen streng vertraulich behandelt wird und nur zur 
+Aufstellung der Speed-Dates verwendet wird. Die Daten werden vom OK nicht an Dritte rausgegeben.<br>
+<br>
+Falls du noch Fragen hast, kannst du jederzeit ein Mail an speeddating@amiv.ethz.ch schreiben. Wir geben dir dann gerne 
+Auskunft.<br>
+<br>
+Los gehts!</p>
+		</div>
+
+
+		<BR/><!-- begin form -->
+		<form method=post enctype=multipart/form-data action=processor.php onSubmit="return validatePage2();"><ul class=mainForm id="mainForm_1">
+
+				<li class="mainForm" id="fieldBox_1">
+					<label class="formFieldQuestion">Geschlecht&nbsp;*</label><span><input class=mainForm type=radio name=field_1 id=field_1_option_1 value="Weiblich" /><label class=formFieldOption for="field_1_option_1">Weiblich</label><input class=mainForm type=radio name=field_1 id=field_1_option_2 value="Männlich" /><label class=formFieldOption for="field_1_option_2">Männlich</label></span></li>
+
+				<li class="mainForm" id="fieldBox_2">
+					<label class="formFieldQuestion">E-Mail Adresse&nbsp;*</label><input class=mainForm type=email name=field_2 id=field_2 size=20 value="" style="background-image:url(imgs/email.png); background-repeat: no-repeat;  padding: 2px 2px 2px 25px;"></li>
+
+				<li class="mainForm" id="fieldBox_3">
+					<label class="formFieldQuestion">Studiengang&nbsp;*</label><input class=mainForm type=text name=field_3 id=field_3 size='20' value=''></li>
+
+				<li class="mainForm" id="fieldBox_4">
+					<label class="formFieldQuestion">Semester</label><input class=mainForm type=text 
+name=field_4 id=field_4 size='20' value=''></li>
+		
+		
+		<!-- end of this page -->
+
+		<!-- page validation -->
+		<SCRIPT type=text/javascript>
+		<!--
+			function validatePage1()
+			{
+				retVal = true;
+				if (validateField('field_1','fieldBox_1','radio',1) == false)
+ retVal=false;
+if (validateField('field_2','fieldBox_2','email',1) == false)
+ retVal=false;
+if (validateField('field_3','fieldBox_3','text',1) == false)
+ retVal=false;
+
+				if(retVal == false)
+				{
+					alert('Please correct the errors.  Fields marked with an asterisk (*) are required');
+					return false;
+				}
+				return retVal;
+			}
+		//-->
+		</SCRIPT>
+
+		<!-- end page validaton -->
+
+
+
+		<!-- next page buttons --><li class="mainForm">
+					<input type=button onclick="if (validatePage1()) { collapseElem('mainForm_1'); expandElem('mainForm_2');}" class="mainForm" value="Go to page 2"/>	
+				</li>
+		<!-- close the display stuff for this page -->
+		</ul><ul class=mainForm id="mainForm_2">
+
+				<li class="mainForm" id="fieldBox_5">
+					<label class="formFieldQuestion">Was erhoffst du dir vom Speed-Dating?</label><textarea class=mainForm  name=field_5 id=field_5 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_6">
+					<label class="formFieldQuestion">Was ist für dich das 
+perfekte Date?</label><textarea class=mainForm  name=field_6 id=field_6 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_7">
+					<label class="formFieldQuestion">Wie lauten deine Neujahrsvorsätze?</label><textarea class=mainForm  name=field_7 id=field_7 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_8">
+					<label class="formFieldQuestion">Lieblingsaktivitäten in deiner Freizeit und am Wochenende?</label><textarea class=mainForm  name=field_8 id=field_8 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_9">
+					<label class="formFieldQuestion">Dein bester Anmachspruch?</label><textarea class=mainForm  name=field_9 id=field_9 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_10">
+					<label class="formFieldQuestion">Frauen sind...</label><textarea class=mainForm  name=field_10 id=field_10 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_11">
+					<label class="formFieldQuestion">Männer sind…</label><textarea class=mainForm  name=field_11 id=field_11 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_12">
+					<label class="formFieldQuestion">Du hattest vor, mit einem guten Kollegen/einer 
+Kollegin in 
+die Ferien zu gehen. Dieser Kollege/Diese Kollegin sagt jedoch kurzfristig ab. Gehst du trotzdem?</label><textarea 
+class=mainForm  name=field_12 id=field_12 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_13">
+					<label class="formFieldQuestion">Über den Winter zugenommen: Was für Konsequenzen ziehst du?</label><textarea class=mainForm  name=field_13 id=field_13 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_14">
+					<label class="formFieldQuestion">Du bist zuhause, und in 30 Minuten kommen deine 
+Kollegen/Kolleginnen, um dich zu einem Barbesuch mitzunehmen. Wie bereitest du dich vor?</label><textarea class=mainForm  
+name=field_14 id=field_14 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_15">
+					<label class="formFieldQuestion">Samstagmorgen, schönes Wetter und Muskelkater. Was machst du heute?</label><textarea class=mainForm  name=field_15 id=field_15 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_16">
+					<label class="formFieldQuestion">Was ist die grösste Ungerechtigkeit zwischen Männern und Frauen?</label><textarea class=mainForm  name=field_16 id=field_16 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_17">
+					<label class="formFieldQuestion">Mit wie vielen Leuten warst du intim?</label><textarea class=mainForm  name=field_17 id=field_17 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_18">
+					<label class="formFieldQuestion">Banane, Apfel, oder Birne? Warum?</label><textarea class=mainForm  name=field_18 id=field_18 rows=10 cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_19">
+					<label class="formFieldQuestion">Dein Partner/Deine Partnerin möchte sein/ihre 
+Karriere zu 100% 
+verfolgen. Wie stehst du dazu?</label><textarea class=mainForm  name=field_19 id=field_19 rows=10 
+cols=40></textarea></li>
+
+				<li class="mainForm" id="fieldBox_20">
+					<label class="formFieldQuestion">Du wachst auf einer einsamen Insel auf. Wie kommst du da weg?</label><textarea class=mainForm  name=field_20 id=field_20 rows=10 cols=40></textarea></li>
+		
+		
+		<!-- end of this page -->
+
+		<!-- page validation -->
+		<SCRIPT type=text/javascript>
+		<!--
+			function validatePage2()
+			{
+				retVal = true;
+				if (validateField('field_5','fieldBox_5','textarea',0) == false)
+ retVal=false;
+if (validateField('field_6','fieldBox_6','textarea',0) == false)
+ retVal=false;
+if (validateField('field_7','fieldBox_7','textarea',0) == false)
+ retVal=false;
+if (validateField('field_8','fieldBox_8','textarea',0) == false)
+ retVal=false;
+if (validateField('field_9','fieldBox_9','textarea',0) == false)
+ retVal=false;
+if (validateField('field_10','fieldBox_10','textarea',0) == false)
+ retVal=false;
+if (validateField('field_11','fieldBox_11','textarea',0) == false)
+ retVal=false;
+if (validateField('field_12','fieldBox_12','textarea',0) == false)
+ retVal=false;
+if (validateField('field_13','fieldBox_13','textarea',0) == false)
+ retVal=false;
+if (validateField('field_14','fieldBox_14','textarea',0) == false)
+ retVal=false;
+if (validateField('field_15','fieldBox_15','textarea',0) == false)
+ retVal=false;
+if (validateField('field_16','fieldBox_16','textarea',0) == false)
+ retVal=false;
+if (validateField('field_17','fieldBox_17','textarea',0) == false)
+ retVal=false;
+if (validateField('field_18','fieldBox_18','textarea',0) == false)
+ retVal=false;
+if (validateField('field_19','fieldBox_19','textarea',0) == false)
+ retVal=false;
+if (validateField('field_20','fieldBox_20','textarea',0) == false)
+ retVal=false;
+
+				if(retVal == false)
+				{
+					alert('Please correct the errors.  Fields marked with an asterisk (*) are required');
+					return false;
+				}
+				return retVal;
+			}
+		//-->
+		</SCRIPT>
+
+		<!-- end page validaton -->
+
+
+
+		<!-- next page buttons --><li class="mainForm">
+					<input id="saveForm" class="mainForm" type="submit" value="Submit" />
+				</li>
+
+			</form>
+			<!-- end of form -->
+		<!-- close the display stuff for this page -->
+		</ul></div>
+
+	</body>
+	</html>

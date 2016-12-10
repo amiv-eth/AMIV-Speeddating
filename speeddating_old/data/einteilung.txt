@@ -1,0 +1,284 @@
+free
+
+m; 21; naumannm@student.ethz.ch; Informationstechnologie und Elektrotechnik
+m; 24; juchlid@ethz.ch; Maschinenbauingenieurwissenschaften
+m; 23; marcellojakob@gmail.com; Maschinenbau D-MAVT
+m; 21; andreab@student.ethz.ch; Umweltnaturwisseschaften
+m; 25; edwind@ethz.ch; ITET
+m; 19; lschai@student.ethz.ch; Maschinenbau
+m; 20; moritwoe@student.ethz.ch; maschinenbau
+m; 21; rm2kpro@gmail.com; Informatik ETH
+m; 20; mmaxim@student.ethz.ch; D-ITET
+m; 22; alexandros_p@live.com; Politik; Wirtschaft & Psychologie
+m; 22; dkovacs@student.ethz.ch; Informatik
+m; 22; apaolo@student.ethz.ch; ETH - Computer Science Master
+m; 28; mmigueis@student.ethz.ch; Biomedical Engineering
+m; 22; kuthand@student.ethz.ch; Physik
+m; 21; timo@student.ethz.ch; MAVT
+m; 23; lufabian@ethz.ch; Maschineningenieur
+m; 27; fleetfox86@gmail.com; Theologie
+m; 26; seb.library@gmail.com; Psychologie und Politikwissenschaft
+m; 21; nikol@student.ethz.ch; Erdwissenschaften
+m; 30; piontekgregor@gmail.com; Architektur
+m; 20; ulukas@student.ethz.ch; Maschineningenieurwissenschaften BSc.
+m; 22; simon.sommer2@uzh.ch; Rechtswissenschaften
+m; 26; guga@gmx.ch; Mathematik
+m; 19; kochjo@student.ethz.ch; Maschinenbau
+m; 20; johannsp@student.ethz.ch; Maschinenbau
+m; 24; joel.meier2@uzh.ch; Theologie
+m; 21; streiffm@student.ethz.ch; Lebensmittelwissenschaften
+m; 23; ruetzf@ethz.ch; Maschinenbau
+m; 21; ycelik@ethz.ch; Maschinenbaum;
+m; 21; maxime14@hotmail.de; Bauingenieur
+m; 21; haiderr@student.ethz.ch; MAVT ETHZ
+m; 22; mazmiche@student.ethz.ch; ITET
+m; 22; hendryd@student.ethz.ch; maschinenbau
+m; 22; kevinpkramer@gmail.com; Physik
+m; 20; sefabio@student.ethz.ch; Maschinenbau
+m; 22; hansimann2@gmail.com; Informatik
+m; 21; mercurio9999@hotmail.com; Chemieingenieur
+m; 21; stjulian@student.ethz.ch; Physik
+m; 20; luhuber@student.ethz.ch; Maschinenbaum;
+m; 21; vheizer@student.ethz.ch; Maschinenbau
+m; 28; frittiner@ethz.ch; D-MTEC
+m; 29; mharvan@inf.ethz.ch; Informatik
+m; 21; dyacine@student.ethz.ch; Elektrotechnik und Informationstechnologie
+m; 21; dennis.hoch@uzh.ch; Medizin
+m; 22; ml91@live.de; Wirtschaftsinformatik
+m; 31; ludovic.howald@physik.uzh.ch; Physik
+m; 22; antoinek@student.ethz.ch; Informatik
+m; 22; tobias.vuillemin@uzh.ch; Wirtschaftschemie
+m; 20; jstiefel@student.ethz.ch; Maschinenbau
+m; 22; bharry@student.ethz.ch; Maschinenbau
+m; 25; pagasser@student.ethz.ch; Mathematik
+m; 22; foe329@hotmail.de; Geschichte
+m; 21; bauerlu@student.ethz.ch; D-Baug
+m; 19; ignaciolobato@student.ethz.ch; Maschinenbau
+m; 28; lieberto@inf.ethz.ch; Phd Informatik
+m; 21; hegglin.michael@gmail.com; Umweltnaturwissenschaften
+m; 22; camaibach@gmail.com; Psychologie
+m; 23; anroman@ethz.ch; Maschinenbauingenieur
+m; 28; brenner_martin@hotmail.com; Volkswirtschaftslehre (VWL)
+m; 22; peltierv@student.ethz.ch; D-MAVT
+m; 26; adrfried@ee.ethz.ch; Informationstechnologie und Elektrotechnik
+m; 21; samuel.prenner@gmx.net; Philosophie
+m; 24; ptbowen@ncsu.edu; Micro-Nano Systems Master
+m; 20; maassen.steve@gmail.com; Maschinenbau
+m; 20; yannick.liechti@gmx.ch; Wirtschaftswissenschaften
+m; 22; schnpatr@gmail.com; Bauingenieurwissenschaften ETHZ
+m; 28; mister.jackflash@hotmail.com; Theologie
+m; 22; tkuipers@student.ethz.ch; Bauingenieur
+m; 29; portmannjonas@hotmail.com; biologie
+m; 21; brudomin@student.ethz.ch; Elektrotechnik
+m; 20; bbasso@student.ethz.ch; itet
+m; 22; eryser@ethz.ch; D-MAVT
+m; 22; hallerja@ee.ethz.ch; ITET
+m; 21; pjanshekar_2048@gmx.ch; jus
+m; 37; o-haupt@gmx.de; ehm. Architektur
+
+13_5_2013_1830
+
+m; 25; blackjackal@gmx.net; Elektrotechnik
+m; 23; mmaetz@student.ethz.ch; Physik
+m; 24; lukas.gabi@gmx.ch; Physik
+m; 23; uwegmann@student.ethz.ch; Biochemie
+m; 23; asrivath@student.ethz.ch; Masters Biotechnology
+m; 23; yoriyoshi90@hotmail.co.jp; Maschinenbau
+m; 24; luduel@gmail.com; Wirtschaft
+m; 24; felixz@student.ethz.ch; Maschinenbau und Verfahrenstechnik
+m; 20; aebiru@student.ethz.ch; Maschinenbau
+m; 24; daniel@danielperez.ch; Master GesangspÃ¤dagogik
+f; 28; rzoller@student.ethz.ch; Materialwissenschaften MSc
+f; 20; sanwilli@student.ethz.ch; Lebensmittelwissenschaft
+f; 22; ruth_hangartner@hotmail.com; Medizin
+f; 21; rueegnad@student.ethz.ch; maschinenbau
+f; 23; jmetzner@student.ethz.ch; Maschinenbau
+f; 20; flsarah@student.ethz.ch; Erdwissenschaften
+f; 23; nadjam@student.ethz.ch; MAVT
+f; 19; schranev@student.ethz.ch; Lebensmittelwissenschaft
+f; 21; luana@nyiroe.ch; Medizin
+f; 23; libauman@student.ethz.ch; Lebensmittelwissenschaften
+
+13_5_2013_2030
+
+m; 23; louis.leon.90@gmail.com; Informatik
+m; 23; hyperion67@gmx.net; MAS KVT u. Verhaltensmedizin
+m; 23; matt_55_55@hotmail.com; Physik
+m; 24; thalbe@student.ethz.ch; Biologie Master
+m; 19; leons@student.ethz.ch; Maschinenbau
+m; 24; marc.schmit@uzh.ch; Biologie
+m; 20; andreadenz92@gmail.com; Politikwissenschaften
+m; 23; vincent.grandjean@bluewin.ch; Medizin
+m; 24; haeckel.alexander@gmail.com; Wirtschaftswissenschaften
+m; 23; stefan.betschart@uzh.ch; Wirtschaftswissenschaften
+f; 20; selina_lacher93@hotmail.com; medizin
+f; 21; a.kundert@kundert.ch; Humanmedizin
+f; 21; melanie_guillebeau@hotmail.com; Biologie
+f; 21; jennifer.burkhard@uzh.ch; Humanmedizin
+f; 21; laura_c_graf@yahoo.com; Medizin (Chiro)
+f; 21; aline-b-@hotmail.com; Medizin
+f; 22; nguyenj@ethz.ch; Pharmazie
+f; 22; sarina.enzler@bleuwin.ch; Psychologie
+f; 23; sommer2013@gmail.com; Wirtschaft
+f; 22; sabinne.langhart@uzh.ch; Humanmedizin
+
+14_5_2013_1830
+
+m; 25; ikunz@ethz.ch; Maschineningenieur 
+m; 25; m.wulfmeier@gmx.net; Robotik
+m; 24; markurem@ee.ethz.ch; Biomedical Engineering
+m; 25; piattim@student.ethz.ch; architektur
+m; 25; pavel.raykov@inf.ethz.ch; Informatik
+m; 25; mnicolas@student.ethz.ch; Raumentwicklung und Infrastruktursysteme
+m; 25; deliaf@student.ethz.ch; Mathematik
+m; 25; rknuser@ethz.ch; Bauingenieurwissenschaften
+m; 27; dwolf@ethz.ch; Maschinenbau
+m; 29; fbru@gmx.net; Mathematik
+f; 27; noraflora86@gmail.com; Phil. I. 
+f; 24; leutwilf@student.ethz.ch; Biologie
+f; 23; julia.mueller89@gmx.ch; Jus
+f; 26; tetetondorf@gmx.ch; Psychologie
+f; 26; antjed@student.ethz.ch; Biologie
+f; 22; Vy-huynh@hotmail.com; Rechtswissenschaften
+f; 25; lamista@hotmail.com; Geographie
+f; 25; je_bohler@hotmail.com; Master Wirtschaftswissenschaften
+f; 25; ca.kaufmann@bluemail.ch; Humanmedizin
+f; 24gi; claudinepodner@bluewin.ch; Jus
+
+14_5_2013_2030
+
+m; 23; ottob@student.ethz.ch; Informatik
+m; 24; martieic@ethz.ch; Maschinenbau
+m; 25; gfarina@inf.ethz.ch; Computer Science
+m; 23; ramonasmus@hotmail.com; ETH-MAVT
+m; 26; marco.rudin@uzh.ch; Wirtschaftswissenschaften
+m; 25; nvladi@student.ethz.ch; RechnergestÃ¼tztewissenschaften
+m; 25; Kaufmann.patrick@gmx.ch; Wirtschaft
+m; 22; christianthoma@hotmail.com; Maschinenbau
+m; 23; gyseljo@student.ethz.ch; Maschinenbau ETH
+m; 25; dintend@student.ethz.ch; Master Geology
+f; 24; sinaunseld@hotmail.com; Psychologie
+f; 23; patricia.lenz@gmx.ch; Kunstgeschichte und Japanologie
+f; 20; V.Tramer@gmx.ch; Bachelor: PopulÃ¤re Kulturen, Geschichte, Psychologie
+f; 23; smyriam@student.ethz.ch; Physik
+f; 22; forremar@students.zhaw.ch; Economics and Politics
+f; 23; annatina.vinzens@uzh.ch; Angewandte Informatik (Neuroinformatik) 
+f; 25; deliamaire@access.uzh.ch; Jus
+f; 25; cfurter@student.ethz.ch; Bauingenieurwissenschaften
+f; 22; simosch@ethz.ch; Bauingenieur
+f; 22; anna_23789@hotmail.com; Geschichte, Politik
+
+15_5_2013_1800
+
+m; 24; zidaniel@student.ethz.ch; Maschinenbau
+m; 24; pwilli@hsr.ch; Elektrotechnik
+m; 25; bafsimon@ee.ethz.ch; Doktorand BAUG (Vorher: MSc ITET). 
+m; 24; widmeman@student.ethz.ch; Elektrotechnik
+m; 25; gaehlers@gmail.com; Elektrotechnik
+m; 26; mawiget@student.ethz.ch; Maschineningenieurwissenschaft
+m; 23; philipposterwalder@hotmail.com; Biologie
+m; 22; jabeken@ethz.ch; Maschinenbau
+m; 25; philipp.powder@gmail.com; Ingenieurswissenschaft (jo genau, Maschbau..)
+m; 22; rlinus@student.ethz.ch; Elektrotechnik
+f; 24; diana.l.truong@gmail.com; Banking and Finance
+f; 29; jocelynwaser@gmx.ch; Medizin
+f; 24; Zahnerf@student.ethz.ch; Umweltingenieurwissenschaften
+f; 21; alicech@student.ethz.ch; Bauingenieur
+f; 26; tamara_h@gmx.ch; Biologie/Ethnologie
+f; 21; lilianet@student.ethz.ch; Lebensmittelwissenschaften
+f; 20; alex.v2v@hotmail.com; Bauingenieur
+f; 23; manjad@student.ethz.ch; Bewegungswissenschaften und Sport (Master)
+f; 23; alice.mueller@uzh.ch; Psychologie
+f; 19; mengina127@live.dr; Geographie
+
+15_5_2013_2000
+
+m; 23; enderlip@student.ethz.ch; Maschinenbau
+m; 20; marcheim7@gmail.com; Bsc Informatik ETH
+m; 22; reroth@student.ethz.ch; D-INFK
+m; 22; schmifl@student.ethz.ch; Bauingenieur
+m; 19; baertscc@student.ethz.ch; MAVT
+m; 22; arterom@student.ethz.ch; Biologie 
+m; 22; marlonazinovic@aol.com; Physik Bsc
+m; 23; gflorin@student.ethz.ch; Mathematik
+m; 22; jloss@student.ethz.ch; Informatik 
+m; 23; marcokobler@hotmail.com; Bauingenieur
+f; 21; nikita.russi@gmx.ch; Jus
+f; 19; dede.baumann@bluewin.ch; noch keiner nÃ¤chstes Semester Umweltnaturwissenschaften
+f; 19; larastucki93@gmail.com; Umweltnaturwissenschaften
+f; 20; czanell@student.ethz.ch; Physik
+f; 20; livia.morger@gmail.com; Politikwissenschaften
+f; 22; ynnning@gmail.com; Maschinenbau 
+f; 22; rkaestli@student.ethz.ch; Neuroscience Master
+f; 21; simone262626@hotmail.com; Medizin
+f; 21; naefre@student.ethz.ch; Lebensmittelwissenschaften
+f; 22; cobieri@student.ethz.ch; Lebensmittelswissenschaften
+
+16_5_2013_2000
+
+m; 25; dom_thorin@hotmail.com; Sinologie / BWL
+m; 23; gyseljo@student.ethz; Maschinenbau ETH
+m; 21; ajohan@student.ethz.ch; Physik
+m; 26; goettir@student.ethz.ch; MAVT
+m; 24; simon.schaefer@uzh.ch; Tumorbiologie
+m; 25; faustl@student.ethz.ch; Architektur
+m; 22; boarderworld@gmail.com; Pharmazie
+m; 23; amin6144@yahoo.com; Bau
+m; 23; anwaeber@student.ethz.ch; MAVT
+m; 22; napter@ethz.ch; Maschinenbau
+f; 21; caroglauser@hotmail.com; Wirtschaft
+f; 23; juliabr@student.ethz.ch; Statistik
+f; 22; anna_h990@hotmail.com; Sinologie
+f; 23; schmalen@student.ethz.ch; Umweltnaturwissenschaften
+f; 19; laurateresa.hack@uzh.ch; PopulÃ¤re Kulturen
+f; 24; angela.wimmer@ggaweb.ch; Kommunikationswissenschaften & Betriebswirtschaftslehre 
+f; 22; ursina.muenger@hotmail.com; VeterinÃ¤rmedizin
+f; 23; ornellavonmatt@msn.com; Volkswirtschaft
+f; 19; alix.forrer@hotmail.com; bin grade in Entscheidungsphase
+f; 21; natalie.bearth@bluewin.ch; VeterinÃ¤rmedizin
+
+17_5_2013_1800
+
+m; 23; freicy@student.ethz.ch; Elektrotechnik
+m; 23; eglukas@student.ethz.ch; Maschinenbau
+m; 23; micaz@gmx.ch; Soziologie
+m; 23; alexmuel@student.ethz.ch; Maschinenbau
+m; 24; da.wyss@gmx.ch; Germanistik 90, Russische Literatur 60, Philosophie 30
+m; 23; silviawidm@gmail.com; PH
+m; 22; christoph.t.weber@gmail.com; Maschinenbau
+m; 23; walkerj@student.ethz.ch; Health Science and Technology
+m; 20; soldanie@student.ethz.ch; Mathematik Bsc
+m; 23; rengler@student.ethz.ch; Management, Technologie und Ã–konomie
+f; 23; larissa.arnold@bluewin.ch; Bauingenieur
+f; 21; helena.reichlin@gmail.com; Jus
+f; 23; ma.zi@hotmail.com; Ethnologie
+f; 22; anpatricia23@gmail.com; Wirtschaft
+f; 20; spaetik@student.ethz.ch; UWIS
+f; 21; kidudel@hotmail.com; Lebensmittelwissenschaften
+f; 21; popovvic@students.zhaw.ch; Wirtschaftsrecht
+f; 21; jul.keller@bluewin.ch; Klassische ArchÃ¤ologie
+f; 20; anettesteinmann@bluewin.ch; Lebensmittelwissenschaften
+f; 22; leabo@student.ethz.ch; Pharmazeutische Wissenschaften
+
+17_5_2013_2000
+
+m; 23; mancinig@idsc.mavt.ethz.ch; PhD Mechanical Engineering
+m; 26; stepmuel@ee.ethz.ch; ITET
+m; 25; martin.noack@uzh.ch; Informatik
+m; 25; bonzanigo@gmail.com; Finance
+m; 26; swayam.151@gmail.com; Material Science
+m; 28; markus@hirschbuehl.ch; Mathematik
+m; 25; lo.bo@gmx.ch; Geographie
+m; 26; cmatt@fastmail.fm; Informatik
+m; 27; reichni@student.ethz.ch; Maschinenbau
+m; 26; wiseveri@student.ethz.ch; Informatik
+f; 26; lillibittner86@yahoo.de; PHD student (Tiermedizin)
+f; 23; jasmin.terreni@bluewin.ch; Biochemie
+f; 25; angi_meier@gmx.ch; Doktorandin Humanmedizin
+f; 25; lara.schneider@uzh.ch; Medizin
+f; 27; jenny.salzmann@gmx.ch; Rechtswissenschaft
+f; 26; m.walser@gmx.ch; Kunstgeschichte
+f; 23; lena@leserf.ch; Publizistik
+f; 21; seline.wuest@gmx.ch; PHZH Kindergarten/Unterstufen Studiengang
+f; 23; carole.kindle@uzh.ch; Rechtswissenschaften
+f; 24; jhughes@student.ethz.ch; Energy Science and Technology Master Programme
