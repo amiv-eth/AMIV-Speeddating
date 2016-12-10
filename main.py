@@ -6,7 +6,7 @@ import requests
 app = Flask(__name__)
 
 #setup sql db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:toor@localhost/Speeddating'
 db = SQLAlchemy(app)
 
 
