@@ -9,125 +9,125 @@
 {% block content %}
 
 <div>
-  <h2>Speed Dating Fragebogen</h2>
-  <p>
-    Wir freuen uns, dass du an unserem Speed-Dating teilnehmen möchtest. Hier noch ein paar Informationen zum Fragebogen:
-  </p>
-  <ul>
-    <li>Mit einem <strong>Sternchen (*) markierte Fragen sind obligatorisch</strong> und müssen beantwortet werden.</li>
-    <li>Fragen die kein Sternchen haben sind freiwillig und müssen nicht unbedingt beantwortet werden.</li>
-    <li>Je mehr Termine du angibst, desto höher sind deine Chancen dabei zu sein.</li>
-    <li>Sämtliche Angaben sind sind zur internen Verwendung und werden nicht veröffentlicht. </li>
-  </ul>
-  <p class="formInfo">
-    Viel Spass beim ausfüllen und falls du Fragen hast, schreib einfach eine Mail an speeddating@amiv.ethz.ch. <br><br>
+	<h2>Speed Dating Fragebogen</h2>
+	<p>
+	Wir freuen uns, dass du an unserem Speed-Dating teilnehmen möchtest. Hier noch ein paar Informationen zum Fragebogen:
+	</p>
+	<ul>
+		<li>Mit einem <strong>Sternchen (*) markierte Fragen sind obligatorisch</strong> und müssen beantwortet werden.</li>
+		<li>Fragen die kein Sternchen haben sind freiwillig und müssen nicht unbedingt beantwortet werden.</li>
+		<li>Je mehr Termine du angibst, desto höher sind deine Chancen dabei zu sein.</li>
+		<li>Sämtliche Angaben sind sind zur internen Verwendung und werden nicht veröffentlicht. </li>
+	</ul>
+	<p class="formInfo">
+	Viel Spass beim ausfüllen und falls du Fragen hast, schreib einfach eine Mail an speeddating@amiv.ethz.ch. <br><br>
 
-					Dein Speed-Dating Team
-  </p>
+	Dein Speed-Dating Team
+	</p>
 </div>
 
 
 <form action = "http://localhost:5000/signup" method = "POST">
-  <div class = "form-group">
-    <label for = "name">Name </label>
-    <input type = "text" class="form-control" name = "name">
-  </div>
-  <div class = "form-group">
-    <label for = "prename">Vorname </label>
-    <input type = "text" class="form-control" name = "prename">
-  </div>
-  <div class = "form-group">
-    <label for = "mail">E-Mail </label>
-    <input type = "text" class="form-control" name = "mail">
-  </div>
-  <div class = "form-group">
-    <label for = "mobile">Mobile-Nr </label>
-    <input type = "text" class="form-control" name = "mobile">
-  </div>
-  <div class = "form-group">
-    <label for = "address">Adresse</label>
-	  <textarea class="form-control" rows="3" placeholder="Crazy pickupLine" name = "pickupLine"></textarea>
-  </div>
+	<div class = "form-group">
+		<label for = "name">Name </label>
+		<input type = "text" class="form-control" name = "name">
+	</div>
+	<div class = "form-group">
+		<label for = "prename">Vorname </label>
+		<input type = "text" class="form-control" name = "prename">
+	</div>
+	<div class = "form-group">
+		<label for = "mail">E-Mail </label>
+		<input type = "text" class="form-control" name = "mail">
+	</div>
+	<div class = "form-group">
+		<label for = "mobile">Mobile-Nr </label>
+		<input type = "text" class="form-control" name = "mobile">
+	</div>
+	<div class = "form-group">
+		<label for = "address">Adresse</label>
+		<textarea class="form-control" rows="3" placeholder="Crazy pickupLine" name = "pickupLine"></textarea>
+	</div>
 
 
-  <div class = "form-group">
-	  <form>
-		  Birthday:
-		  <input type="date" name="bday">
-	  </form>
-  </div>
+	<div class = "form-group">
+		<form>
+			Birthday:
+			<input type="date" name="bday">
+		</form>
+	</div>
 
-  <div class = "form-group">
-	  <label for = "birthday"></label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "birthday">
-  </div>
-  <div class = "form-group">
-	  <label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
-	  <label class="checkbox-inline"><input type="checkbox" value="">Option 2</label>
-	  <label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
-  </div>
-  <div class = "form-group">
-	  <label for = "sexe">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "sexe">
-  </div>
-  <div class = "form-group">
-	  <label for = "eventYear">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "eventyear">
-  </div>
-  <div class = "form-group">
-	  <label for = "studyCourse">Studiengang </label>
-	  <input type = "text" class="form-control" placeholder="Studiengang" name = "studycourse">
-  </div>
-  <div class = "form-group">
-	  <label for = "semester">Semester </label>
-	  <input type = "text" class="form-control" placeholder="Semester" name = "semester">
-  </div>
-  <div class = "form-group">
-	  <label for = "perfectDate">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "perfectdate">
-  </div>
-  <!-- TODO date input field -->
-  <div class = "form-group">
-	  <label for = "singleSince">Single seit... </label>
-	  <input type = "text" class="form-control" placeholder="Datum" name = "singleSince">
-  </div>
-  <div class = "form-group">
-	  <label for = "onlineDating">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "onlineDating">
-  </div>
-  <div class = "form-group">
-	  <label for = "pickupLine">Vorname </label>
-	  <textarea class="form-control" rows="10" placeholder="Crazy pickupLine" name = "pickupLine"></textarea>
-  </div>
-  <div class = "form-group">
-	  <label for = "women">Frauen sind... </label>
-	  <input type = "text" class="form-control" placeholder="Lass es raus" name = "women">
-  </div>
-  <div class = "form-group">
-	  <label for = "men">Männer sind... </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "men">
-  </div>
-  <div class = "form-group">
-	  <label for = "advantages">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "advantages">
-  </div>
-  <div class = "form-group">
-	  <label for = "nrDates">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "nrDates">
-  </div>
-  <div class = "form-group">
-	  <label for = "longestRelationship">Längste Beziehung</label>
-	  <input type = "text" class="form-control" placeholder="" name = "longestRelationship">
-  </div>
-  <div class = "form-group">
-	  <label for = "findDates">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "findDates">
-  </div>
-  <div class = "form-group">
-	  <label for = "fruit">Vorname </label>
-	  <input type = "text" class="form-control" placeholder="Vorname" name = "fruit">
-  </div>
-  <button type = "submit" class="btn btn-default">Submit</button>
+	<div class = "form-group">
+		<label for = "birthday"></label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "birthday">
+	</div>
+	<div class = "form-group">
+		<label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
+		<label class="checkbox-inline"><input type="checkbox" value="">Option 2</label>
+		<label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
+	</div>
+	<div class = "form-group">
+		<label for = "sexe">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "sexe">
+	</div>
+	<div class = "form-group">
+		<label for = "eventYear">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "eventyear">
+	</div>
+	<div class = "form-group">
+		<label for = "studyCourse">Studiengang </label>
+		<input type = "text" class="form-control" placeholder="Studiengang" name = "studycourse">
+	</div>
+	<div class = "form-group">
+		<label for = "semester">Semester </label>
+		<input type = "text" class="form-control" placeholder="Semester" name = "semester">
+	</div>
+	<div class = "form-group">
+		<label for = "perfectDate">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "perfectdate">
+	</div>
+	<!-- TODO date input field -->
+	<div class = "form-group">
+		<label for = "singleSince">Single seit... </label>
+		<input type = "text" class="form-control" placeholder="Datum" name = "singleSince">
+	</div>
+	<div class = "form-group">
+		<label for = "onlineDating">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "onlineDating">
+	</div>
+	<div class = "form-group">
+		<label for = "pickupLine">Vorname </label>
+		<textarea class="form-control" rows="10" placeholder="Crazy pickupLine" name = "pickupLine"></textarea>
+	</div>
+	<div class = "form-group">
+		<label for = "women">Frauen sind... </label>
+		<input type = "text" class="form-control" placeholder="Lass es raus" name = "women">
+	</div>
+	<div class = "form-group">
+		<label for = "men">Männer sind... </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "men">
+	</div>
+	<div class = "form-group">
+		<label for = "advantages">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "advantages">
+	</div>
+	<div class = "form-group">
+		<label for = "nrDates">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "nrDates">
+	</div>
+	<div class = "form-group">
+		<label for = "longestRelationship">Längste Beziehung</label>
+		<input type = "text" class="form-control" placeholder="" name = "longestRelationship">
+	</div>
+	<div class = "form-group">
+		<label for = "findDates">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "findDates">
+	</div>
+	<div class = "form-group">
+		<label for = "fruit">Vorname </label>
+		<input type = "text" class="form-control" placeholder="Vorname" name = "fruit">
+	</div>
+	<button type = "submit" class="btn btn-default">Submit</button>
 </form>
 
 
