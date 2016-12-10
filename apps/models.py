@@ -1,11 +1,12 @@
-from apps.database import db
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 class Participants(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     DefSlot = db.Column(db.Integer, primary_key=False)
     AvailableSlot = db.Column(db.String(50), primary_key=False)
-    NonceConfirm = db.Column(db.String(50), primary_key=True)
-    NonceCancel = db.Column(db.String(50), primary_key=True)
+    NonceConfirm = db.Column(db.String(50), primary_key=False)
+    NonceCancel = db.Column(db.String(50), primary_key=False)
     Name = db.Column(db.String(80), unique=False)
     Prename = db.Column(db.String(80), unique=False)
     EMail = db.Column(db.String(120), unique=False)
@@ -60,8 +61,8 @@ class TimeSlots(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
     EventYear = db.Column(db.Date, unique=True)
     Date = db.Column(db.Date, unique=True)
-    StartTime = db.Column(db.Time, primary_key=True)
-    EndTime = db.Column(db.Time, primary_key=True)
+    StartTime = db.Column(db.Time, primary_key=False)
+    EndTime = db.Column(db.Time, primary_key=False)
     NrCouples = db.Column(db.Integer, primary_key=False)
 
     def __init__(self, year, date, startDate, endTime, nrCouples):
