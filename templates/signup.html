@@ -35,20 +35,20 @@
 	</div>
 
 	<div class = "form-group">
-		<label for = "prename">Vorname (*) </label>
+		<label for = "prename">Vorname </label>
 		<input type = "text" class="form-control" name = "prename">
 	</div>
 
 	<div class = "form-group">
-		<label for = "gender-radio-buttons">Geschlecht (*) </label><br>
-		<form name="gender-radio-buttons">
+		<label for = "gender-radio-buttons">Geschlecht </label><br>
+		<div name="gender-radio-buttons">
 			<input type="radio" name="gender" value="Weiblich"><label for="Weiblich"> Weiblich</label><br>
 			<input type="radio" name="gender" value="Männlich"><label for="Männlich"> Männlich</label><br>
-		</form>
+		</div>
 	</div>
 
 	<div class = "form-group">
-		<label for = "mail">E-Mail (*) </label>
+		<label for = "mail">E-Mail </label>
 		<input type = "text" class="form-control" placeholder="lorem.ipsum@student.ethz.ch" name = "mail">
 	</div>
 
@@ -58,17 +58,15 @@
 	</div>
 
 	<div class = "form-group">
-		<label for = "address">Adresse (*) </label>
+		<label for = "address">Adresse</label>
 		<textarea class="form-control" rows="3" placeholder="Max Mustermann..." name = "address"></textarea>
 	</div>
 
 
 	<!-- TODO find something that works outside of chrome -->
 	<div class = "form-group">
-		<label for = "bday">Geburtstag (*) </label>
-		<form>
+		<label for = "bday">Geburtstag </label>
 			<input type="date" name="bday">
-		</form>
 	</div>
 
 	<!-- TODO get valid dates dynamically -->
@@ -114,17 +112,17 @@
 
 	<div class = "form-group">
 		<label for = "pickupLine">Dein bester Anmachspruch? </label>
-		<textarea class="form-control" rows="2" placeholder="Keine Hemmungen" name = "pickupLine"></textarea>
+		<textarea class="form-control" rows="5" placeholder="Keine Hemmungen" name = "pickupLine"></textarea>
 	</div>
 
 	<div class = "form-group">
 		<label for = "women">Frauen sind... </label>
-		<textarea type = "text" class="form-control" name="women"></textarea>
+		<input type = "text" class="form-control" name="women">
 	</div>
 
 	<div class = "form-group">
 		<label for = "men">Männer sind... </label>
-		<textarea type = "text" class="form-control" name="men"></textarea>
+		<input type = "text" class="form-control" name="men">
 	</div>
 
 	<div class = "form-group">
