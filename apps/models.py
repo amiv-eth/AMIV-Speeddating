@@ -1,7 +1,7 @@
 from apps.database import db
 
 class Participants(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     DefSlot = db.Column(db.Integer, primary_key=False)
     AvailableSlot = db.Column(db.String(50), primary_key=False)
     NonceConfirm = db.Column(db.String(50), primary_key=True)
