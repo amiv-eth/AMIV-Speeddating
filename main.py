@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
-from flaskext.mysql import MySQL
+# from flaskext.mysql import MySQL
 import requests
 
-mysql = MySQL()
+# mysql = MySQL()
 app = Flask(__name__)
 
 
@@ -11,7 +11,7 @@ app.config['MYSQL_DATABASE_USER'] = 'root'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'toor'
 app.config['MYSQL_DATABASE_DB'] = 'Speeddating'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
+# mysql.init_app(app)
 
 
 @app.route('/')
@@ -35,12 +35,12 @@ def signup():
         result = request.form
         prename1 = str(result['prename'])
         name1 = str(result['name'])
-        con = mysql.connect()
+        # # con = mysql.connect()
         cursor = con.cursor()
-        sql = "INSERT INTO Person (Name,Prename) VALUES (?,?)"
-        cursor.execute(sql, (name1,prename1))
+        # sql = "INSERT INTO Person (Name,Prename) VALUES (?,?)"
+        # cursor.execute(sql, (name1,prename1))
         con.commit()
-        con.close()   
+        con.close()
         return render_template('signup.html')
     return render_template('signup.html')
 
