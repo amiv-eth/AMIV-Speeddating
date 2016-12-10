@@ -1,4 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+{% extends 'base.html' %}
+
+<h1>{% block title %}Home{% endblock %}</h1>
+
+{% block content %}
 
 <html>
 	<head>
@@ -99,15 +103,14 @@
 					8092 Z&uuml;rich - Schweiz</a></p>
 			</div>
 			<!--<div id="sponsor" style="margin-top:50px">
-	   <img src="static/images/800px-Durex_logo.svg.png" style="height:72px;" />
-	   <p>Dieses Jahr von Durex gesponsert.</p>
-	   </div>
-	   //-->
+			<img src="static/images/800px-Durex_logo.svg.png" style="height:72px;" />
+			<p>Dieses Jahr von Durex gesponsert.</p>
+			</div>
+			//-->
 
 		</div>
-
-
 	</body>
-
-
 </html>
+
+
+{% endblock %}
