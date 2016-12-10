@@ -9,11 +9,11 @@ class Participants(db.Model):
     Name = db.Column(db.String(80), unique=False)
     Prename = db.Column(db.String(80), unique=False)
     EMail = db.Column(db.String(120), unique=False)
-    MobileNr = db.Column(db.Integer, unique=False)
+    MobileNr = db.Column(db.String(20), unique=False)
     Address = db.Column(db.String(200), unique=False)
-    Birthday = db.Column(db.Date, unique=False)
+    Age = db.Column(db.Integer, unique=False)
     Sexe = db.Column(db.Boolean, unique=False)
-    EventYear = db.Column(db.Date, unique=False)
+    EventYear = db.Column(db.Integer, unique=False)
     StudyCourse = db.Column(db.String(80), unique=False)
     StudySemester = db.Column(db.String(80), unique=False)
     PerfectDate = db.Column(db.String(300), unique=False)
@@ -28,7 +28,7 @@ class Participants(db.Model):
     FindDates = db.Column(db.String(300), unique=False)
     Fruit = db.Column(db.String(300), unique=False)
 
-    def __init__(self, name, prename, email, mobileNr, address, birthday, sexe, year=None, dSlot=None, aSlot=None, nConfirm=None, nCancel=None, course=None, semester=None, perfDate=None, singleSince=None, onlineDating=None, pickup=None, women=None, men=None, advantages=None, nrDates=None, longestRel=None, findDates=None, fruit=None):
+    def __init__(self, name, prename, email, mobileNr, address, age, sexe, year=None, dSlot=None, aSlot=None, nConfirm=None, nCancel=None, course=None, semester=None, perfDate=None, singleSince=None, onlineDating=None, pickup=None, women=None, men=None, advantages=None, nrDates=None, longestRel=None, findDates=None, fruit=None):
         self.DefSlot = dSlot
         self.AvailableSlot = aSlot
         self.NonceConfirm = nConfirm
@@ -38,7 +38,7 @@ class Participants(db.Model):
         self.EMail = email
         self.MobileNr = mobileNr
         self.Address = address
-        self.Birthday = birthday
+        self.Age = age
         self.Sexe = sexe
         self.EventYear = year
         self.StudyCourse = course
