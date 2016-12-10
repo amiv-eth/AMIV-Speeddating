@@ -3,6 +3,7 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from apps.database import db
+from apps.models import Participants, TimeSlots
 import requests
 
 
@@ -37,7 +38,7 @@ def signup():
         result = request.form
         prename = str(result['prename'])
         name = str(result['name'])
-        admin = Person(prename, name)
+        admin = Participants(prename, name)
         db.session.add(admin)
         db.session.commit()
         return render_template('index.html')
