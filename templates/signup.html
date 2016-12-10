@@ -36,6 +36,15 @@
 		<label for = "prename">Vorname </label>
 		<input type = "text" class="form-control" name = "prename">
 	</div>
+
+	<div class = "form-group">
+		<label for = "gender-radio-buttons">Geschlecht </label><br>
+		<form name="gender-radio-buttons">
+			<input type="radio" name="gender" value="Weiblich"><label for="Weiblich"> Weiblich</label><br>
+			<input type="radio" name="gender" value="Männlich"><label for="Männlich"> Männlich</label><br>
+		</form>
+	</div>
+
 	<div class = "form-group">
 		<label for = "mail">E-Mail </label>
 		<input type = "text" class="form-control" name = "mail">
@@ -65,10 +74,6 @@
 		<label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
 		<label class="checkbox-inline"><input type="checkbox" value="">Option 2</label>
 		<label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
-	</div>
-	<div class = "form-group">
-		<label for = "sexe">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "sexe">
 	</div>
 	<div class = "form-group">
 		<label for = "eventYear">Vorname </label>
@@ -112,8 +117,8 @@
 		<input type = "text" class="form-control" placeholder="Vorname" name = "advantages">
 	</div>
 	<div class = "form-group">
-		<label for = "nrDates">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "nrDates">
+		<label for = "nrDates">Wie viele Dates hattest du im letzten Jahr?</label>
+		<input type = "text" class="form-control" placeholder="+/- 10%" name = "nrDates">
 	</div>
 	<div class = "form-group">
 		<label for = "longestRelationship">Längste Beziehung</label>
@@ -124,8 +129,8 @@
 		<input type = "text" class="form-control" placeholder="Vorname" name = "findDates">
 	</div>
 	<div class = "form-group">
-		<label for = "fruit">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "fruit">
+		<label for = "fruit">Lieblingsfrucht?</label>
+		<input type = "text" class="form-control" placeholder="" name = "fruit">
 	</div>
 	<button type = "submit" class="btn btn-default">Submit</button>
 </form>
