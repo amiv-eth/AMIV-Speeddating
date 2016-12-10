@@ -28,6 +28,7 @@
 
 
 <form action = "http://localhost:5000/signup" method = "POST">
+
 	<div class = "form-group">
 		<label for = "name">Name </label>
 		<input type = "text" class="form-control" name = "name">
@@ -47,15 +48,15 @@
 
 	<div class = "form-group">
 		<label for = "mail">E-Mail </label>
-		<input type = "text" class="form-control" name = "mail">
+		<input type = "text" class="form-control" placeholder="lorem.ipsum@student.ethz.ch" name = "mail">
 	</div>
 	<div class = "form-group">
-		<label for = "mobile">Mobile-Nr </label>
-		<input type = "text" class="form-control" name = "mobile">
+		<label for = "mobile">Handynummer </label>
+		<input type = "text" class="form-control" placeholder="099 999 99 99" name = "mobile">
 	</div>
 	<div class = "form-group">
 		<label for = "address">Adresse</label>
-		<textarea class="form-control" rows="3" placeholder="Crazy pickupLine" name = "pickupLine"></textarea>
+		<textarea class="form-control" rows="3" placeholder="Max Mustermann..." name = "address"></textarea>
 	</div>
 
 
@@ -88,8 +89,8 @@
 		<input type = "text" class="form-control" placeholder="Semester" name = "semester">
 	</div>
 	<div class = "form-group">
-		<label for = "perfectDate">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "perfectdate">
+		<label for = "perfectDate">Das perfekte Date? </label>
+		<input type = "text" class="form-control" placeholder="Max. 50 Seiten" name = "perfectdate">
 	</div>
 	<!-- TODO date input field -->
 	<div class = "form-group">
@@ -97,20 +98,20 @@
 		<input type = "text" class="form-control" placeholder="Datum" name = "singleSince">
 	</div>
 	<div class = "form-group">
-		<label for = "onlineDating">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "onlineDating">
+		<label for = "onlineDating">Wie stehst du zum Thema Online-Dating?</label>
+		<input type = "text" class="form-control" name = "onlineDating">
 	</div>
 	<div class = "form-group">
-		<label for = "pickupLine">Vorname </label>
-		<textarea class="form-control" rows="10" placeholder="Crazy pickupLine" name = "pickupLine"></textarea>
+		<label for = "pickupLine">Dein bester Anmachspruch? </label>
+		<textarea class="form-control" rows="10" placeholder="Keine Hemmungen" name = "pickupLine"></textarea>
 	</div>
 	<div class = "form-group">
 		<label for = "women">Frauen sind... </label>
-		<input type = "text" class="form-control" placeholder="Lass es raus" name = "women">
+		<input type = "text" class="form-control"  name = "women">
 	</div>
 	<div class = "form-group">
 		<label for = "men">Männer sind... </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "men">
+		<input type = "text" class="form-control" name = "men">
 	</div>
 	<div class = "form-group">
 		<label for = "advantages">Vorname </label>
@@ -121,16 +122,16 @@
 		<input type = "text" class="form-control" placeholder="+/- 10%" name = "nrDates">
 	</div>
 	<div class = "form-group">
-		<label for = "longestRelationship">Längste Beziehung</label>
+		<label for = "longestRelationship">Längste Beziehung?</label>
 		<input type = "text" class="form-control" placeholder="" name = "longestRelationship">
 	</div>
 	<div class = "form-group">
-		<label for = "findDates">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "findDates">
+		<label for = "findDates">Wo triffst du neue Leute (ausser beim AMIV Speeddating)?</label>
+		<input type = "text" class="form-control" placeholder="" name = "findDates">
 	</div>
 	<div class = "form-group">
 		<label for = "fruit">Lieblingsfrucht?</label>
-		<input type = "text" class="form-control" placeholder="" name = "fruit">
+		<input type = "text" class="form-control" placeholder="Apfel? Birne? Banane? Karambole? Maracuja?" name = "fruit">
 	</div>
 	<button type = "submit" class="btn btn-default">Submit</button>
 </form>
