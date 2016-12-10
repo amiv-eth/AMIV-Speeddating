@@ -33,6 +33,7 @@
 		<label for = "name">Name </label>
 		<input type = "text" class="form-control" name = "name">
 	</div>
+
 	<div class = "form-group">
 		<label for = "prename">Vorname </label>
 		<input type = "text" class="form-control" name = "prename">
@@ -50,89 +51,107 @@
 		<label for = "mail">E-Mail </label>
 		<input type = "text" class="form-control" placeholder="lorem.ipsum@student.ethz.ch" name = "mail">
 	</div>
+
 	<div class = "form-group">
 		<label for = "mobile">Handynummer </label>
-		<input type = "text" class="form-control" placeholder="099 999 99 99" name = "mobile">
+		<input type = "text" class="form-control" placeholder="071 337 13 37" name = "mobile">
 	</div>
+
 	<div class = "form-group">
 		<label for = "address">Adresse</label>
 		<textarea class="form-control" rows="3" placeholder="Max Mustermann..." name = "address"></textarea>
 	</div>
 
 
+	<!-- TODO find something that works outside of chrome -->
 	<div class = "form-group">
+		<label for = "bday">Geburtstag </label>
 		<form>
-			Birthday:
 			<input type="date" name="bday">
 		</form>
 	</div>
 
-	<div class = "form-group">
-		<label for = "birthday"></label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "birthday">
-	</div>
+	<!-- TODO get valid dates dynamically -->
 	<div class = "form-group">
 		<label class="checkbox-inline"><input type="checkbox" value="">Option 1</label>
 		<label class="checkbox-inline"><input type="checkbox" value="">Option 2</label>
 		<label class="checkbox-inline"><input type="checkbox" value="">Option 3</label>
 	</div>
+
+	<!-- TODO
+	why is this an input field?
 	<div class = "form-group">
-		<label for = "eventYear">Vorname </label>
+		<label for = "eventTitle">2017</label>
 		<input type = "text" class="form-control" placeholder="Vorname" name = "eventyear">
 	</div>
+	-->
+
 	<div class = "form-group">
 		<label for = "studyCourse">Studiengang </label>
 		<input type = "text" class="form-control" placeholder="Studiengang" name = "studycourse">
 	</div>
+
 	<div class = "form-group">
 		<label for = "semester">Semester </label>
 		<input type = "text" class="form-control" placeholder="Semester" name = "semester">
 	</div>
+
 	<div class = "form-group">
 		<label for = "perfectDate">Das perfekte Date? </label>
-		<input type = "text" class="form-control" placeholder="Max. 50 Seiten" name = "perfectdate">
+		<textarea type = "text" class="form-control" placeholder="Max. 50 Seiten" rows="2" name = "perfectdate">
 	</div>
+
 	<!-- TODO date input field -->
 	<div class = "form-group">
 		<label for = "singleSince">Single seit... </label>
 		<input type = "text" class="form-control" placeholder="Datum" name = "singleSince">
 	</div>
+
 	<div class = "form-group">
 		<label for = "onlineDating">Wie stehst du zum Thema Online-Dating?</label>
-		<input type = "text" class="form-control" name = "onlineDating">
+		<textarea type = "text" class="form-control" rows="2" name = "onlineDating">
 	</div>
+
 	<div class = "form-group">
 		<label for = "pickupLine">Dein bester Anmachspruch? </label>
-		<textarea class="form-control" rows="10" placeholder="Keine Hemmungen" name = "pickupLine"></textarea>
+		<textarea class="form-control" rows="5" placeholder="Keine Hemmungen" name = "pickupLine"></textarea>
 	</div>
+
 	<div class = "form-group">
 		<label for = "women">Frauen sind... </label>
-		<input type = "text" class="form-control"  name = "women">
+		<input type = "text" class="form-control" name="women">
 	</div>
+
 	<div class = "form-group">
 		<label for = "men">Männer sind... </label>
-		<input type = "text" class="form-control" name = "men">
+		<input type = "text" class="form-control" name="men">
 	</div>
+
 	<div class = "form-group">
 		<label for = "advantages">Vorname </label>
 		<input type = "text" class="form-control" placeholder="Vorname" name = "advantages">
 	</div>
+
 	<div class = "form-group">
 		<label for = "nrDates">Wie viele Dates hattest du im letzten Jahr?</label>
 		<input type = "text" class="form-control" placeholder="+/- 10%" name = "nrDates">
 	</div>
+
 	<div class = "form-group">
 		<label for = "longestRelationship">Längste Beziehung?</label>
 		<input type = "text" class="form-control" placeholder="" name = "longestRelationship">
 	</div>
+
 	<div class = "form-group">
 		<label for = "findDates">Wo triffst du neue Leute (ausser beim AMIV Speeddating)?</label>
 		<input type = "text" class="form-control" placeholder="" name = "findDates">
 	</div>
+
 	<div class = "form-group">
 		<label for = "fruit">Lieblingsfrucht?</label>
 		<input type = "text" class="form-control" placeholder="Apfel? Birne? Banane? Karambole? Maracuja?" name = "fruit">
 	</div>
+
 	<button type = "submit" class="btn btn-default">Submit</button>
 </form>
 
