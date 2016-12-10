@@ -30,17 +30,17 @@
 <form action = "http://localhost:5000/signup" method = "POST">
 
 	<div class = "form-group">
-		<label for = "name">Name </label>
-		<input type = "text" class="form-control" name = "name">
-	</div>
-
-	<div class = "form-group">
-		<label for = "prename">Vorname </label>
+		<label for = "prename">(*) Vorname </label>
 		<input type = "text" class="form-control" name = "prename">
 	</div>
 
 	<div class = "form-group">
-		<label for = "gender-radio-buttons">Geschlecht </label><br>
+		<label for = "name">(*) Nachname </label>
+		<input type = "text" class="form-control" name = "name">
+	</div>
+
+	<div class = "form-group">
+		<label for = "gender-radio-buttons">(*) Geschlecht </label><br>
 		<div name="gender-radio-buttons">
 			<input type="radio" name="gender" value="Weiblich"><label for="Weiblich"> Weiblich</label><br>
 			<input type="radio" name="gender" value="Männlich"><label for="Männlich"> Männlich</label><br>
@@ -48,25 +48,25 @@
 	</div>
 
 	<div class = "form-group">
-		<label for = "mail">E-Mail </label>
+		<label for = "mail">(*) E-Mail </label>
 		<input type = "text" class="form-control" placeholder="lorem.ipsum@student.ethz.ch" name = "mail">
 	</div>
 
 	<div class = "form-group">
-		<label for = "mobile">Handynummer </label>
+		<label for = "mobile">(*) Handynummer </label>
 		<input type = "text" class="form-control" placeholder="071 337 13 37" name = "mobile">
 	</div>
 
 	<div class = "form-group">
-		<label for = "address">Adresse</label>
+		<label for = "address">(*) Adresse</label>
 		<textarea class="form-control" rows="3" placeholder="Max Mustermann..." name = "address"></textarea>
 	</div>
 
 
 	<!-- TODO find something that works outside of chrome -->
 	<div class = "form-group">
-		<label for = "bday">Geburtstag </label> <br>
-			<input type="date" name="bday">
+		<label for = "age">(*) Alter </label> <br>
+		<input type="number" name="age">
 	</div>
 
 	<!-- TODO get valid dates dynamically -->
