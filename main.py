@@ -1,3 +1,5 @@
+#!/usb/bin/env python3
+
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from apps.database import db
@@ -35,7 +37,7 @@ def signup():
         result = request.form
         prename = str(result['prename'])
         name = str(result['name'])
-        admin = Person(prename, name) 
+        admin = Person(prename, name)
         db.session.add(admin)
         db.session.commit()
         return render_template('index.html')
