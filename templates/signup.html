@@ -42,8 +42,8 @@
 	<div class = "form-group">
 		<label for = "gender-radio-buttons">(*) Geschlecht </label><br>
 		<div name="gender-radio-buttons">
-			<input type="radio" name="gender" value="Weiblich"><label for="Weiblich"> Weiblich</label><br>
-			<input type="radio" name="gender" value="Männlich"><label for="Männlich"> Männlich</label><br>
+			<input type="radio" name="gender" value="0"><label for="Weiblich"> Weiblich</label><br>
+			<input type="radio" name="gender" value="1"><label for="Männlich"> Männlich</label><br>
 		</div>
 	</div>
 
@@ -66,7 +66,7 @@
 	<!-- TODO find something that works outside of chrome -->
 	<div class = "form-group">
 		<label for = "age">(*) Alter </label> <br>
-		<input type="number" name="age">
+		<input type="number" name="age" style="color: #000000">
 	</div>
 
 	<!-- TODO get valid dates dynamically -->
@@ -105,7 +105,7 @@
 	<!-- TODO date input field -->
 	<div class = "form-group">
 		<label for = "singleSince">Single seit... </label>
-		<input type = "text" class="form-control" placeholder="Datum" name = "singleSince">
+		<input type = "number" class="form-control" placeholder="Anzahl Jahre..." name = "singleSince">
 	</div>
 
 	<div class = "form-group">
@@ -128,14 +128,17 @@
 		<input type = "text" class="form-control" name="men">
 	</div>
 
+	<!-- TODO
+	 What is this?
 	<div class = "form-group">
 		<label for = "advantages">Vorname </label>
 		<input type = "text" class="form-control" placeholder="Vorname" name = "advantages">
 	</div>
+	-->
 
 	<div class = "form-group">
 		<label for = "nrDates">Wie viele Dates hattest du im letzten Jahr?</label>
-		<input type = "text" class="form-control" placeholder="+/- 10%" name = "nrDates">
+		<input type = "number" class="form-control" placeholder="+/- 10%" name = "nrDates">
 	</div>
 
 	<div class = "form-group">
