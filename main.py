@@ -1,17 +1,14 @@
 from flask import Flask, render_template, request
-# from flaskext.mysql import MySQL
+from flask_sqlalchemy import SQLAlchemy
 import requests
 
-# mysql = MySQL()
+#create app
 app = Flask(__name__)
 
+#setup sql db
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db = SQLAlchemy(app)
 
-# MySQL configurations
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'toor'
-app.config['MYSQL_DATABASE_DB'] = 'Speeddating'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-# mysql.init_app(app)
 
 
 @app.route('/')
@@ -33,14 +30,14 @@ def login():
 def signup():
     if request.method == 'POST':
         result = request.form
-        prename1 = str(result['prename'])
-        name1 = str(result['name'])
+        prename = str(result['prename'])
+        name = str(result['name'])
         # # con = mysql.connect()
-        cursor = con.cursor()
+        #cursor = con.cursor()
         # sql = "INSERT INTO Person (Name,Prename) VALUES (?,?)"
-        # cursor.execute(sql, (name1,prename1))
-        con.commit()
-        con.close()
+        # cursor.execute(sql, (name,prename))
+        #con.commit()
+        #con.close()
         return render_template('signup.html')
     return render_template('signup.html')
 
