@@ -28,7 +28,7 @@ class Participants(db.Model):
     FindDates = db.Column(db.String(300), unique=False)
     Fruit = db.Column(db.String(300), unique=False)
 
-    def __init__(self, name, prename, email, mobileNr, address, birthday, sexe, year, dSlot=None, aSlot=None, nConfirm=None, nCancel=None, course=None, semester=None, perfDate=None, singleSince=None, onlineDating=None, pickup=None, women=None, men=None, advantages=None, nrDates=None, longestRel=None, findDates=None, fruit=None):
+    def __init__(self, name, prename, email, mobileNr, address, birthday, sexe, year=None, dSlot=None, aSlot=None, nConfirm=None, nCancel=None, course=None, semester=None, perfDate=None, singleSince=None, onlineDating=None, pickup=None, women=None, men=None, advantages=None, nrDates=None, longestRel=None, findDates=None, fruit=None):
         self.DefSlot = dSlot
         self.AvailableSlot = aSlot
         self.NonceConfirm = nConfirm
@@ -49,9 +49,9 @@ class Participants(db.Model):
         self.PickupLine = pickup
         self.Women = women
         self.Men = men
-        self.Advantages = advantages 
+        self.Advantages = advantages
         self.NrDates = nrDates
-        self.LongestRelationship = longestRel 
+        self.LongestRelationship = longestRel
         self.FindDates = findDates
         self.Fruit = fruit
 
