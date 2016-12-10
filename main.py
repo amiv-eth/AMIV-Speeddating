@@ -1,29 +1,18 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from apps.database import db
 import requests
 
 
-#create app
-app = Flask(__name__)
-
-#setup sql db
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:toor@localhost/Speeddating'
-db = SQLAlchemy(app)
-
-class Person(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
-    prename = db.Column(db.String(120), unique=True)
-
-    def __init__(self, prename, name):
-        self.name = name
-        self.prename = prename
-
-    def __repr__(self):
-        return '<User %r %r>' % self.prename %self.name
+def create_app():
+    app = Flask(__name__)
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:toor@localhost/Speeddating'
+    db.init_app(app)
+    return app
 
 
-db.create_all()
+app = create_app()
+
 
 @app.route('/')
 def index():
@@ -48,8 +37,7 @@ def signup():
         name = str(result['name'])
         admin = Person(prename, name) 
         db.session.add(admin)
-        #db.session.commit()
-        print("bla")
+        db.session.commit()
         return render_template('index.html')
     return render_template('signup.html')
 
