@@ -4,9 +4,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from apps.models import Participants, TimeSlots
 import requests
-
 import datetime
-year = datetime.datetime.now().year
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:toor@localhost/Speeddating'
@@ -34,6 +32,7 @@ def login():
 def signup():
     if request.method == 'POST':
         try:
+            year = datetime.datetime.now().year
             result = request.form
             prename = str(result['prename'])
             name = str(result['name'])
