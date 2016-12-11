@@ -22,7 +22,11 @@ def index():
 def login():
     if request.method == 'POST':
         result = request.form
-        ack = requests.post("https://amiv-apidev.vsos.ethz.ch/sessions", data={"user" : str(result['nethz']), "password" : str(result['password'])}, verify=False)
+
+        # Send POST request with parameters 'username' and 'password'. Verification has to be off since
+        # SSL certs are self-signed.
+        ack = requests.post("https://amiv-apidev.vsos.ethz.ch/sessions", data={"username" : str(result['nethz']), "password" : str(result['password'])}, verify=False)
+
         if ack.status_code == 201:
             return render_template("admin.html")
         return render_template('login.html')
