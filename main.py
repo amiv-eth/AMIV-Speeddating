@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import pdb
+import sys
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 #from apps.database import db
@@ -14,22 +15,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:toor@localhost/Speeddating'
 db = SQLAlchemy(app)
 
-
 db.create_all()
-
-
-prename = str("aoeu")
-name = str("aoeu")
-mobile = int("10")
-address = str("aoeu")
-email = str("aoeu")
-gender = bool(1)
-year = int(2016)
-age = int(10)
-
-admin = Participants(name, prename, mobile, address, email, gender, year, age)
-db.session.add(admin)
-db.session.commit()
 
 @app.route('/')
 def index():
@@ -49,14 +35,20 @@ def login():
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == 'POST':
-        result = request.form
-        prename = str(result['prename'])
-        name = str(result['name'])
-        mobile = str(result['mobile'])
-        address = str(result['address'])
-        email = str(result['mail'])
-        age = int(result['age'])
-        gender = bool(result['gender'])
+        try:
+            result = request.form
+            prename = str(result['prename'])
+            name = str(result['name'])
+            mobile = str(result['mobile'])
+            address = str(result['address'])
+            email = str(result['mail'])
+            age = int(result['age'])
+            gender = bool(result['gender'])
+
+        except Exception as e:
+            print(e)
+            sys.exit()
+
 
         admin = Participants(name, prename, email, mobile, address, age, gender, year)
         db.session.add(admin)
@@ -67,4 +59,4 @@ def signup():
 
 
 if __name__ == '__main__':
-   app.run()
+    app.run()
