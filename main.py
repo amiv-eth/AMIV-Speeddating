@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-import pdb
-import sys
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-#from apps.database import db
 from apps.models import Participants, TimeSlots
 import requests
 
@@ -15,6 +12,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:toor@localhost/Speeddating'
 db = SQLAlchemy(app)
 
+# Creates tables only when they don't already exist so we can just leave this here
 db.create_all()
 
 @app.route('/')
@@ -47,13 +45,16 @@ def signup():
 
         except Exception as e:
             print(e)
-            sys.exit()
 
+            # TODO: Show actual error instead of redirectiing to an error page
+            return render_template('error.html')
 
         admin = Participants(name, prename, email, mobile, address, age, gender, year)
         db.session.add(admin)
         db.session.commit()
-        return render_template('index.html')
+
+        return render_template('success.html')
+
     return render_template('signup.html')
 
 
