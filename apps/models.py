@@ -59,15 +59,31 @@ class Participants(db.Model):
 
 class TimeSlots(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
-    EventYear = db.Column(db.Date, unique=True)
+    EventID = db.Column(db.Integer, unique=True)
     Date = db.Column(db.Date, unique=True)
     StartTime = db.Column(db.Time, primary_key=False)
     EndTime = db.Column(db.Time, primary_key=False)
     NrCouples = db.Column(db.Integer, primary_key=False)
 
-    def __init__(self, year, date, startDate, endTime, nrCouples):
-        self.EventYear = year
+    def __init__(self, event_id, date, startTime, endTime, nrCouples):
+        self.EventID = event_id
         self.Date = date
         self.StartTime = startTime
         self.EndTime = endTime
         self.NrCouples = nrCouples
+
+
+class Events(db.Model):
+    ID = db.Column(db.Integer, primary_key=True)
+    Name = db.Column(db.String(80), unique=False)
+    Year = db.Column(db.Date, unique=False)
+    Semester = db.Column(db.Boolean, unique=False)
+    CreationTimestamp = db.Column(db.DateTime, unique=False)
+    SignupOpen = db.Column(db.Boolean, unique=False)
+
+    def __init__(self, name, year, semester, timestamp, signup_open):
+        self.Name = name
+        self.Year = year
+        self.Semester = semester
+        self.CreationTimestamp = timestamp
+        self.SignupOpen = signup_open
