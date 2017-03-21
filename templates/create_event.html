@@ -1,0 +1,20 @@
+{% from "_formhelpers.html" import render_field, render_radio %}
+
+{% extends 'base.html' %}
+
+
+<h1>{% block title %}Create new Speeddating Event{% endblock %}</h1>
+
+{% block content %}
+<h2>Create new event:</h2>
+
+<form action = {{ url_for('create_event') }} method = "POST">
+  <dl>
+    {{ render_field(form.name) }}
+    {{ render_field(form.year) }}
+    {{ render_radio(form.semester) }}
+  </dl>
+  <button type = "submit" class="btn btn-default">Submit</button>
+</form>
+
+{% endblock %}

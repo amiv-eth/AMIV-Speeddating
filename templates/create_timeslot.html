@@ -1,0 +1,22 @@
+{% from "_formhelpers.html" import render_field, render_radio, render_date_field, render_time_field %}
+
+{% extends 'base.html' %}
+
+
+<h1>{% block title %}Create new TimeSlot for Event{% endblock %}</h1>
+
+{% block content %}
+<h2>Create new Slot:</h2>
+
+<form action = {{ url_for('create_timeslot', event_id = eid) }} method = "POST">
+  <dl>
+    {{ render_date_field(form.date) }}
+    {{ render_time_field(form.starttime) }}
+    {{ render_time_field(form.endtime) }}
+    {{ render_field(form.nrcouples) }}
+    {{ render_radio(form.agerange) }}
+  </dl>
+  <button type = "submit" class="btn btn-default">Submit</button>
+</form>
+
+{% endblock %}

@@ -1,31 +1,76 @@
 {% extends 'base.html' %}
 
 
-<h1>{% block title %}Admin page{% endblock %}</h1>
+<h1>{% block title %}Admin Page{% endblock %}</h1>
 
 {% block content %}
-<h2>Create new timeslot:</h2>
-<form action = "http://localhost:5000/admin" method = "POST">
-	<div class = "form-group">
-			<label for = "eventYear">Event year</label>
-			<input type = "number" class="form-control" name = "eventYear">
-	</div>
-	<div class = "form-group">
-			<label for = "date">Date</label>
-			<input type = "text" class="form-control" name = "date">
-	</div>
-	<div class = "form-group">
-			<label for = "startTime">Start time</label>
-			<input type = "text" class="form-control" name = "startTime">
-	</div>
-	<div class = "form-group">
-			<label for = "endTime">End time</label>
-			<input type = "text" class="form-control" name = "endTme">
-	</div>
-	<div class = "form-group">
-			<label for = "nrCouples">Number of couples</label>
-			<input type = "number" class="form-control" name = "nrCouples">
-	</div>
-	<button type = "submit" class="btn btn-default">Submit</button>
-</form>
+<p>
+  In the Table you can find all events of the last years.<br>
+  By pressing the cross button ont the top right corner you can add a new event.<br>
+  By pressing on an event you come to the overview of the selected event, where you can add/remove/edit the timeslots of the event or viewing the participants. <br>
+  
+</p>
+
+<h2>All Events:</h2>
+<table class="table table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Year</th> 
+    <th>Semester</th>
+    <th>Signup Status</th>
+    <th>Active</th>
+    <th>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_event') }}'">
+	<span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </th>
+  </tr>
+  {% for e in events %}
+  <tr {% if e.Active %} class="table-success" {% endif %}>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">{{ e.Name }}</td>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">{{ e.Year }}</td> 
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
+       {% if e.Semester %}
+          HS
+       {% else %}
+          FS
+       {% endif %}
+    </td>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
+      {% if e.SignupOpen %}
+         open
+      {% else %}
+         closed
+      {% endif %}
+    </td>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
+      {% if e.Active %}
+         active
+      {% else %}
+         -
+      {% endif %}
+    </td>
+    <td>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.ID, open = '0') }}'">close</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.ID, open = '1') }}'">open</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.ID, active = '0') }}'">deactivate</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.ID, active = '1') }}'">activate</button>
+    </td>
+  </tr>
+  <tr>
+  </tr>
+  {% else %}
+  <tr>
+    <td>No existing event!</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  {% endfor %}
+</table>
+
+
 {% endblock %}

@@ -1,23 +1,22 @@
+{% from "_formhelpers.html" import render_field %}
+
 {% extends 'base.html' %}
 
 
 {% block login %}class="active"{% endblock %}
 
-<h1>{% block title %}Login{% endblock %}</h1>
+
+<h1>{% block title %}Admin Login{% endblock %}</h1>
+
 
 {% block content %}
 
 <form action = "http://localhost:5000/login" method = "POST">
-  <div class = "form-group">
-    <label for = "username">Username </label>
-    <input type = "text" class="form-control" placeholder="Username" name = "username">
-  </div>
-  <div class = "form-group">
-    <label for = "password">Password </label>
-    <input type = "password" class="form-control" placeholder="Password" name = "password">
-  </div>
-    <button type = "submit" class="btn btn-default">Submit</button>
+  <dl>
+    {{ render_field(form.username) }}
+    {{ render_field(form.password) }}
+  </dl>
+  <button type = "submit" class="btn btn-default">Submit</button>
 </form>
-
 
 {% endblock %}
