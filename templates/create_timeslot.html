@@ -1,6 +1,7 @@
 {% from "_formhelpers.html" import render_field, render_radio, render_date_field, render_time_field %}
 
 {% extends 'base.html' %}
+{% block admin %}class="active"{% endblock %}
 
 
 <h1>{% block title %}Create new TimeSlot for Event{% endblock %}</h1>
