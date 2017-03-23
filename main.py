@@ -2,13 +2,13 @@
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
-from apps.forms import LoginForm, CreateEventForm, CreateTimeSlotForm
+from apps.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm
 from apps.models import Participants, TimeSlots, Events
 from apps.functions import change_signup_status, activate_event_status
 import requests
 import datetime
 from flask.ext.login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
-
+from wtforms import BooleanField, validators
 
 # create and config app
 app = Flask(__name__)
@@ -170,31 +170,38 @@ def activate_event(event_id, active):
 # signup page
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
-    if request.method == 'POST':
+    form = SignupForm(request.form)
+    eventid = Events.query.filter_by(Active='1').first().ID
+    timeslots = TimeSlots.query.filter_by(EventID=eventid).all()
+    if timeslots != None:
+        form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: ' + str(slot.AgeRange)) for slot in timeslots]
+
+    if request.method == 'POST' and form.validate():
         try:
-            year = datetime.datetime.now().year
-            result = request.form
-            prename = str(result['prename'])
-            name = str(result['name'])
-            mobile = str(result['mobile'])
-            address = str(result['address'])
-            email = str(result['mail'])
-            age = int(result['age'])
-            gender = bool(result['gender'])
+            timestamp = datetime.datetime.now()
+            name = str(request.form['name'])
+            prename = str(request.form['prename'])
+            gender = int(request.form['gender'])
+            email = str(request.form['email'])
+            mobile = str(request.form['mobilenr'])
+            address = str(request.form['address'])
+            birthday = str(request.form['birthday'])
+            studycourse = str(request.form['studycourse'])
+            studysemester = str(request.form['studysemester'])
+            perfectdate = str(request.form['perfectdate'])
+            fruit = str(request.form['fruit'])
+            availableslots = int(request.form['availableslots'])
 
         except Exception as e:
             print(e)
-
             # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
 
-        admin = Participants(name, prename, email, mobile, address, age, gender, year)
-        db.session.add(admin)
+        new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots)
+        db.session.add(new_participant)
         db.session.commit()
-
         return render_template('success.html')
-
-    return render_template('signup.html')
+    return render_template('signup.html', form=form)
 
 
 if __name__ == '__main__':

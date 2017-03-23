@@ -1,3 +1,5 @@
+{% from "_formhelpers.html" import render_field, render_radio, render_date_field, render_time_field,render_checkbox_field %}
+
 {% extends 'base.html' %}
 
 {% block anmeldung %}class="active"{% endblock %}
@@ -28,135 +30,21 @@
 
 
 <form action = "http://localhost:5000/signup" method = "POST">
-
-	<div class = "form-group">
-		<label for = "prename">(*) Vorname </label>
-		<input type = "text" class="form-control" name = "prename">
-	</div>
-
-	<div class = "form-group">
-		<label for = "name">(*) Nachname </label>
-		<input type = "text" class="form-control" name = "name">
-	</div>
-
-	<div class = "form-group">
-		<label for = "gender-radio-buttons">(*) Geschlecht </label><br>
-		<div name="gender-radio-buttons">
-			<input type="radio" name="gender" value="0"><label for="Weiblich"> Weiblich</label><br>
-			<input type="radio" name="gender" value="1"><label for="Männlich"> Männlich</label><br>
-		</div>
-	</div>
-
-	<div class = "form-group">
-		<label for = "mail">(*) E-Mail </label>
-		<input type = "text" class="form-control" placeholder="lorem.ipsum@student.ethz.ch" name = "mail">
-	</div>
-
-	<div class = "form-group">
-		<label for = "mobile">(*) Handynummer </label>
-		<input type = "text" class="form-control" placeholder="071 337 13 37" name = "mobile">
-	</div>
-
-	<div class = "form-group">
-		<label for = "address">(*) Adresse</label>
-		<textarea class="form-control" rows="3" placeholder="Max Mustermann..." name = "address"></textarea>
-	</div>
-
-
-	<!-- TODO find something that works outside of chrome -->
-	<div class = "form-group">
-		<label for = "age">(*) Alter </label> <br>
-		<input type="number" name="age" style="color: #000000">
-	</div>
-
-	<!-- TODO get valid dates dynamically -->
-	<div class = "form-group">
-		<label for="date-checkboxes">(*) Daten </label> <br>
-		<div name="date-checkboxes">
-			<label class="checkbox-inline"><input type="checkbox" value="">Option 1</label> <br>
-			<label class="checkbox-inline"><input type="checkbox" value="">Option 2</label> <br>
-			<label class="checkbox-inline"><input type="checkbox" value="">Option 3</label> <br>
-		</div>
-	</div>
-
-	<!-- TODO
-	why is this an input field?
-	<div class = "form-group">
-		<label for = "eventTitle">2017</label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "eventyear">
-	</div>
-	-->
-
-	<div class = "form-group">
-		<label for = "studyCourse">Studiengang </label>
-		<input type = "text" class="form-control" placeholder="Studiengang" name = "studycourse">
-	</div>
-
-	<div class = "form-group">
-		<label for = "semester">Semester </label>
-		<input type = "text" class="form-control" placeholder="Semester" name = "semester">
-	</div>
-
-	<div class = "form-group">
-		<label for = "perfectDate">Das perfekte Date? </label>
-		<textarea type = "text" class="form-control" placeholder="Max. 50 Seiten" rows="2" name = "perfectdate"></textarea>
-	</div>
-
-	<!-- TODO date input field -->
-	<div class = "form-group">
-		<label for = "singleSince">Single seit... </label>
-		<input type = "number" class="form-control" placeholder="Anzahl Jahre..." name = "singleSince">
-	</div>
-
-	<div class = "form-group">
-		<label for = "onlineDating">Wie stehst du zum Thema Online-Dating?</label>
-		<textarea type = "text" class="form-control" rows="2" name = "onlineDating"></textarea>
-	</div>
-
-	<div class = "form-group">
-		<label for = "pickupLine">Dein bester Anmachspruch? </label>
-		<textarea class="form-control" rows="5" placeholder="Keine Hemmungen" name = "pickupLine"></textarea>
-	</div>
-
-	<div class = "form-group">
-		<label for = "women">Frauen sind... </label>
-		<input type = "text" class="form-control" name="women">
-	</div>
-
-	<div class = "form-group">
-		<label for = "men">Männer sind... </label>
-		<input type = "text" class="form-control" name="men">
-	</div>
-
-	<!-- TODO
-	 What is this?
-	<div class = "form-group">
-		<label for = "advantages">Vorname </label>
-		<input type = "text" class="form-control" placeholder="Vorname" name = "advantages">
-	</div>
-	-->
-
-	<div class = "form-group">
-		<label for = "nrDates">Wie viele Dates hattest du im letzten Jahr?</label>
-		<input type = "number" class="form-control" placeholder="+/- 10%" name = "nrDates">
-	</div>
-
-	<div class = "form-group">
-		<label for = "longestRelationship">Längste Beziehung?</label>
-		<input type = "text" class="form-control" placeholder="" name = "longestRelationship">
-	</div>
-
-	<div class = "form-group">
-		<label for = "findDates">Wo triffst du neue Leute (ausser beim AMIV Speeddating)?</label>
-		<input type = "text" class="form-control" placeholder="" name = "findDates">
-	</div>
-
-	<div class = "form-group">
-		<label for = "fruit">Lieblingsfrucht?</label>
-		<input type = "text" class="form-control" placeholder="Apfel? Birne? Banane? Karambole? Maracuja?" name = "fruit">
-	</div>
-
-	<button type = "submit" class="btn btn-default">Submit</button>
+  {{ render_field(form.name) }}
+  {{ render_field(form.prename) }}
+  {{ render_radio(form.gender) }}
+  {{ render_field(form.email) }}
+  {{ render_field(form.mobilenr) }}
+  {{ render_field(form.address) }}
+  {{ render_date_field(form.birthday) }}
+  {{ render_field(form.studycourse) }}
+  {{ render_field(form.studysemester) }}
+  {% if form.availableslots %}
+  {{ render_radio(form.availableslots) }}
+  {% endif %}
+  {{ render_field(form.perfectdate) }}
+  {{ render_field(form.fruit) }}
+  <button type = "submit" class="btn btn-default">Submit</button>
 </form>
 
 
