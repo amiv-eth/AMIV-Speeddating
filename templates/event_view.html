@@ -2,11 +2,11 @@
 
 {% block admin %}class="active"{% endblock %}
 
-<h1>{% block title %}Event {{ eventname }}{% endblock %}</h1>
+<h1>{% block title %}Event {{ event.Name }}{% endblock %}</h1>
 
 {% block content %}
 
-<h2>All Timeslots of {{ eventname }}:</h2>
+<h2>All Timeslots of {{ event.Name }}:</h2>
 <table class="table table-striped table-hover">
   <tr>
     <th>ID</th>
@@ -24,14 +24,16 @@
   {% for s in slots %}
   <tr>
     <td>{{ s.ID }}</td>
-    <td>{{ s.Date }}</td>
+    <td>{{ s.Date.strftime("%A %d. %B %Y") }}</td>
     <td>{{ s.StartTime }}</td>
     <td>{{ s.EndTime }}</td>
     <td>{{ s.NrCouples }}</td>
-    {% if s.AgeRange == '0' %}
-       <td> 22 </td>
+    {% if s.AgeRange == 0 %}
+    <td> < 22 </td>
+    {% elif s.AgeRange == 1 %}
+    <td> 22-15 </td>
     {% else %}
-       <td> 25 </td>
+       <td> > 25 </td>
     {% endif %}
     <td></td>
   </tr>
