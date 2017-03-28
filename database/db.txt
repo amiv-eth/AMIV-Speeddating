@@ -5,50 +5,54 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
-DROP TABLE IF EXISTS `Person`;
-CREATE TABLE `Person` (
+DROP TABLE IF EXISTS `events`;
+CREATE TABLE `events` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `DefSlot` int(11) NOT NULL,
-  `AvailableSlot` tinytext NOT NULL,
-  `NonceConfirm` text NOT NULL,
-  `NonceCancel` text NOT NULL,
-  `Name` tinytext NOT NULL,
-  `Prename` int(35) NOT NULL,
-  `E-Mail` tinytext NOT NULL,
-  `Mobile-Nr` int(11) NOT NULL,
-  `Address` text NOT NULL,
-  `Birthday` date NOT NULL,
-  `Sexe` bit(1) NOT NULL,
-  `EventYear` year(4) NOT NULL,
-  `StudyCourse` tinytext NOT NULL,
-  `Semester` tinytext NOT NULL,
-  `PerfectDate` text NOT NULL,
-  `SingleSince` tinytext NOT NULL,
-  `OnlineDating` text NOT NULL,
-  `PickupLine` text NOT NULL,
-  `Women` text NOT NULL,
-  `Men` text NOT NULL,
-  `Advantages` text NOT NULL,
-  `NrDates` text NOT NULL,
-  `LongestRelationship` text NOT NULL,
-  `FindDates` text NOT NULL,
-  `Fruit` text NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `DefSlot` (`DefSlot`),
-  CONSTRAINT `Person_ibfk_1` FOREIGN KEY (`DefSlot`) REFERENCES `TimeSlots` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-DROP TABLE IF EXISTS `TimeSlots`;
-CREATE TABLE `TimeSlots` (
-  `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `EventYear` year(4) NOT NULL,
-  `Date` date NOT NULL,
-  `StartTime` time NOT NULL,
-  `EndTime` time NOT NULL,
-  `NrCouples` int(11) NOT NULL,
+  `Name` tinytext,
+  `Semester` int(1) DEFAULT NULL COMMENT '0: FS, 1: HS',
+  `Year` year(4) DEFAULT NULL,
+  `CreationTimestamp` timestamp NULL DEFAULT NULL,
+  `SignupOpen` int(1) DEFAULT NULL COMMENT '0: closed, 1: open',
+  `Active` int(1) DEFAULT NULL COMMENT '0: inactive, 1: active',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- 2016-12-07 12:50:01
+DROP TABLE IF EXISTS `participants`;
+CREATE TABLE `participants` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `EventID` int(11) DEFAULT NULL,
+  `CreationTimestamp` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `DefSlot` int(11) DEFAULT NULL,
+  `AvailableSlot` tinytext,
+  `Name` tinytext,
+  `Prename` tinytext,
+  `EMail` tinytext,
+  `MobileNr` tinytext,
+  `Address` text,
+  `Birthday` date DEFAULT NULL,
+  `Gender` int(11) DEFAULT NULL,
+  `StudyCourse` tinytext,
+  `StudySemester` tinytext,
+  `PerfectDate` text,
+  `Fruit` text,
+  PRIMARY KEY (`ID`),
+  KEY `DefSlot` (`DefSlot`),
+  CONSTRAINT `participants_ibfk_1` FOREIGN KEY (`DefSlot`) REFERENCES `time_slots` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+DROP TABLE IF EXISTS `time_slots`;
+CREATE TABLE `time_slots` (
+  `ID` int(11) NOT NULL AUTO_INCREMENT,
+  `EventID` int(11) NOT NULL,
+  `Date` date NOT NULL,
+  `StartTime` time NOT NULL,
+  `EndTime` time NOT NULL,
+  `NrCouples` int(11) NOT NULL,
+  `AgeRange` int(2) NOT NULL COMMENT '0: 22; 1:22-25; 2: 25',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- 2017-03-28 15:01:19
