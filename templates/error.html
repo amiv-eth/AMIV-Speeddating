@@ -4,4 +4,7 @@
 <h1>{% block title %}Error.{% endblock %}</h1>
 {% block content %}
 <p>Nicht alle notwendigen Felder wurden korrekt ausgefüllt. (TODO: better error reporting, see testing branch.)</p>
+{% if message %}
+{{ message }}
+{% endif %}
 {% endblock %}
