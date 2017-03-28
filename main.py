@@ -166,23 +166,28 @@ def event_view(event_id):
 @login_required
 def create_event():
     form = CreateEventForm(request.form)
-    if request.method == 'POST' and form.validate():
+    if request.method == 'POST' :
         try:
+            format = '%Y-%m-%dT%H:%M:%S'
             name = str(request.form['name'])
             year = int(request.form['year'])
             semester = int(request.form['semester'])
             timestamp = datetime.now()
+            opensignuptimestamp = datetime.strptime(str(request.form['opensignuptimestamp']), format)
+            closesignuptimestamp = datetime.strptime(str(request.form['closesignuptimestamp']), format)
+            place = str(request.form['place'])
+            participationfee = str(request.form['participationfee'])
             signup_open = 0
             active = 0
         
         except Exception as e:
             print(e)
             # TODO: Show actual error instead of redirectiing to an error page
-            return render_template('error.html')
+            return render_template('error.html', message = str(request.form['opensignuptimestamp']))
 
         session = Session()
         try:
-            event = Events(name, year, semester, timestamp, signup_open, active)
+            event = Events(name, year, semester, timestamp, signup_open, active, participationfee, opensignuptimestamp, closesignuptimestamp)
             session.add(event)
             session.commit()
         except Exception as e:
@@ -322,10 +327,16 @@ def signup():
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
             availableslots = int(request.form['availableslots'])
-            
-            new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots)
-            session.add(new_participant)
-            session.commit()
+
+            count = session.query(Participants).filter(Participants.EMail==email, Participants.EventID==eventid).count()
+
+            if count == 0:
+                new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots)
+                session.add(new_participant)
+                session.commit()
+            else:
+                message = 'Die E-Mail Adresse ' + email + ' wurde bereits für das Speeddating angewendet. Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
+                return render_template('error.html', message=message)
 
         except Exception as e:
             #session.rollback()

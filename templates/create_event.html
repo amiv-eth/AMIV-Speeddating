@@ -1,4 +1,4 @@
-{% from "_formhelpers.html" import render_field, render_radio %}
+{% from "_formhelpers.html" import render_field, render_radio, render_datetime_field %}
 
 {% extends 'base.html' %}
 
@@ -14,6 +14,10 @@
     {{ render_field(form.name) }}
     {{ render_field(form.year) }}
     {{ render_radio(form.semester) }}
+    {{ render_field(form.place) }}
+    {{ render_field(form.participationfee) }}
+    {{ render_datetime_field(form.opensignuptimestamp) }}
+    {{ render_datetime_field(form.closesignuptimestamp) }}
   </dl>
   <button type = "submit" class="btn btn-default">Submit</button>
 </form>
