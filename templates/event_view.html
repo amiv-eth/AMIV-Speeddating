@@ -22,7 +22,7 @@
     </th>
   </tr>
   {% for s in slots %}
-  <tr>
+  <tr onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.ID) }}'">
     <td>{{ s.ID }}</td>
     <td>{{ s.Date.strftime("%A %d. %B %Y") }}</td>
     <td>{{ s.StartTime }}</td>

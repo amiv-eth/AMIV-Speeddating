@@ -2,8 +2,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from datetime import datetime
-
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, desc
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
@@ -11,7 +10,6 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm
 from app.models import Participants, TimeSlots, Events
-#from app.tables import Participants, TimeSlots, Events
 from app.functions import event_change_signup_status, event_change_active_status
 
 # create and config app
@@ -44,7 +42,57 @@ def user_loader(username):
 # index page
 @app.route('/')
 def index():
-    return render_template('index.html')
+    session = Session()
+    try:
+        event = session.query(Events).filter(Events.Active=='1').first()
+        if event != None:
+            eventid = event.ID
+            timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
+            dates = list(set(list(slot.Date for slot in timeslots)))
+        else:
+            dates = None
+        dates_string = ''
+        if dates != None:
+            for date in dates:
+                dates_string = dates_string + str(date.strftime("%d. %B, "))
+            dates_string = dates_string[:-2]
+    except Exception as e:
+        session.rollback()
+        print(e)
+        # TODO: Show actual error instead of redirectiing to an error page
+        return render_template('error.html')
+    finally:
+        session.close()
+    return render_template('index.html', event=event, dates=dates_string)
+
+
+@app.route('/home')
+def home():
+    session = Session()
+    try:
+        event = session.query(Events).filter(Events.Active=='1').first()
+        if event != None:
+            eventid = event.ID
+            timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
+            dates = list(set(list(slot.Date for slot in timeslots)))
+        else:
+            dates = None
+        dates_string = ''
+        if dates != None:
+            for date in dates:
+                dates_string = dates_string + str(date.strftime("%d. %B, "))
+            dates_string = dates_string[:-2]
+    except Exception as e:
+        session.rollback()
+        print(e)
+        # TODO: Show actual error instead of redirectiing to an error page
+        return render_template('error.html')
+    finally:
+        session.close()
+    return render_template('home.html', event=event, dates=dates_string)
+
+
+
 
 # login page
 @app.route('/login', methods=['GET', 'POST'])
@@ -178,6 +226,30 @@ def create_timeslot(event_id):
         return redirect(url_for('event_view', event_id = eventid))
     return render_template('create_timeslot.html', eid = eventid, form=form)
 
+
+@app.route('/timeslot_view/<int:timeslot_id>', methods=["GET", "POST"])
+@login_required
+def timeslot_view(timeslot_id):
+    if request.method == 'GET':
+        slotid = timeslot_id
+        participants = None
+        session = Session()
+        try:
+            slot = session.query(TimeSlots).filter(TimeSlots.ID==slotid).first()
+            women = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '1').all()
+            men = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '0').all()
+            event = session.query(Events).filter(Events.ID==slot.EventID).first()
+        except Exception as e:
+            session.rollback()
+            print(e)
+            # TODO: Show actual error instead of redirectiing to an error page
+            return render_template('error.html')
+        finally:
+            session.close()    
+        return render_template('timeslot_view.html', event = event, slot=slot, women=women, men=men)
+
+
+
 # link for open/cose the signup
 @app.route('/change_signup/<int:event_id>/<int:open>', methods=["GET", "POST"])
 @login_required
@@ -219,58 +291,56 @@ def activate_event(event_id, active):
 # signup page
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
+    session = Session()
     form = SignupForm(request.form)
-    if request.method == 'GET':
-        session = Session()
-        try:
-            event = session.query(Events).filter(Events.Active=='1').first()
+    try:
+        event = session.query(Events).filter(Events.Active=='1').first()
+        if event != None:
             eventid = event.ID
             timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
-            #if timeslots != None:
-                #form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: ' + str(slot.AgeRange)) for slot in timeslots]
-
-        except Exception as e:
-            session.rollback()
-            print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
-            return render_template('error.html')
-
-        finally:
-            session.close()
-    return render_template('signup.html', form=form)
+            if timeslots != None:
+                form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: ' + str(slot.AgeRange)) for slot in timeslots]
                 
+    except Exception as e:
+        #session.rollback()
+        print(e)
+        # TODO: Show actual error instead of redirectiing to an error page
+        return render_template('error.html')
+                            
     if request.method == 'POST' and form.validate():
-        session = Session()
         try:
-            timestamp = datetime.datetime.now()
-            #name = str(request.form['name'])
-            #prename = str(request.form['prename'])
-            #gender = int(request.form['gender'])
-            #email = str(request.form['email'])
-            #mobile = str(request.form['mobilenr'])
-            #address = str(request.form['address'])
-            #birthday = str(request.form['birthday'])
-            #studycourse = str(request.form['studycourse'])
-            #studysemester = str(request.form['studysemester'])
-            #perfectdate = str(request.form['perfectdate'])
-            #fruit = str(request.form['fruit'])
-            #availableslots = int(request.form['availableslots'])
+            timestamp = datetime.now()
+            name = str(request.form['name'])
+            prename = str(request.form['prename'])
+            gender = int(request.form['gender'])
+            email = str(request.form['email'])
+            mobile = str(request.form['mobilenr'])
+            address = str(request.form['address'])
+            birthday = str(request.form['birthday'])
+            studycourse = str(request.form['studycourse'])
+            studysemester = str(request.form['studysemester'])
+            perfectdate = str(request.form['perfectdate'])
+            fruit = str(request.form['fruit'])
+            availableslots = int(request.form['availableslots'])
             
-            #new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots)
-            #session.add(new_participant)
-            #session.commit()
+            new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots)
+            session.add(new_participant)
+            session.commit()
 
         except Exception as e:
-            session.rollback()
+            #session.rollback()
             print(e)
             # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
 
         finally:
             session.close()
-
         return render_template('success.html')
-    return render_template('signup.html', form=form)
+    else:
+        if session:
+            session.close()
+        
+    return render_template('signup.html', form=form, event=event)
 
 
 if __name__ == '__main__':
