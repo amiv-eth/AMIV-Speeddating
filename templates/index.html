@@ -1,17 +1,43 @@
 {% extends 'base.html' %}
 
+
+{% if event != None %}
+
+{% if event.SignupOpen %}
+{% set open = True %}
+{% else %}
+{% set open = False %}
+{% endif %}
+
+{% if event.Active %}
+{% set active = True %}
+{% else %}
+{% set active = False %}
+{% endif %}
+
+{% else %}
+
+{% set open = False %}
+{% set active = False %}
+
+{% endif %}
+
 {% block content %}
 <div id="logo" style="display: inline-flex">
 
-	<img src="static/images/logo.png" width="384" height="123" />
-
-	<table border="0" cellspacing="2" cellpadding="2" width="384" style="margin-top: 20px">
-		<tr><td>Datum &amp; Uhrzeit</td><td style="text-align: left; font-weight: bold;">28. und 29. April 2016</td></tr>
-		<tr><td>Ort</td><td style="text-align: left; font-weight: bold;">ETH &amp; Universit&auml;t Z&uuml;rich</td></tr>
-		<tr><td>Kosten</td><td style="text-align: left; font-weight: bold;">CHF 10.&ndash;</td></tr>
-		<tr><td>Anmeldeschluss</td><td style="text-align: left; font-weight: bold;">22. April 2016, 23:59 Uhr</td></tr>
-	</table>
-
+  <img src="static/images/logo.png" width="384" height="123" />
+  
+  {% if active %}
+  <table border="0" cellspacing="2" cellpadding="2" width="384" style="margin-top: 20px">
+    <tr><td>Datum</td><td style="text-align: left; font-weight: bold;">
+	{{ dates }}
+    </td></tr>
+    <tr><td>Ort</td><td style="text-align: left; font-weight: bold;">ETH &amp; Universit&auml;t Z&uuml;rich</td></tr>
+    <tr><td>Kosten</td><td style="text-align: left; font-weight: bold;">CHF 10.&ndash;</td></tr>
+    <tr><td>Anmeldeschluss</td><td style="text-align: left; font-weight: bold;">22. April 2016, 23:59 Uhr</td></tr>
+  </table>
+  {% endif %}
+  
 </div>
 
 <div id="content-wrapper">
@@ -50,8 +76,11 @@
 
 		<p>Falls du mitmachen m&ouml;chtest, f&uuml;lle einfach den nachfolgenden Fragebogen vor Anmeldeschluss aus. Die Teilnehmerzahl ist beschr&auml;nkt.</p>
 
+		{% if open %}
 		<h3><a href="signup">Zur Anmeldung</a></h3>
-
+		{% else %}
+		<h3>Anmeldung geschlossen</h3>
+		{% endif %}
 
 		<!-- <h3>Anmeldung ab 16 Uhr offen!!!</h3> -->
 		<!-- <h3>Anmeldung ab:<br>15.04.2012</h3> -->
