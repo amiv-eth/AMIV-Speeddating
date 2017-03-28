@@ -8,7 +8,7 @@ class Participants(db.Model):
     EventID = db.Column(db.Integer, unique=False)
     Name = db.Column(db.String(80), unique=False)
     Prename = db.Column(db.String(80), unique=False)
-    EMail = db.Column(db.String(120), unique=False)
+    EMail = db.Column(db.String(120), unique=True)
     MobileNr = db.Column(db.String(20), unique=False)
     Address = db.Column(db.String(200), unique=False)
     Birthday = db.Column(db.Date, unique=False)
@@ -62,12 +62,20 @@ class Events(db.Model):
     Semester = db.Column(db.Integer, unique=False)
     CreationTimestamp = db.Column(db.DateTime, unique=False)
     SignupOpen = db.Column(db.Integer, unique=False)
+    OpenSignupTimestamp = db.Column(db.DateTime, unique=False)
+    CloseSignupTimestamp = db.Column(db.DateTime, unique=False)
+    Place = db.Column(db.String(80), unique=False)
     Active = db.Column(db.Integer, unique=False)
+    ParticipationFee = db.Column(db.String(80), unique=False)
 
-    def __init__(self, name, year, semester, timestamp, signup_open, active):
+    def __init__(self, name, year, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
         self.Name = name
         self.Year = year
         self.Semester = semester
         self.CreationTimestamp = timestamp
         self.SignupOpen = signup_open
+        self.OpenSignupTimestamp = open_signup_timestamp
+        self.CloseSignupTimestamp = close_signup_timestamp
         self.Active = active
+        self.ParticipationFee = pfee
+        

@@ -9,7 +9,7 @@ class Participants(Base):
     EventID = Column(Integer, unique=False)
     Name = Column(String(80), unique=False)
     Prename = Column(String(80), unique=False)
-    EMail = Column(String(120), unique=False)
+    EMail = Column(String(120), unique=True)
     MobileNr = Column(String(20), unique=False)
     Address = Column(String(200), unique=False)
     Birthday = Column(Date, unique=False)
@@ -65,12 +65,19 @@ class Events(Base):
     Semester = Column(Integer, unique=False)
     CreationTimestamp = Column(DateTime, unique=False)
     SignupOpen = Column(Integer, unique=False)
+    OpenSignupTimestamp = Column(db.DateTime, unique=False)
+    CloseSignupTimestamp = Column(db.DateTime, unique=False)
+    Place = Column(db.String(80), unique=False)
     Active = Column(Integer, unique=False)
+    ParticipationFee = Column(db.String(80), unique=False)
 
-    def __init__(self, name, year, semester, timestamp, signup_open, active):
+    def __init__(self, name, year, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
         self.Name = name
         self.Year = year
         self.Semester = semester
         self.CreationTimestamp = timestamp
         self.SignupOpen = signup_open
+        self.OpenSignupTimestamp = open_signup_timestamp
+        self.CloseSignupTimestamp = close_signup_timestamp
         self.Active = active
+        self.ParticipationFee = pfee
