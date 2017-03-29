@@ -168,7 +168,7 @@ def create_event():
     form = CreateEventForm(request.form)
     if request.method == 'POST' :
         try:
-            format = '%Y-%m-%dT%H:%M:%S'
+            format = '%Y-%m-%dT%H:%M'
             name = str(request.form['name'])
             year = int(request.form['year'])
             semester = int(request.form['semester'])
