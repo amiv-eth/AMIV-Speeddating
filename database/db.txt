@@ -10,9 +10,13 @@ CREATE TABLE `events` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `Name` tinytext,
   `Semester` int(1) DEFAULT NULL COMMENT '0: FS, 1: HS',
+  `ParticipationFee` tinytext,
+  `Place` tinytext,
   `Year` year(4) DEFAULT NULL,
   `CreationTimestamp` timestamp NULL DEFAULT NULL,
   `SignupOpen` int(1) DEFAULT NULL COMMENT '0: closed, 1: open',
+  `OpenSignupTimestamp` datetime DEFAULT NULL,
+  `CloseSignupTimestamp` datetime DEFAULT NULL,
   `Active` int(1) DEFAULT NULL COMMENT '0: inactive, 1: active',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -55,4 +59,4 @@ CREATE TABLE `time_slots` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- 2017-03-28 15:01:19
+-- 2017-03-29 11:21:31
