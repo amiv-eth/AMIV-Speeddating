@@ -10,3 +10,10 @@ body {
 td, th {
     padding: 0px 5px 0px 5px;
 }
+
+th {
+    background-color: #0f486b;
+} 
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #4F94CD;
+}
