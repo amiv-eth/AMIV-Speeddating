@@ -14,6 +14,6 @@ td, th {
 th {
     background-color: #0f486b;
 } 
-.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+.table-hover tbody tr:hover td {
   background-color: #4F94CD;
 }
