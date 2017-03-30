@@ -11,8 +11,8 @@ class CreateEventForm(Form):
     name = StringField('Name', [validators.DataRequired()])
     year = IntegerField('Jahr', [validators.DataRequired(), validators.NumberRange(min=1000, max=9999)])
     semester = RadioField('Semester', [validators.DataRequired()], choices=[('0','FS'),('1','HS')])
-    opensignuptimestamp = DateTimeField('Zeitpunkt der Oeffnung des Anmeldefensters', [validators.Optional()], format='%Y-%m-%dT%H:%M')
-    closesignuptimestamp = DateTimeField('Zeitpunkt der Schliessung des Anmeldefensters', [validators.Optional()], format='%Y-%m-%dT%H:%M')
+    opensignuptimestamp = DateTimeField('Zeitpunkt der Oeffnung des Anmeldefensters', [validators.DataRequired()], format='%Y-%m-%dT%H:%M')
+    closesignuptimestamp = DateTimeField('Zeitpunkt der Schliessung des Anmeldefensters', [validators.DataRequired()], format='%Y-%m-%dT%H:%M')
     place = StringField('Ort', [validators.DataRequired()])
     participationfee = StringField('Teilnahmegebühr', [validators.DataRequired()])
 

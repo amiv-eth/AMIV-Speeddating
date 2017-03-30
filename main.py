@@ -163,7 +163,7 @@ def event_view(event_id):
 @login_required
 def create_event():
     form = CreateEventForm(request.form)
-    if request.method == 'POST' :
+    if request.method == 'POST' and form.validate():
         try:
             format = '%Y-%m-%dT%H:%M'
             name = str(request.form['name'])
