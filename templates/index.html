@@ -25,100 +25,87 @@
 {% block content %}
 <div id="logo" style="display: inline-flex">
 
-  <img src="static/images/logo.png" width="384" height="123" />
+  <img src="static/images/logo_new.png" style="margin-left: 50px;" width=25% height=25% />
   
-  {% if active %}
-  <table border="0" cellspacing="2" cellpadding="2" width="384" style="margin-top: 20px">
-    <tr><td>Datum</td><td style="text-align: left; font-weight: bold;">
-	{{ dates }}
-    </td></tr>
-    <tr><td>Ort</td><td style="text-align: left; font-weight: bold;">ETH &amp; Universit&auml;t Z&uuml;rich</td></tr>
-    <tr><td>Kosten</td><td style="text-align: left; font-weight: bold;">CHF 10.&ndash;</td></tr>
-    <tr><td>Anmeldeschluss</td><td style="text-align: left; font-weight: bold;">22. April 2016, 23:59 Uhr</td></tr>
-  </table>
-  {% endif %}
+  <div>
+    <h1
+      {% if active %}
+      style="margin-top: 20px; margin-left: 80px;">
+      {% else %}
+      style="margin-top: 70px; margin-left: 80px;">
+      {% endif %}
+      Speeddating ETHZ und UZH
+    </h1>
+    {% if active %}
+    <table style="border-collapse: collapse; cell-padding:2px; border-spacing:2px; border:0; width: 500; margin-top: 20px; margin-left: 120px;">
+      <tr><td style="text-align: right;">Datum </td><td style="text-align: left; font-weight: bold;">
+	  {{ dates }}
+      </td></tr>
+      <tr><td style="text-align: right;">Ort </td><td style="text-align: left; font-weight: bold;">ETH &amp; Universit&auml;t Z&uuml;rich</td></tr>
+      <tr><td style="text-align: right;">Kosten </td><td style="text-align: left; font-weight: bold;">CHF 10.&ndash;</td></tr>
+      <tr><td style="text-align: right;">Anmeldeschluss </td><td style="text-align: left; font-weight: bold;">22. April 2016, 23:59 Uhr</td></tr>
+    </table>
+    {% endif %}
+  </div>
   
 </div>
 
 <div id="content-wrapper">
+  
+  <div id="content1">
+    <br>
+    <h2>Warum mitmachen?</h2>   
+    <p>Wolltest du schon immer mal Studenten anderer Studieng&auml;nge kennenlernen? Bringst
+      du es nicht &uuml;bers Herz im Zug oder im Tram jemanden anzusprechen, da dieser wom&ouml;glich &uuml;berhaupt nicht
+      angesprochen werden will? Oder m&ouml;chtest du einfach einen Abend lang Spass haben und jede Menge neue Leute kennen
+      lernen?
+      <br><br>
+      Was auch immer deine Motivation sein k&ouml;nnte: hier ist die L&ouml;sung! Wir bieten Dating, und dies schnell,
+      unkompliziert und interdisziplin&auml;r!</p>   
+  </div>
+  
+  <div id="content2">
+    <h2>Wobei mitmachen?</h2>
+    
+    <p>Du wirst an einem Abend insgesamt zehn Studenten des anderen Geschlechts
+      kennenlernen. Die passenden Datingpartner werden euch von uns zugewiesen. In einem informativen Gespr&auml;ch von genau
+      sieben Minuten kannst du dich dann deinem Gegen&uuml;ber von deiner besten Seite zeigen und zugleich rausfinden, ob
+      es zu einer Facebook-Freundschaft oder gar noch mehr kommen k&ouml;nnte.
+      <br><br>
+      Nach dem Gespr&auml;ch kannst du anonym ankreuzen, ob du an einem weiteren Treffen interessiert bist. Ein paar Tage
+      nach dem Event geben wir denjenigen Bescheid, die sich gegenseitig wieder sehen m&ouml;chten.</p>
+    
+  </div>
+  
+  <div id="content3">
+    <h2>Wie mitmachen?</h2>
+    <p>Falls du mitmachen m&ouml;chtest, f&uuml;lle einfach den nachfolgenden Fragebogen vor Anmeldeschluss aus. Die Teilnehmerzahl ist beschr&auml;nkt.<br></p>
 
-	<div id="content1">
+    <div style="text-align:center;">
+      {% if open %}
+      <button type="button" onclick="location.href='{{ url_for('signup') }}';" class="btn btn-primary"> Zur Anmeldung</button>
+      {% else %}
+      <h3>Anmeldung geschlossen</h3>
+      {% endif %}
+    </div>
+    
+    <p><br>Der Fragebogen erlaubt uns eine bessere Zusammenstellung der Datingkandidaten. Deine Antworten werden vertraulich und anonym behandelt, und es ist dir &uuml;berlassen, welche Fragen du nicht beantworten m&ouml;chtest.</p>
+  </div>
+  
+  <div id="content4">
+    <h2>Wie geht's weiter?</h2>
+    <p>Nach der Auswertung der Frageb&ouml;gen bekommst du einen Terminvorschlag mit Zeit und Ort. Die Dates werden am sp&auml;ten Nachmittag stattfinden. Sobald du den Termin best&auml;tigt hast, bist du dabei. Ein kleiner Unkostenbeitrag ist dann am Speed-Date selbst zu bezahlen.</p>
+  </div>
 
-		<h2>Warum mitmachen?</h2>
+  <div id="content5">
+    <h2>Traum-Date</h2>
+    <p>Das zweite Treffen liegt dann in eurer Verantwortung! Mit einer Ausnahme: F&uuml;r ein zuf&auml;lliges Paar &uuml;bernehmen wir diese schwierige Aufgabe! Lasst euch von dem Programm &uuml;berraschen, es lohnt sich&hellip;</p>
+  </div>
 
-		<p>Wolltest du schon immer mal Studenten anderer Studieng&auml;nge kennenlernen? Bringst
-		du es nicht &uuml;bers Herz im Zug oder im Tram jemanden anzusprechen, da dieser wom&ouml;glich &uuml;berhaupt nicht
-		angesprochen werden will? Oder m&ouml;chtest du einfach einen Abend lang Spass haben und jede Menge neue Leute kennen
-		lernen? Was auch immer deine Motivation sein k&ouml;nnte; hier ist die L&ouml;sung! Wir bieten Dating, und dies schnell,
-		unkompliziert und interdisziplin&auml;r!</p>
-
-		<!--<p>Egal ob du auf der Suche nach etwas Ernsthaftem oder einfach nur neuen Bekanntschaften bist, speeddating bietet dir dazu den idealen, und etwas ungew&ouml;hnlichen Rahmen daf&uuml;r!</p>-->
-
-	</div>
-
-	<div id="content2">
-
-		<h2>Wobei mitmachen?</h2>
-
-		<p>Du wirst an einem Abend insgesamt zehn Studenten des anderen Geschlechts
-		kennenlernen. Die passenden Datingpartner werden euch von uns zugewiesen. In einem informativen Gespr&auml;ch von genau
-		sieben Minuten kannst du dich dann deinem Gegen&uuml;ber von deiner besten Seite zeigen und zugleich rausfinden, ob
-		es zu einer Facebook-Freundschaft oder gar noch mehr kommen k&ouml;nnte.</p>
-
-		<p>Nach dem Gespr&auml;ch kannst du anonym ankreuzen, ob du an einem weiteren Treffen interessiert bist. Ein paar Tage
-		nach dem Event geben wir denjenigen Bescheid, die sich gegenseitig wieder sehen m&ouml;chten.</p>
-
-	</div>
-
-	<div id="content3">
-
-		<h2>Wie mitmachen?</h2>
-
-		<p>Falls du mitmachen m&ouml;chtest, f&uuml;lle einfach den nachfolgenden Fragebogen vor Anmeldeschluss aus. Die Teilnehmerzahl ist beschr&auml;nkt.</p>
-
-		{% if open %}
-		<h3><a href="signup">Zur Anmeldung</a></h3>
-		{% else %}
-		<h3>Anmeldung geschlossen</h3>
-		{% endif %}
-
-		<!-- <h3>Anmeldung ab 16 Uhr offen!!!</h3> -->
-		<!-- <h3>Anmeldung ab:<br>15.04.2012</h3> -->
-		<!-- <h3><a href="form.php">Zur Anmeldung</a></h3> -->
-		<!-- <h3>Anmeldung geschlossen</h3> -->
-
-		<!-- <h3>Dating-Woche:<br>9.-13.05.2011</h3> -->
-		<!-- <h3>N&auml;chste Runde:<br>April/Mai 2012</h3> -->
-
-		<p>Der Fragebogen erlaubt uns eine bessere Zusammenstellung der Datingkandidaten. Deine Antworten werden vertraulich und anonym behandelt, und es ist dir &uuml;berlassen, welche Fragen du nicht beantworten m&ouml;chtest.</p>
-
-	</div>
-
-	<div id="content4">
-
-		<h3>Wie geht's weiter?</h3>
-
-		<p>Nach der Auswertung der Frageb&ouml;gen bekommst du einen Terminvorschlag mit Zeit und Ort. Die Dates werden am sp&auml;ten Nachmittag stattfinden. Sobald du den Termin best&auml;tigt hast, bist du dabei. Ein kleiner Unkostenbeitrag ist dann am Speed-Date selbst zu bezahlen.</p>
-
-	</div>
-
-	<div id="content5">
-
-		<h3>Traum-Date</h3>
-
-		<p>Das zweite Treffen liegt dann in eurer Verantwortung! Mit einer Ausnahme: F&uuml;r ein zuf&auml;lliges Paar &uuml;bernehmen wir diese schwierige Aufgabe! Lasst euch von dem Programm &uuml;berraschen, es lohnt sich&hellip;</p>
-
-	</div>
-
-	<div id="impressum">
-		<p>Impressum: <a href="http://www.amiv.ethz.ch">AMIV an der ETH - Universit&auml;tsstrasse 6 -
-			8092 Z&uuml;rich - Schweiz</a></p>
-	</div>
-	<!--<div id="sponsor" style="margin-top:50px">
-	<img src="static/images/800px-Durex_logo.svg.png" style="height:72px;" />
-	<p>Dieses Jahr von Durex gesponsert.</p>
-	</div>
-	//-->
+  <div id="impressum">
+    <p style="text-align:center;"><br><br>
+      Impressum: <a href="http://www.amiv.ethz.ch">AMIV an der ETH - Universit&auml;tsstrasse 6 - 8092 Z&uuml;rich - Schweiz</a></p>
+  </div>
 
 </div>
 

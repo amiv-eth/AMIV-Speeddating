@@ -3,4 +3,10 @@ body {
     padding-bottom: 30px;
     background: #14537c url('/static/images/background.png') repeat-x top;
     color: #eeeede;
+    font-size: 1.8em;
+    font-family: "Arial", "Lucida Grande", "Tahoma", sans-serif;
+}
+
+td, th {
+    padding: 0px 5px 0px 5px;
 }
