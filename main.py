@@ -327,11 +327,14 @@ def signup():
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
             availableslots = int(request.form['availableslots'])
+            confirmed = 1
+            present = 0
+            payed = 0
 
             count = session.query(Participants).filter(Participants.EMail==email, Participants.EventID==eventid).count()
 
             if count == 0:
-                new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots)
+                new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, birthday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots, confirmed=confirmed, present=present, payed=payed)
                 session.add(new_participant)
                 session.commit()
             else:

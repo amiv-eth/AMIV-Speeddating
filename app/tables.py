@@ -19,8 +19,11 @@ class Participants(Base):
     PerfectDate = Column(String(300), unique=False)
     Fruit = Column(String(300), unique=False)
     CreationTimestamp = Column(DateTime, unique=False)
+    Confirmed = Column(db.Integer, unique=False)
+    Present = Column(db.Integer, unique=False)
+    Payed = Column(db.Integer, unique=False)
 
-    def __init__(self, timestamp, eventid, name, prename, email, mobileNr, address, bday, gender, dSlot=None, aSlot=None, course=None, semester=None, perfDate=None, fruit=None):
+    def __init__(self, timestamp, eventid, name, prename, email, mobileNr, address, bday, gender, dSlot=None, aSlot=None, course=None, semester=None, perfDate=None, fruit=None, confirmed=1, present=0, payed=0):
         self.DefSlot = dSlot
         self.AvailableSlot = aSlot
         self.EventID = eventid
@@ -36,7 +39,10 @@ class Participants(Base):
         self.PerfectDate = perfDate
         self.Fruit = fruit
         self.CreationTimestamp = timestamp
-
+        self.Confirmed =
+        self.Present =
+        self.Payed =
+        
 
 class TimeSlots(Base):
     __tablename__ = 'TimeSlots'
