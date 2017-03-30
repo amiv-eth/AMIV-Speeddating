@@ -40,6 +40,9 @@ CREATE TABLE `participants` (
   `StudySemester` tinytext,
   `PerfectDate` text,
   `Fruit` text,
+  `Confirmed` int(11) DEFAULT '1',
+  `Present` int(11) DEFAULT '0',
+  `Payed` int(11) DEFAULT '0',
   PRIMARY KEY (`ID`),
   KEY `DefSlot` (`DefSlot`),
   CONSTRAINT `participants_ibfk_1` FOREIGN KEY (`DefSlot`) REFERENCES `time_slots` (`ID`)
@@ -59,4 +62,4 @@ CREATE TABLE `time_slots` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- 2017-03-29 11:21:31
+-- 2017-03-30 10:43:41

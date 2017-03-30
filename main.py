@@ -59,7 +59,6 @@ def index():
     except Exception as e:
         session.rollback()
         print(e)
-        # TODO: Show actual error instead of redirectiing to an error page
         return render_template('error.html')
     finally:
         session.close()
@@ -85,7 +84,6 @@ def home():
     except Exception as e:
         session.rollback()
         print(e)
-        # TODO: Show actual error instead of redirectiing to an error page
         return render_template('error.html')
     finally:
         session.close()
@@ -134,7 +132,6 @@ def admin():
         except Exception as e:
             session.rollback()
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
         finally:
             session.close()
@@ -155,7 +152,6 @@ def event_view(event_id):
         except Exception as e:
             session.rollback()
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
         finally:
             session.close()    
@@ -182,7 +178,6 @@ def create_event():
         
         except Exception as e:
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html', message = str(request.form['opensignuptimestamp']))
 
         session = Session()
@@ -193,7 +188,6 @@ def create_event():
         except Exception as e:
             session.rollback()
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
         finally:
             session.close()
@@ -222,7 +216,6 @@ def create_timeslot(event_id):
         except Exception as e:
             session.rollback()
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
 
         finally:
@@ -247,7 +240,6 @@ def timeslot_view(timeslot_id):
         except Exception as e:
             session.rollback()
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
         finally:
             session.close()    
@@ -265,7 +257,6 @@ def change_signup(event_id, open):
     except Exception as e:
         session.rollback()
         print(e)
-        # TODO: Show actual error instead of redirectiing to an error page
         return render_template('error.html')
     finally:
         session.close()
@@ -283,7 +274,6 @@ def activate_event(event_id, active):
     except Exception as e:
         session.rollback()
         print(e)
-        # TODO: Show actual error instead of redirectiing to an error page
         return render_template('error.html')
     finally:
         session.close()
@@ -304,12 +294,16 @@ def signup():
             eventid = event.ID
             timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
             if timeslots != None:
-                form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: ' + str(slot.AgeRange)) for slot in timeslots]
-                
+                if timeslots == 0:
+                    form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe:  < 22') for slot in timeslots]
+                elif timeslots == 1:
+                    form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe:  22 - 25') for slot in timeslots]
+                else:
+                    form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe:  > 25') for slot in timeslots]                 
+                                                      
     except Exception as e:
         #session.rollback()
         print(e)
-        # TODO: Show actual error instead of redirectiing to an error page
         return render_template('error.html')
                             
     if request.method == 'POST' and form.validate():
@@ -344,7 +338,6 @@ def signup():
         except Exception as e:
             #session.rollback()
             print(e)
-            # TODO: Show actual error instead of redirectiing to an error page
             return render_template('error.html')
 
         finally:
