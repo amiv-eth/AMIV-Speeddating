@@ -296,12 +296,12 @@ def signup():
             eventid = event.ID
             timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
             if timeslots != None:
-                if timeslots == 0:
-                    form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe:  < 22') for slot in timeslots]
-                elif timeslots == 1:
-                    form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe:  22 - 25') for slot in timeslots]
-                else:
-                    form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe:  > 25') for slot in timeslots]                 
+                age_strings=[]
+                age_strings.append('< 22')
+                age_strings.append('22-25')
+                age_strings.append('> 25')
+                
+                form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: &nbsp' + age_strings[slot.AgeRange]) for slot in timeslots]                 
                                                       
     except Exception as e:
         #session.rollback()
