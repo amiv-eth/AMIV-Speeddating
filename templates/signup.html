@@ -41,7 +41,7 @@
 {% endif %}
 
 {% if open %}
-<form action = "http://localhost:5000/signup" method = "POST">
+<form action = {{ url_for('signup') }}" method = "POST">
   {{ render_field(form.name) }}
   {{ render_field(form.prename) }}
   {{ render_radio(form.gender) }}
