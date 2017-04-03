@@ -17,3 +17,7 @@ th {
 .table-hover tbody tr:hover td {
   background-color: #4F94CD;
 }
+
+#impressum:hover {
+  color: #4F94CD;
+}
