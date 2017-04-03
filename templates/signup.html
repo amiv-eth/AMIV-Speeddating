@@ -24,7 +24,7 @@
 		<li>Sämtliche Angaben sind sind zur internen Verwendung und werden nicht veröffentlicht. </li>
 	</ul>
 	<p class="formInfo">
-	Viel Spass beim ausfüllen und falls du Fragen hast, schreib einfach eine Mail an speeddating@amiv.ethz.ch. <br><br>
+	Viel Spass beim ausfüllen und falls du Fragen hast, schreib einfach eine Mail an <strong><i><u>speeddating@amiv.ethz.ch</u></i></strong> <br><br>
 
 	Dein Speed-Dating Team
 	</p>
@@ -41,7 +41,7 @@
 {% endif %}
 
 {% if open %}
-<form action = {{ url_for('signup') }}" method = "POST">
+<form action = {{ url_for('signup') }} method = "POST">
   {{ render_field(form.name) }}
   {{ render_field(form.prename) }}
   {{ render_radio(form.gender) }}
