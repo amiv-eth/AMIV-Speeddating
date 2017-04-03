@@ -1,6 +1,8 @@
 from wtforms import Form, TextField, DateField, RadioField, StringField, IntegerField, PasswordField, SelectField, DateTimeField, validators
 from wtforms_components import TimeField
 from app.models import Participants, TimeSlots, Events
+from wtforms.validators import ValidationError
+from datetime import datetime
 
 class LoginForm(Form):
     username = StringField('Username', [validators.DataRequired()])
@@ -30,7 +32,7 @@ class SignupForm(Form):
     email = TextField('E-Mail Adresse (*)', validators=[validators.DataRequired(), validators.Email()])
     mobilenr = StringField('Handynummer (*)', [validators.DataRequired()])
     address = TextField('Adresse (*)', [validators.DataRequired()])
-    birthday = DateField('Geburtstag (*)',[validators.DataRequired()], format='%Y-%m-%d')
+    birthday = StringField('Geburtstag (*)',[validators.DataRequired()], render_kw={"placeholder": "DD.MM.YYYY"})
     gender = RadioField('Geschlecht (*)', [validators.DataRequired()], choices=[('1','w'),('0','m')])
     studycourse = StringField('Studiengang (*)', [validators.DataRequired()])
     studysemester = StringField('Semester (*)', [validators.DataRequired()])
@@ -38,3 +40,9 @@ class SignupForm(Form):
     fruit = StringField('Lieblingsfrucht?', [validators.Optional()])
 
     availableslots = RadioField('Verfügbare Daten (*) (Bitte achte auf die Altersgruppe)', validators = [validators.DataRequired()], coerce=int)
+
+    def validate_birthday(form, field):
+        try:
+            datetime.strptime(field.data, '%d.%m.%Y')
+        except:
+            raise ValidationError("Wrong date format, should be DD.MM.YYYY")
