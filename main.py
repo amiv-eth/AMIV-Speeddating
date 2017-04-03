@@ -17,7 +17,7 @@ from app.functions import event_change_signup_status, event_change_active_status
 app = Flask(__name__)
 app.config.from_pyfile("./app/config.py")
 app.secret_key = app.config['APP_SECRET']
-app.server_name = app.config['SERVER_NAME']
+#app.server_name = app.config['SERVER_NAME']
 
 # create DB connection
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
