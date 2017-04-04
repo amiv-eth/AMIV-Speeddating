@@ -297,11 +297,30 @@ def signup():
             timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
             if timeslots != None:
                 age_strings=[]
-                age_strings.append('< 22')
-                age_strings.append('22-25')
-                age_strings.append('> 25')
+                age_strings.append('< 22'.ljust(6))
+                age_strings.append('22-25'.ljust(6))
+                age_strings.append('> 25'.ljust(6))
+
+                ids = []
+                strings = []
+                for s in timeslots:
+                    ids.append(int(s.ID))
+                    women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Gender == '1').count()
+                    men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Gender == '0').count()
+                    stri = '&nbsp &nbsp '
+                    stri = stri + s.Date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
+                    stri = str(stri).ljust(50,' '[0:1]) + str(s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                    stri = stri + '&nbsp &nbsp '
+                    stri = stri + 'Altersgruppe: &nbsp' + age_strings[s.AgeRange]
+                    stri = stri + '&nbsp &nbsp # angemeldete Personen: &nbsp &nbsp  M: ' + str(men)
+                    stri = stri + '&nbsp &nbsp W: ' + str(women)
+                    strings.append(stri)
+                    
                 
-                form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: &nbsp' + age_strings[slot.AgeRange]) for slot in timeslots]                 
+
+                form.availableslots.choices = [(ids[i], strings[i]) for i in range(0,len(timeslots))]
+                
+                #form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: &nbsp' + age_strings[slot.AgeRange]) for slot in timeslots]                 
                                                       
     except Exception as e:
         #session.rollback()

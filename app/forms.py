@@ -39,7 +39,7 @@ class SignupForm(Form):
     perfectdate = StringField('Das perfekte Date?', [validators.Optional()])
     fruit = StringField('Lieblingsfrucht?', [validators.Optional()])
 
-    availableslots = RadioField('Verfügbare Daten (*) (Bitte achte auf die Altersgruppe)', validators = [validators.DataRequired()], coerce=int)
+    availableslots = RadioField('Verfügbare Daten (*) (Bitte achte auf die Altersgruppe, pro Zeitfenster je 12 Damen und 12 Herren)', validators = [validators.DataRequired()], coerce=int)
 
     def validate_birthday(form, field):
         try:
