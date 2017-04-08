@@ -159,6 +159,41 @@ def event_view(event_id):
             session.close()    
         return render_template('event_view.html', eid = eventid, slots=slots, event=event)
 
+    
+# protected admin event view page
+@app.route('/event_participants/<int:event_id>', methods=["GET", "POST"])
+@login_required
+def event_participants(event_id):
+    if request.method == 'GET':
+        eid = event_id
+        slots = None
+        eventname = None
+        women = []
+        men = []
+        
+        session = Session()
+        try:
+            event = session.query(Events).filter(Events.ID==eid).first()
+            slots = session.query(TimeSlots).filter(TimeSlots.EventID==eid)
+            if slots != None:
+            
+                for slot in slots:
+                    w = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.EventID==eid, Participants.AvailableSlot==slot.ID, Participants.Gender == '1').all()
+                    m = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.EventID==eid, Participants.AvailableSlot==slot.ID, Participants.Gender == '0').all()
+                    women.append(w)
+                    men.append(m)
+        except Exception as e:
+            session.rollback()
+            print(e)
+            return render_template('error.html')
+        finally:
+            session.close()
+            
+    return render_template('event_participants.html', event = event, slots=slots, women=women, men=men)
+
+        
+
+    
 # protected admin create new event page
 @app.route('/create_event', methods=["GET", "POST"])
 @login_required
@@ -305,8 +340,8 @@ def signup():
                 strings = []
                 for s in timeslots:
                     ids.append(int(s.ID))
-                    women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Gender == '1').count()
-                    men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Gender == '0').count()
+                    women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '1').count()
+                    men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '0').count()
                     stri = '&nbsp &nbsp '
                     stri = stri + s.Date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
                     stri = str(stri).ljust(50,' '[0:1]) + str(s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]

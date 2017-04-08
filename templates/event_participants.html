@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block admin %}class="active"{% endblock %}
+
+<h1>{% block title %}Event {{ event.Name }}{% endblock %}</h1>
+
+{% block content %}
+
+
+
+{% for slot in slots %}
+
+
+<h2>TimeSlot ID {{ slot.ID  }}:   {{ slot.Date.strftime("%d. %B %Y")  }} {{ slot.StartTime  }} - {{ slot.EndTime  }}</h2>
+
+
+<h2>Alle Damen des TimeSlots:</h2>
+<table class="table table-hover">
+  <tr>
+    <th>Bestätigt / <br> Abgemeldet</th>
+    <th>Anwesend</th>
+    <th>Bezahlt</th>
+    <th>Anmeldung</th>
+    <th>Familienname</th>
+    <th>Vorname</th>
+    <th>Geburtstag</th>
+    <th>E-Mail</th>
+    <th>Mobile-Nr</th>
+    <th>Adresse</th>
+    <th>Studium</th>
+    <th>Semester</th>
+    <th>Perfektes Date</th>
+    <th>Frucht</th>
+  </tr>
+  <tr>
+    <th align="center" colspan="14">Women</th>
+  </tr>
+  {% for w in women[loop.index-1] %}
+  <tr>
+    <td>{{ w.Confirmed }}</td>
+    <td>{{ w.Present }}</td>
+    <td>{{ w.Payed }}</td>
+    <td>{{ w.CreationTimestamp }}</td>
+    <td>{{ w.Name }}</td>
+    <td>{{ w.Prename }}</td>
+    <td>{{ w.Birthday.strftime("%d.%B.%Y") }}</td>
+    <td>{{ w.EMail }}</td>
+    <td>{{ w.MobileNr }}</td>
+    <td>{{ w.Address }}</td>
+    <td>{{ w.StudyCourse }}</td>
+    <td>{{ w.StudySemester }}</td>
+    <td>{{ w.PerfectDate }}</td>
+    <td>{{ w.Fruit }}</td>    
+  </tr>
+  <tr>
+  </tr>
+  {% else %}
+  <tr>
+    <td>Noch keine Teilnehmer!</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  {% endfor %}
+
+  <tr>
+    <th align="center" colspan="14">Men</th>
+  </tr>
+  {% for m in men[loop.index-1] %}
+  <tr>
+    <td>{{ m.Confirmed }}</td>
+    <td>{{ m.Present }}</td>
+    <td>{{ m.Payed }}</td>
+    <td>{{ m.CreationTimestamp }}</td>
+    <td>{{ m.Name }}</td>
+    <td>{{ m.Prename }}</td>
+    <td>{{ m.Birthday.strftime("%d.%B.%Y") }}</td>
+    <td>{{ m.EMail }}</td>
+    <td>{{ m.MobileNr }}</td>
+    <td>{{ m.Address }}</td>
+    <td>{{ m.StudyCourse }}</td>
+    <td>{{ m.StudySemester }}</td>
+    <td>{{ m.PerfectDate }}</td>
+    <td>{{ m.Fruit }}</td>    
+  </tr>
+  <tr>
+  </tr>
+  {% else %}
+  <tr>
+    <td>Noch keine Teilnehmer!</td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+
+  {% endfor %}
+
+
+</table>
+
+<br>
+
+{% endfor %}
+{% endblock %}

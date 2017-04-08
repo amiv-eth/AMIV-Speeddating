@@ -53,4 +53,6 @@
   {% endfor %}
 </table>
 
+<button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = eid) }}'"> See all Participants </button>
+
 {% endblock %}
