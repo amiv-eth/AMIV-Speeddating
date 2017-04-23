@@ -45,3 +45,17 @@ def event_change_active_status(session, event_id, active):
         return False
 
 
+    
+def event_change_register_status(session, p_id, register):
+    try:
+        participant = session.query(Participants).filter_by(ID = p_id).first()
+        if participant.Confirmed == 0:
+            participant.Confirmed = 1
+        else:
+            participant.Confirmed = 0
+        session.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+

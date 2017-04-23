@@ -13,9 +13,15 @@ td, th {
 
 th {
     background-color: #0f486b;
-} 
+    height: 500%;
+}
+
 .table-hover tbody tr:hover td {
-  background-color: #4F94CD;
+    background-color: #4F94CD;
+}
+
+.in {
+    background-color: #00CD66;
 }
 
 #impressum:hover {

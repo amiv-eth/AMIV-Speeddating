@@ -11,7 +11,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm
 from app.models import Participants, TimeSlots, Events
-from app.functions import event_change_signup_status, event_change_active_status
+from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status
 
 # create and config app
 app = Flask(__name__)
@@ -170,6 +170,12 @@ def event_participants(event_id):
         eventname = None
         women = []
         men = []
+        inw = []
+        inm = []
+        mailinw = []
+        mailoutw = []
+        mailinm = []
+        mailoutm = []
         
         session = Session()
         try:
@@ -178,8 +184,8 @@ def event_participants(event_id):
             if slots != None:
             
                 for slot in slots:
-                    w = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.EventID==eid, Participants.AvailableSlot==slot.ID, Participants.Gender == '1').all()
-                    m = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.EventID==eid, Participants.AvailableSlot==slot.ID, Participants.Gender == '0').all()
+                    w = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.EventID==eid, Participants.AvailableSlot==slot.ID, Participants.Gender == '1').all()
+                    m = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.EventID==eid, Participants.AvailableSlot==slot.ID, Participants.Gender == '0').all()
                     women.append(w)
                     men.append(m)
         except Exception as e:
@@ -188,8 +194,37 @@ def event_participants(event_id):
             return render_template('error.html')
         finally:
             session.close()
+
+    for wslot in women:
+        inmail = ""
+        outmail = ""
+        wcount = 0
+        for w in wslot:
+            if w.Confirmed == 1 and wcount < 12:
+                wcount = wcount + 1;
+                inw.append(w.EMail)
+                inmail = inmail + w.EMail + "; "
+            else:
+                outmail = outmail + w.EMail + "; "
             
-    return render_template('event_participants.html', event = event, slots=slots, women=women, men=men)
+        mailinw.append(inmail)
+        mailoutw.append(outmail)
+        
+    for mslot in men:
+        inmail = ""
+        outmail = ""
+        mcount = 0
+        for m in mslot:
+            if m.Confirmed == 1 and mcount < 12:
+                mcount = mcount + 1;
+                inm.append(m.EMail)
+                inmail = inmail + m.EMail + "; "
+            else:
+                outmail = outmail + m.EMail + "; "
+        mailinm.append(inmail)
+        mailoutm.append(outmail)
+                
+    return render_template('event_participants.html', event = event, slots=slots, women=women, men=men, inw=inw, inm=inm, mailinw=mailinw, mailinm=mailinm, mailoutw=mailoutw, mailoutm=mailoutm)
 
         
 
@@ -268,19 +303,46 @@ def timeslot_view(timeslot_id):
     if request.method == 'GET':
         slotid = timeslot_id
         participants = None
+        inw = []
+        inm = []
+        
         session = Session()
+        
         try:
             slot = session.query(TimeSlots).filter(TimeSlots.ID==slotid).first()
-            women = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '1').all()
-            men = session.query(Participants).order_by(desc(Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '0').all()
+            women = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '1').all()
+            men = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '0').all()
             event = session.query(Events).filter(Events.ID==slot.EventID).first()
         except Exception as e:
             session.rollback()
             print(e)
             return render_template('error.html')
         finally:
-            session.close()    
-        return render_template('timeslot_view.html', event = event, slot=slot, women=women, men=men)
+            session.close()
+
+        mailinw = ""
+        mailoutw = ""
+        wcount = 0
+        for w in women:
+            if w.Confirmed == 1 and wcount < 12:
+                wcount = wcount + 1;
+                inw.append(w.EMail)
+                mailinw = mailinw + w.EMail + "; "
+            else:
+                mailoutw = mailoutw + w.EMail + "; "
+             
+        mailinm = ""
+        mailoutm = ""
+        mcount = 0
+        for m in men:
+            if m.Confirmed == 1 and mcount < 12:
+                mcount = mcount + 1;
+                inm.append(m.EMail)
+                mailinm = mailinm + m.EMail + "; "
+            else:
+                mailoutm = mailoutm + m.EMail + "; "
+        
+        return render_template('timeslot_view.html', event = event, slot=slot, women=women, men=men, inw=inw, inm=inm, mailinw=mailinw, mailinm=mailinm, mailoutw=mailoutw, mailoutm=mailoutm)
 
 
 
@@ -316,6 +378,23 @@ def activate_event(event_id, active):
         session.close()
     if activated:
         return redirect(url_for('admin'))
+    return render_template('error.html')
+
+# link for register/deregister an participant ## TODO merge to one single function
+@app.route('/register_participant/<int:event_id>/<int:participant_id>/<int:register>', methods=["GET", "POST"])
+@login_required
+def register_participant(event_id, participant_id, register):
+    session = Session()
+    try:
+        registered = event_change_register_status(session, participant_id, register)
+    except Exception as e:
+        session.rollback()
+        print(e)
+        return render_template('error.html')
+    finally:
+        session.close()
+    if registered:
+        return redirect(url_for('event_participants', event_id = event_id))
     return render_template('error.html')
 
 

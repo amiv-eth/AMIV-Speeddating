@@ -2,7 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 class Participants(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    ID = db.Column(db.Integer, primary_key=True)
     DefSlot = db.Column(db.Integer, primary_key=False)
     AvailableSlot = db.Column(db.String(50), primary_key=False)
     EventID = db.Column(db.Integer, unique=False)

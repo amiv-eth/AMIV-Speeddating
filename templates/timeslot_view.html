@@ -5,6 +5,24 @@
 <h1>{% block title %} TimeSlot {{ slot.Date.strftime("%d. %B %Y")  }} {{ slot.StartTime  }} - {{ slot.EndTime  }}{% endblock %}</h1>
 
 {% block content %}
+<div>
+  <p>
+    EMail Adressen Dabei:
+  </p>
+  <p>
+    {{ mailinw }}
+    {{ mailinm }}
+  </p>
+  <br>
+  <p>
+    EMail Adressen nicht Dabei:
+  </p>
+  <p>
+    {{ mailoutw }}
+    {{ mailoutm }}
+  </p>
+  <br>
+</div>
 
 <h2>Alle Damen des TimeSlots:</h2>
 <table class="table table-striped table-hover">
@@ -23,12 +41,18 @@
     <th>Frucht</th>
   </tr>
   {% for w in women %}
-  <tr>
+  {% if w.EMail in inw %}
+  {% set in = true %}
+  {% else %}
+  {% set in = false %}
+  {% endif %}
+ 
+  <tr{% if in == true %} class="in" {% endif %}>
     <td>{{ w.ID }}</td>
-    <td>{{ w.CreationTimestamp }}</td>
+    <td>{{ w.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ w.Name }}</td>
     <td>{{ w.Prename }}</td>
-    <td>{{ w.Birthday.strftime("%d.%B.%Y") }}</td>
+    <td>{{ w.Birthday.strftime("%d.%m.%Y") }}</td>
     <td>{{ w.EMail }}</td>
     <td>{{ w.MobileNr }}</td>
     <td>{{ w.Address }}</td>
@@ -77,12 +101,17 @@
     <th>Frucht</th>
   </tr>
   {% for m in men %}
-  <tr>
+  {% if m.EMail in inm %}
+  {% set in = true %}
+  {% else %}
+  {% set in = false %}
+  {% endif %}
+  <tr{% if in == true %} class="in" {% endif %}>
     <td>{{ m.ID }}</td>
-    <td>{{ m.CreationTimestamp }}</td>
+    <td>{{ m.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ m.Name }}</td>
     <td>{{ m.Prename }}</td>
-    <td>{{ m.Birthday.strftime("%d.%B.%Y") }}</td>
+    <td>{{ m.Birthday.strftime("%d.%m.%Y") }}</td>
     <td>{{ m.EMail }}</td>
     <td>{{ m.MobileNr }}</td>
     <td>{{ m.Address }}</td>
