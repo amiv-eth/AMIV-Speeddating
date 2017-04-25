@@ -345,6 +345,31 @@ def timeslot_view(timeslot_id):
         return render_template('timeslot_view.html', event = event, slot=slot, women=women, men=men, inw=inw, inm=inm, mailinw=mailinw, mailinm=mailinm, mailoutw=mailoutw, mailoutm=mailoutm)
 
 
+@app.route('/timeslot_view_ongoing/<int:timeslot_id>', methods=["GET", "POST"])
+@login_required
+def timeslot_view_ongoing(timeslot_id):
+    if request.method == 'GET':
+        slotid = timeslot_id
+        participants = None
+        
+        session = Session()
+        
+        try:
+            slot = session.query(TimeSlots).filter(TimeSlots.ID==slotid).first()
+            women = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '1', Participants.Present == '1').all()
+            men = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '0', Participants.Present == '1').all()
+            event = session.query(Events).filter(Events.ID==slot.EventID).first()
+        except Exception as e:
+            session.rollback()
+            print(e)
+            return render_template('error.html')
+        finally:
+            session.close()
+        
+        return render_template('timeslot_view_ongoing.html', event = event, slot=slot, women=women, men=men)
+
+
+
 
 # link for open/cose the signup
 @app.route('/change_signup/<int:event_id>/<int:open>', methods=["GET", "POST"])
