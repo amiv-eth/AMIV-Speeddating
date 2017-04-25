@@ -506,5 +506,99 @@ def signup():
     return render_template('signup.html', form=form, event=event)
 
 
+
+
+# manual signup page
+@app.route('/manual_signup', methods=["GET", "POST"])
+def manual_signup():
+    session = Session()
+    form = SignupForm(request.form)
+    try:
+        event = session.query(Events).filter(Events.Active=='1').first()
+        if event != None:
+            eventid = event.ID
+            timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
+            if timeslots != None:
+                age_strings=[]
+                age_strings.append('< 22'.ljust(6))
+                age_strings.append('22-25'.ljust(6))
+                age_strings.append('> 25'.ljust(6))
+
+                ids = []
+                strings = []
+                for s in timeslots:
+                    ids.append(int(s.ID))
+                    women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '1').count()
+                    men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '0').count()
+                    stri = '&nbsp &nbsp '
+                    stri = stri + s.Date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
+                    stri = str(stri).ljust(50,' '[0:1]) + str(s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                    stri = stri + '&nbsp &nbsp '
+                    stri = stri + 'Altersgruppe: &nbsp' + age_strings[s.AgeRange]
+                    stri = stri + '&nbsp &nbsp # angemeldete Personen: &nbsp &nbsp  M: ' + str(men)
+                    stri = stri + '&nbsp &nbsp W: ' + str(women)
+                    strings.append(stri)
+                    
+                
+
+                form.availableslots.choices = [(ids[i], strings[i]) for i in range(0,len(timeslots))]
+
+                
+    except Exception as e:
+        #session.rollback()
+        print(e)
+        return render_template('error.html')
+                            
+    if request.method == 'POST' and form.validate():
+        try:
+            timestamp = datetime.now()
+            name = str(request.form['name'])
+            prename = str(request.form['prename'])
+            gender = int(request.form['gender'])
+            email = str(request.form['email'])
+            mobile = str(request.form['mobilenr'])
+            address = str(request.form['address'])
+            birthday = str(request.form['birthday'])
+            studycourse = str(request.form['studycourse'])
+            studysemester = str(request.form['studysemester'])
+            perfectdate = str(request.form['perfectdate'])
+            fruit = str(request.form['fruit'])
+            availableslots = int(request.form['availableslots'])
+            confirmed = 1
+            present = 1
+            payed = 0
+
+            bday= datetime.strptime(birthday, '%d.%m.%Y')
+
+            count = session.query(Participants).filter(Participants.EMail==email, Participants.EventID==eventid).count()
+
+            if count == 0:
+                new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, bday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots, confirmed=confirmed, present=present, payed=payed)
+                session.add(new_participant)
+                session.commit()
+            else:
+                message = 'Die E-Mail Adresse ' + email + ' wurde bereits für das Speeddating angewendet. Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
+                return render_template('error.html', message=message)
+
+        except Exception as e:
+            #session.rollback()
+            print(e)
+            return render_template('error.html')
+
+        finally:
+            session.close()
+        return render_template('success.html')
+    else:
+        if session:
+            session.close()
+        
+    return render_template('manual_signup.html', form=form, event=event)
+
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run()
