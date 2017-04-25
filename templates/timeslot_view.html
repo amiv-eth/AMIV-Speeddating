@@ -27,7 +27,12 @@
 <h2>Alle Damen des TimeSlots:</h2>
 <table class="table table-striped table-hover">
   <tr>
-    <th>ID</th>
+    <th>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_event') }}'">
+	<span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </th>
+    <th>Anwesend/<br>Bezahlt</th>
     <th>Anmeldung</th>
     <th>Familienname</th>
     <th>Vorname</th>
@@ -35,10 +40,6 @@
     <th>E-Mail</th>
     <th>Mobile-Nr</th>
     <th>Adresse</th>
-    <th>Studium</th>
-    <th>Semester</th>
-    <th>Perfektes Date</th>
-    <th>Frucht</th>
   </tr>
   {% for w in women %}
   {% if w.EMail in inw %}
@@ -48,27 +49,50 @@
   {% endif %}
  
   <tr{% if in == true %} class="in" {% endif %}>
-    <td>{{ w.ID }}</td>
+    <td>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = w.ID, action='present') }}'">
+	{% if w.Present %}
+	abwesend
+	{% else %}
+	anwesend
+	{% endif %}
+      </button>
+      {% if w.Present %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = w.ID, action='payed') }}'">
+	{% if w.Payed %}
+	nicht bezahlt
+	{% else %}
+	bezahlt
+	{% endif %}
+      </button>
+      {% endif %}
+    </td>
+    <td>
+      {% if w.Present %}
+      Ja
+      {% else %}
+      Nein
+      {% endif %}
+      /
+      {% if w.Payed %}
+      Ja
+      {% else %}
+      Nein
+      {% endif %}
+    </td>
     <td>{{ w.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ w.Name }}</td>
     <td>{{ w.Prename }}</td>
     <td>{{ w.Birthday.strftime("%d.%m.%Y") }}</td>
     <td>{{ w.EMail }}</td>
     <td>{{ w.MobileNr }}</td>
-    <td>{{ w.Address }}</td>
-    <td>{{ w.StudyCourse }}</td>
-    <td>{{ w.StudySemester }}</td>
-    <td>{{ w.PerfectDate }}</td>
-    <td>{{ w.Fruit }}</td>    
+    <td>{{ w.Address }}</td> 
   </tr>
   <tr>
   </tr>
   {% else %}
   <tr>
     <td>Noch keine Teilnehmer!</td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -87,7 +111,12 @@
 <h2>Alle Herren des TimeSlots:</h2>
 <table class="table table-striped table-hover">
   <tr>
-    <th>ID</th>
+    <th>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_event') }}'">
+	<span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </th>
+    <th>Anwesend/<br>Bezahlt</th>
     <th>Anmeldung</th>
     <th>Familienname</th>
     <th>Vorname</th>
@@ -95,10 +124,6 @@
     <th>E-Mail</th>
     <th>Mobile-Nr</th>
     <th>Adresse</th>
-    <th>Studium</th>
-    <th>Semester</th>
-    <th>Perfektes Date</th>
-    <th>Frucht</th>
   </tr>
   {% for m in men %}
   {% if m.EMail in inm %}
@@ -107,7 +132,37 @@
   {% set in = false %}
   {% endif %}
   <tr{% if in == true %} class="in" {% endif %}>
-    <td>{{ m.ID }}</td>
+    <td>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = m.ID, action='present') }}'">
+	{% if m.Present %}
+	abwesend
+	{% else %}
+	anwesend
+	{% endif %}
+      </button>
+      {% if m.Present %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = m.ID, action='payed') }}'">
+	{% if m.Payed %}
+	nicht bezahlt
+	{% else %}
+	bezahlt
+	{% endif %}
+      </button>
+      {% endif %}
+    </td>
+    <td>
+      {% if m.Present %}
+      Ja
+      {% else %}
+      Nein
+      {% endif %}
+      /
+      {% if m.Payed %}
+      Ja
+      {% else %}
+      Nein
+      {% endif %}
+    </td>
     <td>{{ m.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ m.Name }}</td>
     <td>{{ m.Prename }}</td>
@@ -115,19 +170,12 @@
     <td>{{ m.EMail }}</td>
     <td>{{ m.MobileNr }}</td>
     <td>{{ m.Address }}</td>
-    <td>{{ m.StudyCourse }}</td>
-    <td>{{ m.StudySemester }}</td>
-    <td>{{ m.PerfectDate }}</td>
-    <td>{{ m.Fruit }}</td>
   </tr>
   <tr>
   </tr>
   {% else %}
   <tr>
     <td>Noch keine Teilnehmer!</td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
     <td></td>
     <td></td>

@@ -59,3 +59,36 @@ def event_change_register_status(session, p_id, register):
         print(e)
         return False
 
+def change_present(session, slot_id, participant_id):
+    try:
+        participant = session.query(Participants).filter_by(ID = participant_id).first()
+        
+        if participant.Present == 0:
+            participant.Present = int(1)
+        else:
+            participant.Present = int(0)
+
+        session.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+
+def change_payed(session, slot_id, participant_id):
+    try:
+        participant = session.query(Participants).filter_by(ID = participant_id).first()
+
+        if participant.Present == 1:
+            if participant.Payed == 0:
+                participant.Payed = int(1)
+            else:
+                participant.Payed = int(0)
+        else:
+            return False
+
+        session.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False

@@ -11,7 +11,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm
 from app.models import Participants, TimeSlots, Events
-from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status
+from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status, change_present, change_payed
 
 # create and config app
 app = Flask(__name__)
@@ -397,6 +397,25 @@ def register_participant(event_id, participant_id, register):
         return redirect(url_for('event_participants', event_id = event_id))
     return render_template('error.html')
 
+
+@app.route('/change_participant_on_timeslot/<int:slot_id>/<int:participant_id>/<string:action>', methods=["GET", "POST"])
+@login_required
+def change_participant_on_timeslot(slot_id, participant_id, action):
+    session = Session()
+    try:
+        if action == 'present':
+            changed = change_present(session, slot_id, participant_id)
+        elif action == 'payed':
+            changed = change_payed(session, slot_id, participant_id)
+    except Exception as e:
+        session.rollback()
+        print(e)
+        return render_template('error.html')
+    finally:
+        session.close()
+    if changed:
+        return redirect(url_for('timeslot_view', timeslot_id = slot_id))
+    return render_template('error.html', message = 'changing '+ action + ' did not work. Maybe a participant wanted to pay before being present on event.' )
 
 
 # signup page
