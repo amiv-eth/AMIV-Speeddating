@@ -92,3 +92,16 @@ def change_payed(session, slot_id, participant_id):
     except Exception as e:
         print(e)
         return False
+
+
+def change_datenr(session, participant_id, datenr):
+    try:
+        participant = session.query(Participants).filter_by(ID = participant_id).first()
+      
+        participant.DateNr = int(datenr)
+
+        session.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False

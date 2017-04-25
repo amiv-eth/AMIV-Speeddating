@@ -1,4 +1,4 @@
-from wtforms import Form, TextField, DateField, RadioField, StringField, IntegerField, PasswordField, SelectField, DateTimeField, validators
+from wtforms import Form, TextField, DateField, RadioField, StringField, IntegerField, PasswordField, SelectField, DateTimeField, validators, HiddenField
 from wtforms_components import TimeField
 from app.models import Participants, TimeSlots, Events
 from wtforms.validators import ValidationError
@@ -46,3 +46,8 @@ class SignupForm(Form):
             datetime.strptime(field.data, '%d.%m.%Y')
         except:
             raise ValidationError("Wrong date format, should be DD.MM.YYYY")
+
+
+class ChangeDateNr(Form):
+    datenr = IntegerField('DateNr (Unique pro Geschlecht!)', [validators.DataRequired(), validators.NumberRange(min=0, max=20)])
+    participant_id = HiddenField('Teilnehmer ID', [validators.DataRequired()])

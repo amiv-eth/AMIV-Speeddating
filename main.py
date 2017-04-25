@@ -9,9 +9,9 @@ from sqlalchemy.orm import sessionmaker
 
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 
-from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm
+from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
 from app.models import Participants, TimeSlots, Events
-from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status, change_present, change_payed
+from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status, change_present, change_payed, change_datenr
 
 # create and config app
 app = Flask(__name__)
@@ -348,26 +348,37 @@ def timeslot_view(timeslot_id):
 @app.route('/timeslot_view_ongoing/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
 def timeslot_view_ongoing(timeslot_id):
-    if request.method == 'GET':
-        slotid = timeslot_id
-        participants = None
-        
+    form = ChangeDateNr(request.form)
+    session = Session()
+
+    if request.method == 'POST' and form.validate():
         session = Session()
-        
         try:
-            slot = session.query(TimeSlots).filter(TimeSlots.ID==slotid).first()
-            women = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '1', Participants.Present == '1').all()
-            men = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==slotid, Participants.Gender == '0', Participants.Present == '1').all()
-            event = session.query(Events).filter(Events.ID==slot.EventID).first()
+            participant_id = int(request.form['participant_id'])
+            datenr = int(request.form['datenr'])
+            changed = change_datenr(session, participant_id, datenr)
+            
         except Exception as e:
-            session.rollback()
+            #session.rollback()
             print(e)
             return render_template('error.html')
+
         finally:
             session.close()
-        
-        return render_template('timeslot_view_ongoing.html', event = event, slot=slot, women=women, men=men)
-
+    # "GET":                       
+    try:
+        slot = session.query(TimeSlots).filter(TimeSlots.ID==timeslot_id).first()
+        women = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==timeslot_id, Participants.Gender == '1', Participants.Present == '1').all()
+        men = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==timeslot_id, Participants.Gender == '0', Participants.Present == '1').all()
+        event = session.query(Events).filter(Events.ID==slot.EventID).first()
+    except Exception as e:
+        session.rollback()
+        print(e)
+        return render_template('error.html')
+    finally:
+        session.close()
+    form.datenr.data=''                  
+    return render_template('timeslot_view_ongoing.html', event = event, slot=slot, women=women, men=men, form=form)
 
 
 
