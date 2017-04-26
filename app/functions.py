@@ -1,4 +1,8 @@
 from app.models import Participants, TimeSlots, Events
+import csv
+import datetime
+from datetime import date
+import io
 
 def event_change_signup_status(session, event_id, open):
     try:
@@ -105,3 +109,25 @@ def change_datenr(session, participant_id, datenr):
     except Exception as e:
         print(e)
         return False
+
+
+def export(women, men, slot):
+    try:
+        output = io.StringIO()
+        res = csv.writer(output, delimiter=',')
+        for w in women:
+            res.writerow([str(w.DateNr)] + ['f'] + [w.Prename] + [w.Name] + [str(get_age(w.Birthday))] + [w.MobileNr] + [w.EMail])
+        for m in men:
+            res.writerow([str(m.DateNr)] + ['m'] + [m.Prename] + [m.Name] + [str(get_age(m.Birthday))] + [m.MobileNr] + [m.EMail])
+
+        result = output.getvalue()
+        output.close()
+        return str(result)
+    except Exception as e:
+        print(e)
+        return ''
+    
+
+def get_age(born):
+    today = date.today()
+    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))

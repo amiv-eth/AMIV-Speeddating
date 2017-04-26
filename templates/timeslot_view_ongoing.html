@@ -138,4 +138,10 @@
   {% endfor %}
 </table>
 
+<div style="text-align:center;">
+  <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('export_slot', timeslot_id = slot.ID) }}'">
+    Exportieren
+  </button>
+</div>
+
 {% endblock %}

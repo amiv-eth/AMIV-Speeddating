@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block admin %}class="active"{% endblock %}
+<h1>{% block title %} TimeSlot {{ slot.Date.strftime("%d. %B %Y")  }} {{ slot.StartTime  }} - {{ slot.EndTime  }}{% endblock %}</h1>
+
+{% block content %}
+<br>
+<div>
+  <p>
+    <textarea class="form-control" rows=30>{{ exported }}</textarea>
+  </p>
+</div>
+
+{% endblock %}

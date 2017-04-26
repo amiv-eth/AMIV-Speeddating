@@ -11,7 +11,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
 from app.models import Participants, TimeSlots, Events
-from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status, change_present, change_payed, change_datenr
+from app.functions import event_change_signup_status, event_change_active_status, event_change_register_status, change_present, change_payed, change_datenr, export
 
 # create and config app
 app = Flask(__name__)
@@ -350,6 +350,7 @@ def timeslot_view(timeslot_id):
 def timeslot_view_ongoing(timeslot_id):
     form = ChangeDateNr(request.form)
     session = Session()
+    csv=''
 
     if request.method == 'POST' and form.validate():
         session = Session()
@@ -378,7 +379,7 @@ def timeslot_view_ongoing(timeslot_id):
     finally:
         session.close()
     form.datenr.data=''                  
-    return render_template('timeslot_view_ongoing.html', event = event, slot=slot, women=women, men=men, form=form)
+    return render_template('timeslot_view_ongoing.html', event = event, slot=slot, women=women, men=men, form=form, csv=csv)
 
 
 
@@ -632,7 +633,29 @@ def manual_signup():
 
 
 
+# link for exporting the participants of a slot for the SpeedMatchTool
+@app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
+@login_required
+def export_slot(timeslot_id):
+    session = Session()
+    
+    try:
+        slot = session.query(TimeSlots).filter(TimeSlots.ID==timeslot_id).first()
+        women = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==timeslot_id, Participants.Gender == '1', Participants.Present == '1').all()
+        men = session.query(Participants).order_by((Participants.CreationTimestamp)).filter(Participants.AvailableSlot==timeslot_id, Participants.Gender == '0', Participants.Present == '1').all()
+        exported = export(women, men, slot)
 
+    except Exception as e:
+        session.rollback()
+        print(e)
+        return render_template('error.html')
+
+    finally:
+        session.close()
+
+    if exported != '':
+        return render_template('csv.html', slot=slot, exported=exported)
+    return render_template('error.html')
 
 
 
