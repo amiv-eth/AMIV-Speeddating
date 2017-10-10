@@ -1,0 +1,26 @@
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  image: tetraweb/php:7.1
+  when: manual
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - mkdir -p ~/.ssh
+    - eval $(ssh-agent -s)
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
+    - apt-get install rsync
+  script:
+    - ssh -p22 speeddating@login.ee.ethz.ch "mkdir -p ~/app_tmp/"
+    - rsync -rav -e ssh --exclude='.git/' --exclude='.gitlab-ci.yml' --delete-excluded ./ speeddating@login.ee.ethz.ch:~/app_tmp
+    - ssh -p22 speeddating@login.ee.ethz.ch "cp ~/app/app/config.py ~/app_tmp/app/"
+    - ssh -p22 speeddating@login.ee.ethz.ch "mv ~/app ~/app_old && mv ~/app_tmp ~/app && chmod -R 700 ~/app"
+    - ssh -p22 speeddating@login.ee.ethz.ch "kill `ps -aux | grep 'uwsgi --socket localhost:10032' | grep -v grep | awk '{print $2}'`"
+    - ssh -p22 speeddating@login.ee.ethz.ch "rm -rf ~/app_old"
+  only:
+    - master
+  environment:
+    name: production
+    url: https://speeddating.ethz.ch
