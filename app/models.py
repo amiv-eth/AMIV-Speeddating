@@ -67,18 +67,24 @@ class Events(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
     Name = db.Column(db.String(80), unique=False)
     Year = db.Column(db.Date, unique=False)
-    Semester = db.Column(db.Integer, unique=False)
+    SpecialSlots = db.Column(db.Boolean, unique=False)
+    SpecialSlotsName = db.Column(db.Text, unique=False)
+    SpecialSlotsDescription = db.Column(db.Text, unique=False)
+    Semester = db.Column(db.Boolean, unique=False)
     CreationTimestamp = db.Column(db.DateTime, unique=False)
-    SignupOpen = db.Column(db.Integer, unique=False)
+    SignupOpen = db.Column(db.Boolean, unique=False)
     OpenSignupTimestamp = db.Column(db.DateTime, unique=False)
     CloseSignupTimestamp = db.Column(db.DateTime, unique=False)
     Place = db.Column(db.String(80), unique=False)
-    Active = db.Column(db.Integer, unique=False)
+    Active = db.Column(db.Boolean, unique=False)
     ParticipationFee = db.Column(db.String(80), unique=False)
 
-    def __init__(self, name, year, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
+    def __init__(self, name, year, specslot, specslotname, sepcslotdescription, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
         self.Name = name
         self.Year = year
+        self.SpecialSlots = specslot
+        self.SpecialSlotsName = specslotname
+        self.SpecialSlotsDescription = sepcslotdescription
         self.Semester = semester
         self.CreationTimestamp = timestamp
         self.SignupOpen = signup_open

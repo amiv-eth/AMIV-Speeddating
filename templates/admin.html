@@ -9,7 +9,6 @@
   In the Table you can find all events of the last years.<br>
   By pressing the cross button ont the top right corner you can add a new event.<br>
   By pressing on an event you come to the overview of the selected event, where you can add/remove/edit the timeslots of the event or viewing the participants. <br>
-  
 </p>
 
 <h2>All Events:</h2>
@@ -17,7 +16,8 @@
   <tr>
     <th>Name</th>
     <th>Year</th> 
-    <th>Semester</th>
+    <th>Sem.</th>
+    <th>Special Slots</th>
     <th>Signup Status</th>
     <th>Active</th>
     <th>
@@ -36,6 +36,13 @@
        {% else %}
           FS
        {% endif %}
+    </td>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
+      {% if e.SpecialSlots %}
+         Yes:  {{e.SpecialSlotsName}}
+      {% else %}
+         No
+      {% endif %}
     </td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
       {% if e.SignupOpen %}

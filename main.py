@@ -240,6 +240,9 @@ def create_event():
             name = str(request.form['name'])
             year = int(request.form['year'])
             semester = int(request.form['semester'])
+            specialslot = int(request.form['specialslot'])
+            specialslotname = str(request.form['specialslotname'])
+            specialslotdescription = str(request.form['specialslotdescription'])
             timestamp = datetime.now()
             opensignuptimestamp = datetime.strptime(str(request.form['opensignuptimestamp']), format)
             closesignuptimestamp = datetime.strptime(str(request.form['closesignuptimestamp']), format)
@@ -254,7 +257,7 @@ def create_event():
 
         session = Session()
         try:
-            event = Events(name, year, semester, timestamp, signup_open, active, participationfee, opensignuptimestamp, closesignuptimestamp)
+            event = Events(name, year, specialslot, specialslotname, specialslotdescription, semester, timestamp, signup_open, active, participationfee, opensignuptimestamp, closesignuptimestamp)
             session.add(event)
             session.commit()
         except Exception as e:
