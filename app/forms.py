@@ -49,8 +49,8 @@ class SignupForm(Form):
     #availableslots = RadioField('Verfügbare Daten (*) <br> (Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze))', validators = [validators.Optional()], coerce=int)
     #availablespecialslots = RadioField('Verfügbare Daten Spezial Event (*) (Bitte achte auf die Altersgruppe, (# angemeldete Personen) / (# verfügbare Plätze))', validators = [validators.Optional()], coerce=int)
 
-    availableslots = MultiCheckboxField('Verfügbare Daten (*) <br> (Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze))', validators = [validators.Optional()], coerce=int)
-    availablespecialslots = MultiCheckboxField('Verfügbare Daten Spezial Event(*) <br> (Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze))', validators = [validators.Optional()], coerce=int)
+    availableslots = MultiCheckboxField('Verfügbare Daten (*)<br> <span class="notbold">(Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze)</span>', validators = [validators.Optional()], coerce=int)
+    availablespecialslots = MultiCheckboxField('Verfügbare Daten <span class="text-danger">Spezial Speeddating</span> (siehe Beschreibung auf der Startseite) (*) <br> <span class="notbold">(Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze))</span>', validators = [validators.Optional()], coerce=int)
 
     def validate_availableslots(form, field):
         if form.availableslots.data and form.availablespecialslots.data:

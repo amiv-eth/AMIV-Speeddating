@@ -51,7 +51,6 @@
 </div>
 
 <div id="content-wrapper">
-  
   <div id="content1">
     <br>
     <h2>Warum mitmachen?</h2>   
@@ -74,9 +73,15 @@
       <br><br>
       Nach dem Gespr&auml;ch kannst du anonym ankreuzen, ob du an einem weiteren Treffen interessiert bist. Ein paar Tage
       nach dem Event geben wir denjenigen Bescheid, die sich gegenseitig wieder sehen m&ouml;chten.</p>
-    
   </div>
   
+  {% if event.SpecialSlots %}
+  <div id="content0">
+    <h3 class="text-danger"><i>Dieses Semester speziell: {{ event.SpecialSlotsName }} </i></h3>   
+    <p>{{ event.SpecialSlotsDescription }}</p>   
+  </div>
+  {% endif %}
+
   <div id="content3">
     <h2>Wie mitmachen?</h2>
     <p>Falls du mitmachen m&ouml;chtest, f&uuml;lle einfach den nachfolgenden Fragebogen vor Anmeldeschluss aus. Die Teilnehmerzahl ist beschr&auml;nkt.<br></p>

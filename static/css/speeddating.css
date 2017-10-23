@@ -27,3 +27,7 @@ th {
 #impressum:hover {
   color: #4F94CD;
 }
+
+.notbold{
+    font-weight:normal
+}​
