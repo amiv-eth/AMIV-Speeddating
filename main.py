@@ -284,7 +284,8 @@ def create_timeslot(event_id):
             endtime = str(request.form['endtime'])
             nrcouples = int(request.form['nrcouples'])
             agerange = int(request.form['agerange'])
-            slot = TimeSlots(eventid, date, starttime, endtime, nrcouples, agerange)
+            specialslot = int(request.form['specialslot'])
+            slot = TimeSlots(eventid, date, starttime, endtime, nrcouples, agerange, specialslot)
             session.add(slot)
             session.commit()
             
@@ -473,27 +474,39 @@ def signup():
                 age_strings.append('< 22'.ljust(6))
                 age_strings.append('22-25'.ljust(6))
                 age_strings.append('> 25'.ljust(6))
-
-                ids = []
-                strings = []
+                age_strings.append('alle'.ljust(6))
+                ids_nonspecial = []
+                ids_special = []
+                strings_non_special = []
+                strings_special = []
                 for s in timeslots:
-                    ids.append(int(s.ID))
-                    women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '1').count()
-                    men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '0').count()
-                    stri = '&nbsp &nbsp '
-                    stri = stri + s.Date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
-                    stri = str(stri).ljust(50,' '[0:1]) + str(s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
-                    stri = stri + '&nbsp &nbsp '
-                    stri = stri + 'Altersgruppe: &nbsp' + age_strings[s.AgeRange]
-                    stri = stri + '&nbsp &nbsp # angemeldete Personen: &nbsp &nbsp  M: ' + str(men)
-                    stri = stri + '&nbsp &nbsp W: ' + str(women)
-                    strings.append(stri)
+                    if s.SpecialSlot == 1:
+                        ids_special.append(int(s.ID))
+                        women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '1').count()
+                        men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '0').count()
+                        stri = '&nbsp &nbsp &nbsp'
+                        stri = stri + s.Date.strftime("%a %d. %b %y") + '&nbsp &nbsp &nbsp'
+                        stri = str(stri).ljust(50,' '[0:1]) + str(s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                        stri = stri + '&nbsp &nbsp &nbsp'
+                        stri = stri + 'Altersgruppe: &nbsp' + age_strings[s.AgeRange]
+                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + str(men) + '/'+ str(s.NrCouples)
+                        stri = stri + '&nbsp &nbsp W: ' + str(women) + '/'+ str(s.NrCouples)
+                        strings_special.append(stri)
+                    elif s.SpecialSlot == 0:
+                        ids_nonspecial.append(int(s.ID))
+                        women = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '1').count()
+                        men = session.query(Participants).filter(Participants.AvailableSlot==s.ID, Participants.Confirmed=='1', Participants.Gender == '0').count()
+                        stri = '&nbsp &nbsp &nbsp'
+                        stri = stri + s.Date.strftime("%a %d. %b %y") + '&nbsp &nbsp &nbsp'
+                        stri = str(stri).ljust(50,' '[0:1]) + str(s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                        stri = stri + '&nbsp &nbsp &nbsp'
+                        stri = stri + 'Altersgruppe: &nbsp' + age_strings[s.AgeRange]
+                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + str(men) + '/'+ str(s.NrCouples)
+                        stri = stri + '&nbsp &nbsp W: ' + str(women) + '/'+ str(s.NrCouples)
+                        strings_non_special.append(stri)
                     
-                
-
-                form.availableslots.choices = [(ids[i], strings[i]) for i in range(0,len(timeslots))]
-                
-                #form.availableslots.choices = [(int(slot.ID), '&nbsp &nbsp ' + str(slot.Date.strftime("%A %d. %B %Y")) + '&nbsp &nbsp' + str(slot.StartTime)[:-3] + ' - ' + str(slot.EndTime)[:-3] + '&nbsp &nbsp &nbsp Altersgruppe: &nbsp' + age_strings[slot.AgeRange]) for slot in timeslots]                 
+                form.availableslots.choices = [(ids_nonspecial[i], strings_non_special[i]) for i in range(0,len(ids_nonspecial))]
+                form.availablespecialslots.choices = [(ids_special[i], strings_special[i]) for i in range(0,len(ids_special))]
                                                       
     except Exception as e:
         #session.rollback()
@@ -514,17 +527,29 @@ def signup():
             studysemester = str(request.form['studysemester'])
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
-            availableslots = int(request.form['availableslots'])
+            if event.SpecialSlots == 1:
+                availablespecialslots = request.form.getlist('availablespecialslots')
+            availableslots = request.form.getlist('availableslots')
             confirmed = 1
             present = 0
             payed = 0
 
+            slots = 0
+            if availableslots:
+                slots = int(availableslots[0])
+            elif availablespecialslots:
+                slots = int(availablespecialslots[0])
+            else:
+                message = 'Du hast kein passendes Datum ausgewählt! Bitte geh zurück und wähle ein dir passendes Datum aus.'
+                return render_template('error.html', message=message)
+            
             bday= datetime.strptime(birthday, '%d.%m.%Y')
-
             count = session.query(Participants).filter(Participants.EMail==email, Participants.EventID==eventid).count()
+            chosen_timeslot = session.query(TimeSlots).filter(TimeSlots.ID==int(slots)).first()
+            chosen_datetime =  str(chosen_timeslot.Date.strftime("%a %d. %b %y")) + '  ' + str(chosen_timeslot.StartTime)
 
             if count == 0:
-                new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, bday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=availableslots, confirmed=confirmed, present=present, payed=payed)
+                new_participant = Participants(timestamp, eventid, name, prename, email, mobile, address, bday, gender, course=studycourse, semester=studysemester, perfDate=perfectdate, fruit=fruit, aSlot=slots, confirmed=confirmed, present=present, payed=payed)
                 session.add(new_participant)
                 session.commit()
             else:
@@ -538,7 +563,8 @@ def signup():
 
         finally:
             session.close()
-        return render_template('success.html')
+        
+        return render_template('success.html', name=(prename + ' ' + name), mail=email, datetime=chosen_datetime)
     else:
         if session:
             session.close()

@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-<h1>Your registration was successful.</h1>
+<h2>Deine Anmeldung was erfolgreich, vielen Dank!</h2>
+<br>
+<p>Name:            {% if name %}{{ name }}{% endif %}</p>
+<p>Email:           {% if mail %}{{ mail }}{% endif %}</p>
+<p>Datum und Zeit:  {% if datetime %}{{ datetime }}{% endif %}</p>
+<br>
+<p>Bitte überprüfe deine oben aufgeführten Angaben (Name, Email, Datum und Zeit des ausgewählten Timeslots). Falls etwas nicht aufgelistet werden sollte oder sie fehlerhaft sind, bitte melde uns schnell per Mail was schiefgelaufen ist!
+<br><br>
+Das OK wird dir ein paar Tage vor dem Event eine Teilnahmebestätigung (oder bei zu vielen Anmeldungen eine Absage) sowie weitere Informationen per Mail zukommen lassen.
+Falls du bemerken solltest, dass du doch nicht an unserem Event teilnehmen kannst oder du sonst irgendwelche Fragen hast, bitte schreibe uns doch eine Mail.
+<br><br>
+Vielen Dank und bis bald!</p>
+<strong><i><u>speeddating@amiv.ethz.ch</u></i></strong>
+
 {% endblock %}

@@ -17,9 +17,9 @@
     <th>Name</th>
     <th>Year</th> 
     <th>Sem.</th>
-    <th>Special Slots</th>
-    <th>Signup Status</th>
+    <th>Special <br> Slots</th>
     <th>Active</th>
+    <th>Signup <br> Status</th>
     <th>
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_event') }}'">
 	<span class="glyphicon glyphicon-plus"></span>
@@ -45,17 +45,17 @@
       {% endif %}
     </td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
-      {% if e.SignupOpen %}
-         open
-      {% else %}
-         closed
-      {% endif %}
-    </td>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
       {% if e.Active %}
          active
       {% else %}
          -
+      {% endif %}
+    </td>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
+      {% if e.SignupOpen %}
+         open
+      {% else %}
+         closed
       {% endif %}
     </td>
     <td>
@@ -70,6 +70,7 @@
   {% else %}
   <tr>
     <td>No existing event!</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

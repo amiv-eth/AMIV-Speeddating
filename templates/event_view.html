@@ -11,10 +11,11 @@
   <tr>
     <th>ID</th>
     <th>Date</th>
-    <th>Start-Time</th>
-    <th>End-Time</th>
-    <th>Nr Couples</th>
-    <th>Age Range</th>
+    <th>Start <br> Time</th>
+    <th>End <br> Time</th>
+    <th>Nr <br> Couples</th>
+    <th>Age <br> Range</th>
+    <th>Special <br> Slot</th>
     <th>
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_timeslot', event_id = eid) }}'">
 	<span class="glyphicon glyphicon-plus"></span>
@@ -32,8 +33,15 @@
     <td> < 22 </td>
     {% elif s.AgeRange == 1 %}
     <td> 22-15 </td>
+    {% elif s.AgeRange == 2 %}
+    <td> > 25 </td>
     {% else %}
-       <td> > 25 </td>
+    <td> does not matter </td>
+    {% endif %}
+    {% if s.SpecialSlot == 0 %}
+    <td> - </td>
+    {% elif s.SpecialSlot == 1 %}
+    <td> {{ event.SpecialSlotsName }} </td>
     {% endif %}
     <td></td>
   </tr>
@@ -41,7 +49,8 @@
   </tr>
   {% else %}
   <tr>
-    <td>No existing event!</td>
+    <td>No existing timeslots!</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -49,7 +58,6 @@
     <td></td>
     <td></td>
   </tr>
-
   {% endfor %}
 </table>
 

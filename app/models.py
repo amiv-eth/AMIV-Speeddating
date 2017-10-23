@@ -53,15 +53,16 @@ class TimeSlots(db.Model):
     EndTime = db.Column(db.DateTime, unique=False)
     NrCouples = db.Column(db.Integer, primary_key=False)
     AgeRange = db.Column(db.Integer, primary_key=False)
+    SpecialSlot = db.Column(db.Boolean, unique=False)
 
-    def __init__(self, event_id, date, starttime, endtime, nrCouples, ageRange):
+    def __init__(self, event_id, date, starttime, endtime, nrCouples, ageRange, specialslot):
         self.EventID = event_id
         self.Date = date
         self.StartTime = starttime
         self.EndTime = endtime
         self.NrCouples = nrCouples
         self.AgeRange = ageRange
-
+        self.SpecialSlot = specialslot
 
 class Events(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
@@ -92,4 +93,3 @@ class Events(db.Model):
         self.CloseSignupTimestamp = close_signup_timestamp
         self.Active = active
         self.ParticipationFee = pfee
-        
