@@ -47,12 +47,20 @@ def index():
     session = Session()
     try:
         event = session.query(Events).filter(Events.Active=='1').first()
+        #close_time_str = str(close_datetime.time.st)[:-3]
         if event != None:
             eventid = event.ID
             timeslots = session.query(TimeSlots).filter(TimeSlots.EventID==eventid).all()
             dates = list(set(list(slot.Date for slot in timeslots)))
+            close_datetime = event.CloseSignupTimestamp
+            close_date_str = str(close_datetime.strftime("%d. %B %Y um %H:%M Uhr"))
+            place = event.Place
+            cost = event.ParticipationFee
         else:
             dates = None
+            close_date_str = None
+            place = None
+            cost = None
         dates_string = ''
         if dates != None:
             for date in dates:
@@ -64,7 +72,7 @@ def index():
         return render_template('error.html')
     finally:
         session.close()
-    return render_template('index.html', event=event, dates=dates_string)
+    return render_template('index.html', event=event, dates=dates_string, place=place, cost=cost, signup_close_date=close_date_str)
 
 
 @app.route('/home')
@@ -257,7 +265,7 @@ def create_event():
 
         session = Session()
         try:
-            event = Events(name, year, specialslot, specialslotname, specialslotdescription, semester, timestamp, signup_open, active, participationfee, opensignuptimestamp, closesignuptimestamp)
+            event = Events(name, year, specialslot, specialslotname, specialslotdescription, place, semester, timestamp, signup_open, active, participationfee, opensignuptimestamp, closesignuptimestamp)
             session.add(event)
             session.commit()
         except Exception as e:

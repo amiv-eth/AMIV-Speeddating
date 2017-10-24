@@ -80,12 +80,13 @@ class Events(db.Model):
     Active = db.Column(db.Boolean, unique=False)
     ParticipationFee = db.Column(db.String(80), unique=False)
 
-    def __init__(self, name, year, specslot, specslotname, sepcslotdescription, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
+    def __init__(self, name, year, specslot, specslotname, sepcslotdescription, place, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
         self.Name = name
         self.Year = year
         self.SpecialSlots = specslot
         self.SpecialSlotsName = specslotname
         self.SpecialSlotsDescription = sepcslotdescription
+        self.Place = place
         self.Semester = semester
         self.CreationTimestamp = timestamp
         self.SignupOpen = signup_open
