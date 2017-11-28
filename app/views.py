@@ -4,13 +4,8 @@ from app.models import Events, TimeSlots, Participants
 from app.forms import MultiCheckboxField, LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
 from app.help_queries import get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
-from app import app, db
+from app import app, db, login_manager
 from datetime import datetime
-
-
-# Create flask-login
-login_manager = LoginManager()
-login_manager.init_app(app)
 
 
 class User(UserMixin):
