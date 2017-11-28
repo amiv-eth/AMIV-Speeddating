@@ -1,5 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from app import db
 
 class Participants(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
