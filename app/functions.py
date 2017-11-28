@@ -4,27 +4,29 @@ import datetime
 from datetime import date
 import io
 
+
 def event_change_signup_status(session, event_id, open):
     try:
-        event = session.query(Events).filter_by(ID = event_id).first()
-        
+        event = Events.query.filter_by(ID=event_id).first()
         if event.Active == 1:
             if open == 1:
-                event.SignupOpen= int(open)
+                event.SignupOpen = int(open)
             else:
-                event.SignupOpen= int(open)
+                event.SignupOpen = int(open)
         else:
             if open == 0:
-                event.SignupOpen= int(open)
+                event.SignupOpen = int(open)
         session.commit()
         return True
     except Exception as e:
         print(e)
         return False
 
+
 def event_change_active_status(session, event_id, active):
     try:
-        nr_active_events = session.query(Events).filter(Events.Active == active).count()
+        nr_active_events = session.query(Events).filter(
+            Events.Active == active).count()
 
         if active == 1:
             if nr_active_events > 0:
@@ -32,7 +34,7 @@ def event_change_active_status(session, event_id, active):
                 for e in events:
                     event_change_signup_status(session, e.ID, 0)
                     e.Active = 0
-                    
+
             event = session.query(Events).filter(Events.ID == event_id).first()
             event.Active = int(active)
 
@@ -49,10 +51,9 @@ def event_change_active_status(session, event_id, active):
         return False
 
 
-    
 def event_change_register_status(session, p_id, register):
     try:
-        participant = session.query(Participants).filter_by(ID = p_id).first()
+        participant = session.query(Participants).filter_by(ID=p_id).first()
         if participant.Confirmed == 0:
             participant.Confirmed = 1
         else:
@@ -63,10 +64,12 @@ def event_change_register_status(session, p_id, register):
         print(e)
         return False
 
+
 def change_present(session, slot_id, participant_id):
     try:
-        participant = session.query(Participants).filter_by(ID = participant_id).first()
-        
+        participant = session.query(Participants).filter_by(
+            ID=participant_id).first()
+
         if participant.Present == 0:
             participant.Present = int(1)
         else:
@@ -81,7 +84,8 @@ def change_present(session, slot_id, participant_id):
 
 def change_payed(session, slot_id, participant_id):
     try:
-        participant = session.query(Participants).filter_by(ID = participant_id).first()
+        participant = session.query(Participants).filter_by(
+            ID=participant_id).first()
 
         if participant.Present == 1:
             if participant.Payed == 0:
@@ -100,8 +104,9 @@ def change_payed(session, slot_id, participant_id):
 
 def change_datenr(session, participant_id, datenr):
     try:
-        participant = session.query(Participants).filter_by(ID = participant_id).first()
-      
+        participant = session.query(Participants).filter_by(
+            ID=participant_id).first()
+
         participant.DateNr = int(datenr)
 
         session.commit()
@@ -116,9 +121,11 @@ def export(women, men, slot):
         output = io.StringIO()
         res = csv.writer(output, delimiter=',')
         for w in women:
-            res.writerow([str(w.DateNr)] + ['f'] + [w.Prename] + [w.Name] + [str(get_age(w.Birthday))] + [w.MobileNr] + [w.EMail])
+            res.writerow([str(w.DateNr)] + ['f'] + [w.Prename] + [w.Name] +
+                         [str(get_age(w.Birthday))] + [w.MobileNr] + [w.EMail])
         for m in men:
-            res.writerow([str(m.DateNr)] + ['m'] + [m.Prename] + [m.Name] + [str(get_age(m.Birthday))] + [m.MobileNr] + [m.EMail])
+            res.writerow([str(m.DateNr)] + ['m'] + [m.Prename] + [m.Name] +
+                         [str(get_age(m.Birthday))] + [m.MobileNr] + [m.EMail])
 
         result = output.getvalue()
         output.close()
@@ -126,8 +133,9 @@ def export(women, men, slot):
     except Exception as e:
         print(e)
         return ''
-    
+
 
 def get_age(born):
     today = date.today()
-    return today.year - born.year - ((today.month, today.day) < (born.month, born.day))
+    return today.year - born.year - ((today.month, today.day) <
+                                     (born.month, born.day))

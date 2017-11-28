@@ -17,7 +17,7 @@
     <th>Age <br> Range</th>
     <th>Special <br> Slot</th>
     <th>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_timeslot', event_id = eid) }}'">
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_timeslot', event_id = event.ID) }}'">
 	<span class="glyphicon glyphicon-plus"></span>
       </button>
     </th>
@@ -61,6 +61,6 @@
   {% endfor %}
 </table>
 
-<button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = eid) }}'"> See all Participants </button>
+<button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = event.ID) }}'"> See all Participants </button>
 
 {% endblock %}
