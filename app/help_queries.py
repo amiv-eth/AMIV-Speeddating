@@ -52,4 +52,10 @@ def get_string_mails_of_list(session, slot, plist):
         mail = mail + p.EMail + "; "
     return mail[:-2]
 
-
+def get_string_of_date_list(date_list):
+    dates_string = ''
+    if date_list != None:
+        for date in date_list:
+            dates_string = dates_string + str(date.strftime("%d. %B, "))
+        dates_string = dates_string[:-2]
+    return dates_string

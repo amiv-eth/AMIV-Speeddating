@@ -2,14 +2,14 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 from flask import Flask, render_template, request, redirect, url_for, flash
 from app.models import Events, TimeSlots, Participants
 from app.forms import MultiCheckboxField, LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
-from app.help_queries import get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
+from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager
 from datetime import datetime
+from app.users import User, check_credentials
 
-
-class User(UserMixin):
-    pass
+# class User(UserMixin):
+#     pass
 
 
 @login_manager.user_loader
@@ -27,17 +27,12 @@ def user_loader(username):
 def index():
     try:
         event = Events.query.filter(Events.Active == '1').first()
+        dates = None
         if event != None:
             timeslots = TimeSlots.query.filter(
                 TimeSlots.EventID == event.ID).all()
             dates = list(set(list(slot.Date for slot in timeslots)))
-        else:
-            dates = None
-        dates_string = ''
-        if dates != None:
-            for date in dates:
-                dates_string = dates_string + str(date.strftime("%d. %B, "))
-            dates_string = dates_string[:-2]
+        dates_string = get_string_of_date_list(dates)
     except Exception as e:
         print(e)
         return render_template('error.html')
@@ -50,13 +45,14 @@ def login():
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
         fusername = request.form['username']
-        if fusername in app.config['USERS'].keys():
-            if app.config['USERS'][fusername] == request.form['password']:
-                user = User()
-                user.id = fusername
-                login_user(user)
-                return redirect(url_for('admin'))
-            # return 'Bad login' TODO: return login error by validator wtform?
+        fpassword = request.form['password']
+        if check_credentials(fusername, fpassword) == True:
+            user = User()
+            user.id = fusername
+            login_user(user)
+            return redirect(url_for('admin'))
+        else:
+            render_template('login.html', form=form)
     return render_template('login.html', form=form)
 
 
