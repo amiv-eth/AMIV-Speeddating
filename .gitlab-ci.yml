@@ -17,7 +17,7 @@ deploy:
     - rsync -rav -e ssh --exclude='.git/' --exclude='.gitlab-ci.yml' --delete-excluded ./ speeddating@login.ee.ethz.ch:~/app_tmp
     - ssh -p22 speeddating@login.ee.ethz.ch "cp ~/app/app/config.py ~/app_tmp/app/"
     - ssh -p22 speeddating@login.ee.ethz.ch "mv ~/app ~/app_old && mv ~/app_tmp ~/app && chmod -R 700 ~/app"
-    - ssh -p22 speeddating@login.ee.ethz.ch "~/.cron/uwsgiStop.sh"
+    - ssh -p22 speeddating@login.ee.ethz.ch "touch ~/app-touch-reload.gg"
     - ssh -p22 speeddating@login.ee.ethz.ch "rm -rf ~/app_old"
   environment:
     name: production
