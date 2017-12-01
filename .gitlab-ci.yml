@@ -19,8 +19,6 @@ deploy:
     - ssh -p22 speeddating@login.ee.ethz.ch "mv ~/app ~/app_old && mv ~/app_tmp ~/app && chmod -R 700 ~/app"
     - ssh -p22 speeddating@login.ee.ethz.ch "~/.cron/uwsgiStop.sh"
     - ssh -p22 speeddating@login.ee.ethz.ch "rm -rf ~/app_old"
-  only:
-    - master
   environment:
     name: production
     url: https://speeddating.ethz.ch
