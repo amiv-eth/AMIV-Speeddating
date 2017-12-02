@@ -1,4 +1,5 @@
 from app import db
+from flask_login import UserMixin
 
 
 class Participants(db.Model):
@@ -131,3 +132,13 @@ class Events(db.Model):
 
     def get_string_close_signup_timestamp(self, format):
         return str(self.CloseSignupTimestamp.strftime(format))
+
+
+class AdminUser(db.Model, UserMixin):
+    """ Represents an admin user """
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(64), unique=True)
+    password = db.Column(db.String(60), unique=False)
+
+    def get_id(self):
+        return self.id

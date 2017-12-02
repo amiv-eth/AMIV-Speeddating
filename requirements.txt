@@ -6,3 +6,4 @@ flask_login
 wtforms
 wtforms_components
 pylint
+flask_bcrypt
