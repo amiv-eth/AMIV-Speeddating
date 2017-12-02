@@ -2,23 +2,27 @@
 All forms are in this file.
 """
 from datetime import datetime
-from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField, DateTimeField, validators, HiddenField, widgets, SelectMultipleField
+from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField,\
+                    DateTimeField, validators, HiddenField, widgets, SelectMultipleField
 from wtforms.validators import ValidationError
 from wtforms_components import TimeField
 from flask_wtf import FlaskForm
 
 
 class MultiCheckboxField(SelectMultipleField):
+    """ Field containing multiple checkboxes. """
     widget = widgets.ListWidget(prefix_label=False)
     option_widget = widgets.CheckboxInput()
 
 
 class LoginForm(FlaskForm):
+    """ Login form """
     username = StringField('Username', [validators.DataRequired()])
     password = PasswordField('Passwort', [validators.DataRequired()])
 
 
 class CreateEventForm(FlaskForm):
+    """ For admins to create an event """
     name = StringField('Name', [validators.DataRequired()])
     year = IntegerField('Jahr', [
         validators.DataRequired(),
@@ -49,6 +53,7 @@ class CreateEventForm(FlaskForm):
 
 
 class CreateTimeSlotForm(FlaskForm):
+    """ For admins to create a new time slot """
     date = DateField('Datum', [validators.DataRequired()], format='%Y-%m-%d')
     starttime = TimeField('Start-Zeit', [validators.DataRequired()])
     endtime = TimeField('End-Zeit', [validators.DataRequired()])
@@ -66,6 +71,7 @@ class CreateTimeSlotForm(FlaskForm):
 
 
 class SignupForm(FlaskForm):
+    """ For participants to sign up """
     name = StringField('Nachname (*)', [validators.DataRequired()])
     prename = StringField('Vorname (*)', [validators.DataRequired()])
     email = TextField(
@@ -88,15 +94,21 @@ class SignupForm(FlaskForm):
     fruit = StringField('Lieblingsfrucht?', [validators.Optional()])
 
     availableslots = MultiCheckboxField(
-        'Verfügbare Daten (*)<br> <span class="notbold">(Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze)</span>',
+        'Verfügbare Daten (*)<br> <span class="notbold">(Bitte achte auf die Altersgruppe und die\
+        Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze)\
+        </span>',
         validators=[validators.Optional()],
         coerce=int)
     availablespecialslots = MultiCheckboxField(
-        'Verfügbare Daten <span class="text-danger">Spezial Speeddating</span> (siehe Beschreibung auf der Startseite) (*) <br> <span class="notbold">(Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze))</span>',
+        'Verfügbare Daten <span class="text-danger">Spezial Speeddating</span> (siehe Beschreibung\
+        auf der Startseite) (*) <br> <span class="notbold">(Bitte achte auf die Altersgruppe und\
+        die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare\
+        Plätze))</span>',
         validators=[validators.Optional()],
         coerce=int)
 
     def validate_availableslots(form, field):
+        """ Makes sure that at exactly one event is selected. """
         if form.availableslots.data and form.availablespecialslots.data:
             raise ValidationError(
                 'Du kannst dich für genau einen Termin anmelden')
@@ -109,6 +121,7 @@ class SignupForm(FlaskForm):
                 'Du musst dich für genau einen Termin anmelden')
 
     def validate_availablespecialslots(form, field):
+        """ Makes sure that at exactly one event is selected. """
         if form.availableslots.data and form.availablespecialslots.data:
             raise ValidationError(
                 'Du kannst dich für genau einen Termin anmelden')
@@ -122,19 +135,20 @@ class SignupForm(FlaskForm):
                 'Du musst dich für genau einen Termin anmelden')
 
     def validate_birthday(form, field):
+        """ Make sure the birthday field is a valid date """
         try:
             datetime.strptime(field.data, '%d.%m.%Y')
         except:
             raise ValidationError("Falsches Datum Format: DD.MM.YYYY")
 
     def validate_on_submit(form, field):
-        if (not form.availableslots.data
-            ) and not (form.availablespecialslots.data):
+        if (not form.availableslots.data) and not form.availablespecialslots.data:
             raise ValidationError(
                 'Du musst dich für genau einen Termin anmelden')
 
 
-class ChangeDateNr(FlaskForm):
+class DateNrChangeForm(FlaskForm):
+    """ Update the date number """
     datenr = IntegerField(
         'DateNr (Unique pro Geschlecht!)',
         [validators.DataRequired(),

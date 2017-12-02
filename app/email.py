@@ -27,8 +27,8 @@ def send_post_signup_email(participant):
                                 confirm_token=participant.confirm_token,
                                 _external=True),
         'cancel_link': url_for('cancel_participation',
-                                cancel_token=participant.cancel_token,
-                                _external=True),
+                               cancel_token=participant.cancel_token,
+                               _external=True),
     }
 
     msg = Message(

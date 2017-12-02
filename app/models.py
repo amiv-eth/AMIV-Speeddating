@@ -2,7 +2,7 @@
 Contains model declarations for sqlalchemy.
 """
 from app import db
-from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime
+from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time
 from flask_login import UserMixin
 
 class Participants(db.Model):
@@ -77,8 +77,8 @@ class TimeSlots(db.Model):
     id = Column(Integer, primary_key=True)
     event_id = Column(Integer, unique=False)
     date = Column(Date, unique=False)
-    start_time = Column(DateTime, unique=False)
-    end_time = Column(DateTime, unique=False)
+    start_time = Column(Time, unique=False)
+    end_time = Column(Time, unique=False)
     nr_couples = Column(Integer, primary_key=False)
     age_range = Column(Integer, primary_key=False)
     special_slot = Column(Boolean, unique=False)

@@ -26,8 +26,8 @@
   <tr onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">
     <td>{{ s.id }}</td>
     <td>{{ s.date.strftime("%A %d. %B %Y") }}</td>
-    <td>{{ s.start_time }}</td>
-    <td>{{ s.end_time }}</td>
+    <td>{{ s.start_time.strftime('%H:%M') }}</td>
+    <td>{{ s.end_time.strftime('%H:%M') }}</td>
     <td>{{ s.nr_couples }}</td>
     {% if s.age_range == 0 %}
     <td> < 22 </td>

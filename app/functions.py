@@ -1,11 +1,14 @@
-from app.models import Participants, TimeSlots, Events
+"""
+Contains admin functions and helpers
+"""
 import csv
-import datetime
-from datetime import date
 import io
+from datetime import date
+from app.models import Participants, Events
 
 
 def event_change_signup_status(session, event_id, open):
+    """ Open / close an event's signup window """
     try:
         event = Events.query.filter_by(id=event_id).first()
         if event.active == 1:
@@ -24,6 +27,7 @@ def event_change_signup_status(session, event_id, open):
 
 
 def event_change_active_status(session, event_id, active):
+    """ Set an event to active / inactive """
     try:
         nr_active_events = session.query(Events).filter(
             Events.active == active).count()
@@ -51,7 +55,8 @@ def event_change_active_status(session, event_id, active):
         return False
 
 
-def event_change_register_status(session, p_id, register):
+def event_change_register_status(session, p_id):
+    """ Confirm / unconfirm a participant's registration """
     try:
         participant = session.query(Participants).filter_by(id=p_id).first()
         if participant.confirmed == 0:
@@ -65,7 +70,8 @@ def event_change_register_status(session, p_id, register):
         return False
 
 
-def change_present(session, slot_id, participant_id):
+def change_present(session, participant_id):
+    """ Mark a participant as present / absent """
     try:
         participant = session.query(Participants).filter_by(
             id=participant_id).first()
@@ -82,7 +88,8 @@ def change_present(session, slot_id, participant_id):
         return False
 
 
-def change_payed(session, slot_id, participant_id):
+def change_payed(session, participant_id):
+    """ Set a participant's payment status """
     try:
         participant = session.query(Participants).filter_by(
             id=participant_id).first()
@@ -103,6 +110,7 @@ def change_payed(session, slot_id, participant_id):
 
 
 def change_datenr(session, participant_id, datenr):
+    """ Change a participant's date number """
     try:
         participant = session.query(Participants).filter_by(
             id=participant_id).first()
@@ -117,6 +125,7 @@ def change_datenr(session, participant_id, datenr):
 
 
 def export(women, men, slot):
+    """ Export a slot's participant list as CSV """
     try:
         output = io.StringIO()
         res = csv.writer(output, delimiter=',')
@@ -136,6 +145,7 @@ def export(women, men, slot):
 
 
 def get_age(born):
+    """ Calculate age given the birth date """
     today = date.today()
     return today.year - born.year - ((today.month, today.day) <
                                      (born.month, born.day))
