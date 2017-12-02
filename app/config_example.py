@@ -13,3 +13,5 @@ MAIL_SERVER = 'smtp.ee.ethz.ch'
 MAIL_PORT = 587
 MAIL_USE_TLS = True
 MAIL_DEFAULT_SENDER = 'speeddating@amiv.ethz.ch'
+MAIL_USERNAME = ''
+MAIL_PASSWORD = ''
