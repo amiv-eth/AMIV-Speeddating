@@ -1,31 +1,32 @@
-from app import db
+from app.db import Model
+from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime
 from flask_login import UserMixin
 
-
-class Participants(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    DefSlot = db.Column(db.Integer, primary_key=False)
-    AvailableSlot = db.Column(db.String(50), primary_key=False)
-    EventID = db.Column(db.Integer, unique=False)
-    Name = db.Column(db.String(80), unique=False)
-    Prename = db.Column(db.String(80), unique=False)
-    EMail = db.Column(db.String(120), unique=True)
-    MobileNr = db.Column(db.String(20), unique=False)
-    Address = db.Column(db.String(200), unique=False)
-    Birthday = db.Column(db.Date, unique=False)
-    Gender = db.Column(db.Integer, unique=False)
-    StudyCourse = db.Column(db.String(80), unique=False)
-    StudySemester = db.Column(db.String(80), unique=False)
-    PerfectDate = db.Column(db.String(300), unique=False)
-    Fruit = db.Column(db.String(300), unique=False)
-    CreationTimestamp = db.Column(db.DateTime, unique=False)
-    Confirmed = db.Column(db.Integer, unique=False)
-    Present = db.Column(db.Integer, unique=False)
-    Payed = db.Column(db.Integer, unique=False)
-    DateNr = db.Column(db.Integer, unique=False)
-    ConfirmToken = db.Column(db.String(64), unique=True)
-    EditToken = db.Column(db.String(64), unique=True)
-    CancelToken = db.Column(db.String(64), unique=True)
+class Participants(Model):
+    """Models a Participant"""
+    ID = Column(Integer, primary_key=True)
+    DefSlot = Column(Integer, primary_key=False)
+    AvailableSlot = Column(String(50), primary_key=False)
+    EventId = Column(Integer, unique=False)
+    Name = Column(String(80), unique=False)
+    Prename = Column(String(80), unique=False)
+    Email = Column(String(120), unique=True)
+    MobileNr = Column(String(20), unique=False)
+    Address = Column(String(200), unique=False)
+    Birthday = Column(Date, unique=False)
+    Gender = Column(Integer, unique=False)
+    StudyCourse = Column(String(80), unique=False)
+    StudySemester = Column(String(80), unique=False)
+    PerfectDate = Column(String(300), unique=False)
+    Fruit = Column(String(300), unique=False)
+    CreationTimestamp = Column(DateTime, unique=False)
+    Confirmed = Column(Integer, unique=False)
+    Present = Column(Integer, unique=False)
+    Payed = Column(Integer, unique=False)
+    DateNr = Column(Integer, unique=False)
+    ConfirmToken = Column(String(64), unique=True)
+    EditToken = Column(String(64), unique=True)
+    CancelToken = Column(String(64), unique=True)
 
     def __init__(self,
                  timestamp,
@@ -68,15 +69,15 @@ class Participants(db.Model):
         self.DateNr = datenr
 
 
-class TimeSlots(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    EventID = db.Column(db.Integer, unique=False)
-    Date = db.Column(db.Date, unique=False)
-    StartTime = db.Column(db.DateTime, unique=False)
-    EndTime = db.Column(db.DateTime, unique=False)
-    NrCouples = db.Column(db.Integer, primary_key=False)
-    AgeRange = db.Column(db.Integer, primary_key=False)
-    SpecialSlot = db.Column(db.Boolean, unique=False)
+class TimeSlots(Model):
+    ID = Column(Integer, primary_key=True)
+    EventID = Column(Integer, unique=False)
+    Date = Column(Date, unique=False)
+    StartTime = Column(DateTime, unique=False)
+    EndTime = Column(DateTime, unique=False)
+    NrCouples = Column(Integer, primary_key=False)
+    AgeRange = Column(Integer, primary_key=False)
+    SpecialSlot = Column(Boolean, unique=False)
 
     def __init__(self, event_id, date, starttime, endtime, nrCouples, ageRange,
                  specialslot):
@@ -89,21 +90,21 @@ class TimeSlots(db.Model):
         self.SpecialSlot = specialslot
 
 
-class Events(db.Model):
-    ID = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String(80), unique=False)
-    Year = db.Column(db.Date, unique=False)
-    SpecialSlots = db.Column(db.Boolean, unique=False)
-    SpecialSlotsName = db.Column(db.Text, unique=False)
-    SpecialSlotsDescription = db.Column(db.Text, unique=False)
-    Semester = db.Column(db.Boolean, unique=False)
-    CreationTimestamp = db.Column(db.DateTime, unique=False)
-    SignupOpen = db.Column(db.Boolean, unique=False)
-    OpenSignupTimestamp = db.Column(db.DateTime, unique=False)
-    CloseSignupTimestamp = db.Column(db.DateTime, unique=False)
-    Place = db.Column(db.String(80), unique=False)
-    Active = db.Column(db.Boolean, unique=False)
-    ParticipationFee = db.Column(db.String(80), unique=False)
+class Events(Model):
+    ID = Column(Integer, primary_key=True)
+    Name = Column(String(80), unique=False)
+    Year = Column(Date, unique=False)
+    SpecialSlots = Column(Boolean, unique=False)
+    SpecialSlotsName = Column(Text, unique=False)
+    SpecialSlotsDescription = Column(Text, unique=False)
+    Semester = Column(Boolean, unique=False)
+    CreationTimestamp = Column(DateTime, unique=False)
+    SignupOpen = Column(Boolean, unique=False)
+    OpenSignupTimestamp = Column(DateTime, unique=False)
+    CloseSignupTimestamp = Column(DateTime, unique=False)
+    Place = Column(String(80), unique=False)
+    Active = Column(Boolean, unique=False)
+    ParticipationFee = Column(String(80), unique=False)
 
     def __init__(self,
                  name,
@@ -137,11 +138,11 @@ class Events(db.Model):
         return str(self.CloseSignupTimestamp.strftime(format))
 
 
-class AdminUser(db.Model, UserMixin):
+class AdminUser(Model, UserMixin):
     """ Represents an admin user """
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True)
-    password = db.Column(db.String(60), unique=False)
+    id = Column(Integer, primary_key=True)
+    username = Column(String(64), unique=True)
+    password = Column(String(60), unique=False)
 
     def get_id(self):
         return self.id
