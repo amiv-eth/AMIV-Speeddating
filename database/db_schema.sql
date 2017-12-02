@@ -5,6 +5,18 @@ SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 SET sql_mode = 'NO_AUTO_VALUE_ON_ZERO';
 
+SET NAMES utf8mb4;
+
+DROP TABLE IF EXISTS `admin_user`;
+CREATE TABLE `admin_user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(64) DEFAULT NULL,
+  `password` varchar(60) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
@@ -67,4 +79,4 @@ CREATE TABLE `time_slots` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
--- 2017-12-01 22:55:04
+-- 2017-12-02 09:43:19
