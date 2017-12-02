@@ -20,63 +20,68 @@ CREATE TABLE `admin_user` (
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `Name` tinytext,
-  `Semester` tinyint(1) DEFAULT NULL COMMENT '0: FS, 1: HS',
-  `ParticipationFee` tinytext,
-  `Place` tinytext,
-  `Year` year(4) DEFAULT NULL,
-  `SpecialSlots` tinyint(1) DEFAULT NULL COMMENT '0: no special slots, 1 special slots',
+  `Name` varchar(80) DEFAULT NULL,
+  `Year` date DEFAULT NULL,
+  `SpecialSlots` tinyint(1) DEFAULT NULL,
   `SpecialSlotsName` text,
   `SpecialSlotsDescription` text,
-  `CreationTimestamp` timestamp NULL DEFAULT NULL,
-  `SignupOpen` tinyint(1) DEFAULT NULL COMMENT '0: closed, 1: open',
+  `Semester` tinyint(1) DEFAULT NULL,
+  `CreationTimestamp` datetime DEFAULT NULL,
+  `SignupOpen` tinyint(1) DEFAULT NULL,
   `OpenSignupTimestamp` datetime DEFAULT NULL,
   `CloseSignupTimestamp` datetime DEFAULT NULL,
-  `Active` tinyint(1) DEFAULT NULL COMMENT '0: inactive, 1: active',
+  `Place` varchar(80) DEFAULT NULL,
+  `Active` tinyint(1) DEFAULT NULL,
+  `ParticipationFee` varchar(80) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP TABLE IF EXISTS `participants`;
 CREATE TABLE `participants` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `EventID` int(11) DEFAULT NULL,
-  `CreationTimestamp` timestamp NULL DEFAULT NULL,
   `DefSlot` int(11) DEFAULT NULL,
-  `AvailableSlot` tinytext,
-  `Name` tinytext,
-  `Prename` tinytext,
-  `EMail` tinytext,
-  `MobileNr` tinytext,
-  `Address` text,
+  `AvailableSlot` varchar(50) DEFAULT NULL,
+  `EventID` int(11) DEFAULT NULL,
+  `Name` varchar(80) DEFAULT NULL,
+  `Prename` varchar(80) DEFAULT NULL,
+  `EMail` varchar(120) DEFAULT NULL,
+  `MobileNr` varchar(20) DEFAULT NULL,
+  `Address` varchar(200) DEFAULT NULL,
   `Birthday` date DEFAULT NULL,
-  `Gender` tinyint(1) DEFAULT NULL,
-  `StudyCourse` tinytext,
-  `StudySemester` tinytext,
-  `PerfectDate` text,
-  `Fruit` text,
-  `Confirmed` int(11) DEFAULT '1',
-  `Present` int(11) DEFAULT '0',
-  `Payed` int(11) DEFAULT '0',
-  `DateNr` int(20) DEFAULT '0',
+  `Gender` int(11) DEFAULT NULL,
+  `StudyCourse` varchar(80) DEFAULT NULL,
+  `StudySemester` varchar(80) DEFAULT NULL,
+  `PerfectDate` varchar(300) DEFAULT NULL,
+  `Fruit` varchar(300) DEFAULT NULL,
+  `CreationTimestamp` datetime DEFAULT NULL,
+  `Confirmed` int(11) DEFAULT NULL,
+  `Present` int(11) DEFAULT NULL,
+  `Payed` int(11) DEFAULT NULL,
+  `DateNr` int(11) DEFAULT NULL,
+  `ConfirmToken` varchar(64) DEFAULT NULL,
+  `EditToken` varchar(64) DEFAULT NULL,
+  `CancelToken` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`ID`),
-  KEY `DefSlot` (`DefSlot`),
-  CONSTRAINT `participants_ibfk_1` FOREIGN KEY (`DefSlot`) REFERENCES `time_slots` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  UNIQUE KEY `EMail` (`EMail`),
+  UNIQUE KEY `ConfirmToken` (`ConfirmToken`),
+  UNIQUE KEY `EditToken` (`EditToken`),
+  UNIQUE KEY `CancelToken` (`CancelToken`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 DROP TABLE IF EXISTS `time_slots`;
 CREATE TABLE `time_slots` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
-  `EventID` int(11) NOT NULL,
+  `EventID` int(11) DEFAULT NULL,
+  `Date` date DEFAULT NULL,
+  `StartTime` datetime DEFAULT NULL,
+  `EndTime` datetime DEFAULT NULL,
+  `NrCouples` int(11) DEFAULT NULL,
+  `AgeRange` int(11) DEFAULT NULL,
   `SpecialSlot` tinyint(1) DEFAULT NULL,
-  `Date` date NOT NULL,
-  `StartTime` time NOT NULL,
-  `EndTime` time NOT NULL,
-  `NrCouples` int(11) NOT NULL,
-  `AgeRange` int(2) NOT NULL COMMENT '0: 22; 1:22-25; 2: 25, 3:unknown',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
--- 2017-12-02 09:43:19
+-- 2017-12-02 16:33:57
