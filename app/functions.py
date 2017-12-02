@@ -7,15 +7,15 @@ import io
 
 def event_change_signup_status(session, event_id, open):
     try:
-        event = Events.query.filter_by(ID=event_id).first()
-        if event.Active == 1:
+        event = Events.query.filter_by(id=event_id).first()
+        if event.active == 1:
             if open == 1:
-                event.SignupOpen = int(open)
+                event.signup_open = int(open)
             else:
-                event.SignupOpen = int(open)
+                event.signup_open = int(open)
         else:
             if open == 0:
-                event.SignupOpen = int(open)
+                event.signup_open = int(open)
         session.commit()
         return True
     except Exception as e:
@@ -26,22 +26,22 @@ def event_change_signup_status(session, event_id, open):
 def event_change_active_status(session, event_id, active):
     try:
         nr_active_events = session.query(Events).filter(
-            Events.Active == active).count()
+            Events.active == active).count()
 
         if active == 1:
             if nr_active_events > 0:
                 events = session.query(Events).all()
                 for e in events:
-                    event_change_signup_status(session, e.ID, 0)
-                    e.Active = 0
+                    event_change_signup_status(session, e.id, 0)
+                    e.active = 0
 
-            event = session.query(Events).filter(Events.ID == event_id).first()
-            event.Active = int(active)
+            event = session.query(Events).filter(Events.id == event_id).first()
+            event.active = int(active)
 
         if active == 0:
             event_change_signup_status(session, event_id, 0)
-            event = session.query(Events).filter(Events.ID == event_id).first()
-            event.Active = int(active)
+            event = session.query(Events).filter(Events.id == event_id).first()
+            event.active = int(active)
 
         session.commit()
         return True
@@ -53,11 +53,11 @@ def event_change_active_status(session, event_id, active):
 
 def event_change_register_status(session, p_id, register):
     try:
-        participant = session.query(Participants).filter_by(ID=p_id).first()
-        if participant.Confirmed == 0:
-            participant.Confirmed = 1
+        participant = session.query(Participants).filter_by(id=p_id).first()
+        if participant.confirmed == 0:
+            participant.confirmed = 1
         else:
-            participant.Confirmed = 0
+            participant.confirmed = 0
         session.commit()
         return True
     except Exception as e:
@@ -68,12 +68,12 @@ def event_change_register_status(session, p_id, register):
 def change_present(session, slot_id, participant_id):
     try:
         participant = session.query(Participants).filter_by(
-            ID=participant_id).first()
+            id=participant_id).first()
 
-        if participant.Present == 0:
-            participant.Present = int(1)
+        if participant.present == 0:
+            participant.present = int(1)
         else:
-            participant.Present = int(0)
+            participant.present = int(0)
 
         session.commit()
         return True
@@ -85,13 +85,13 @@ def change_present(session, slot_id, participant_id):
 def change_payed(session, slot_id, participant_id):
     try:
         participant = session.query(Participants).filter_by(
-            ID=participant_id).first()
+            id=participant_id).first()
 
-        if participant.Present == 1:
-            if participant.Payed == 0:
-                participant.Payed = int(1)
+        if participant.present == 1:
+            if participant.payed == 0:
+                participant.payed = int(1)
             else:
-                participant.Payed = int(0)
+                participant.payed = int(0)
         else:
             return False
 
@@ -105,9 +105,9 @@ def change_payed(session, slot_id, participant_id):
 def change_datenr(session, participant_id, datenr):
     try:
         participant = session.query(Participants).filter_by(
-            ID=participant_id).first()
+            id=participant_id).first()
 
-        participant.DateNr = int(datenr)
+        participant.date_nr = int(datenr)
 
         session.commit()
         return True
@@ -121,11 +121,11 @@ def export(women, men, slot):
         output = io.StringIO()
         res = csv.writer(output, delimiter=',')
         for w in women:
-            res.writerow([str(w.DateNr)] + ['f'] + [w.Prename] + [w.Name] +
-                         [str(get_age(w.Birthday))] + [w.MobileNr] + [w.EMail])
+            res.writerow([str(w.date_nr)] + ['f'] + [w.prename] + [w.name] +
+                         [str(get_age(w.birthday))] + [w.mobile_nr] + [w.email])
         for m in men:
-            res.writerow([str(m.DateNr)] + ['m'] + [m.Prename] + [m.Name] +
-                         [str(get_age(m.Birthday))] + [m.MobileNr] + [m.EMail])
+            res.writerow([str(m.date_nr)] + ['m'] + [m.prename] + [m.name] +
+                         [str(get_age(m.birthday))] + [m.mobile_nr] + [m.email])
 
         result = output.getvalue()
         output.close()

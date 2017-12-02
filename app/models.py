@@ -7,29 +7,29 @@ from flask_login import UserMixin
 
 class Participants(db.Model):
     """Models a Participant"""
-    ID = Column(Integer, primary_key=True)
-    DefSlot = Column(Integer, primary_key=False)
-    AvailableSlot = Column(String(50), primary_key=False)
-    EventId = Column(Integer, unique=False)
-    Name = Column(String(80), unique=False)
-    Prename = Column(String(80), unique=False)
-    Email = Column(String(120), unique=True)
-    MobileNr = Column(String(20), unique=False)
-    Address = Column(String(200), unique=False)
-    Birthday = Column(Date, unique=False)
-    Gender = Column(Integer, unique=False)
-    StudyCourse = Column(String(80), unique=False)
-    StudySemester = Column(String(80), unique=False)
-    PerfectDate = Column(String(300), unique=False)
-    Fruit = Column(String(300), unique=False)
-    CreationTimestamp = Column(DateTime, unique=False)
-    Confirmed = Column(Integer, unique=False)
-    Present = Column(Integer, unique=False)
-    Payed = Column(Integer, unique=False)
-    DateNr = Column(Integer, unique=False)
-    ConfirmToken = Column(String(64), unique=True)
-    EditToken = Column(String(64), unique=True)
-    CancelToken = Column(String(64), unique=True)
+    id = Column(Integer, primary_key=True)
+    def_slot = Column(Integer, primary_key=False)
+    available_slot = Column(String(50), primary_key=False)
+    event_id = Column(Integer, unique=False)
+    name = Column(String(80), unique=False)
+    prename = Column(String(80), unique=False)
+    email = Column(String(120), unique=True)
+    mobile_nr = Column(String(20), unique=False)
+    address = Column(String(200), unique=False)
+    birthday = Column(Date, unique=False)
+    gender = Column(Integer, unique=False)
+    study_course = Column(String(80), unique=False)
+    study_semester = Column(String(80), unique=False)
+    perfect_date = Column(String(300), unique=False)
+    fruit = Column(String(300), unique=False)
+    creation_timestamp = Column(DateTime, unique=False)
+    confirmed = Column(Integer, unique=False)
+    present = Column(Integer, unique=False)
+    payed = Column(Integer, unique=False)
+    date_nr = Column(Integer, unique=False)
+    confirm_token = Column(String(64), unique=True)
+    edit_token = Column(String(64), unique=True)
+    cancel_token = Column(String(64), unique=True)
 
     def __init__(self,
                  timestamp,
@@ -51,63 +51,65 @@ class Participants(db.Model):
                  present=0,
                  payed=0,
                  datenr=0):
-        self.DefSlot = dSlot
-        self.AvailableSlot = aSlot
-        self.EventID = eventid
-        self.Name = name
-        self.Prename = prename
-        self.EMail = email
-        self.MobileNr = mobileNr
-        self.Address = address
-        self.Birthday = bday
-        self.Gender = gender
-        self.StudyCourse = course
-        self.StudySemester = semester
-        self.PerfectDate = perfDate
-        self.Fruit = fruit
-        self.CreationTimestamp = timestamp
-        self.Confirmed = confirmed
-        self.Present = present
-        self.Payed = payed
-        self.DateNr = datenr
+        self.def_slot = dSlot
+        self.available_slot = aSlot
+        self.event_id = eventid
+        self.name = name
+        self.prename = prename
+        self.email = email
+        self.mobile_nr = mobileNr
+        self.address = address
+        self.birthday = bday
+        self.gender = gender
+        self.study_course = course
+        self.study_semester = semester
+        self.perfect_date = perfDate
+        self.fruit = fruit
+        self.creation_timestamp = timestamp
+        self.confirmed = confirmed
+        self.present = present
+        self.payed = payed
+        self.date_nr = datenr
 
 
 class TimeSlots(db.Model):
-    ID = Column(Integer, primary_key=True)
-    EventID = Column(Integer, unique=False)
-    Date = Column(Date, unique=False)
-    StartTime = Column(DateTime, unique=False)
-    EndTime = Column(DateTime, unique=False)
-    NrCouples = Column(Integer, primary_key=False)
-    AgeRange = Column(Integer, primary_key=False)
-    SpecialSlot = Column(Boolean, unique=False)
+    """Models a TimeSlot of an Event"""
+    id = Column(Integer, primary_key=True)
+    event_id = Column(Integer, unique=False)
+    date = Column(Date, unique=False)
+    start_time = Column(DateTime, unique=False)
+    end_time = Column(DateTime, unique=False)
+    nr_couples = Column(Integer, primary_key=False)
+    age_range = Column(Integer, primary_key=False)
+    special_slot = Column(Boolean, unique=False)
 
     def __init__(self, event_id, date, starttime, endtime, nrCouples, ageRange,
                  specialslot):
-        self.EventID = event_id
-        self.Date = date
-        self.StartTime = starttime
-        self.EndTime = endtime
-        self.NrCouples = nrCouples
-        self.AgeRange = ageRange
-        self.SpecialSlot = specialslot
+        self.event_id = event_id
+        self.date = date
+        self.start_time = starttime
+        self.end_time = endtime
+        self.nr_couples = nrCouples
+        self.age_range = ageRange
+        self.special_slot = specialslot
 
 
 class Events(db.Model):
-    ID = Column(Integer, primary_key=True)
-    Name = Column(String(80), unique=False)
-    Year = Column(Date, unique=False)
-    SpecialSlots = Column(Boolean, unique=False)
-    SpecialSlotsName = Column(Text, unique=False)
-    SpecialSlotsDescription = Column(Text, unique=False)
-    Semester = Column(Boolean, unique=False)
-    CreationTimestamp = Column(DateTime, unique=False)
-    SignupOpen = Column(Boolean, unique=False)
-    OpenSignupTimestamp = Column(DateTime, unique=False)
-    CloseSignupTimestamp = Column(DateTime, unique=False)
-    Place = Column(String(80), unique=False)
-    Active = Column(Boolean, unique=False)
-    ParticipationFee = Column(String(80), unique=False)
+    """Models an Event and can include multiple TimeSlots"""
+    id = Column(Integer, primary_key=True)
+    name = Column(String(80), unique=False)
+    year = Column(Date, unique=False)
+    special_slots = Column(Boolean, unique=False)
+    special_slots_name = Column(Text, unique=False)
+    special_slots_description = Column(Text, unique=False)
+    semester = Column(Boolean, unique=False)
+    creation_timestamp = Column(DateTime, unique=False)
+    signup_open = Column(Boolean, unique=False)
+    open_signup_timestamp = Column(DateTime, unique=False)
+    close_signup_timestamp = Column(DateTime, unique=False)
+    place = Column(String(80), unique=False)
+    active = Column(Boolean, unique=False)
+    participation_fee = Column(String(80), unique=False)
 
     def __init__(self,
                  name,
@@ -123,22 +125,22 @@ class Events(db.Model):
                  pfee,
                  open_signup_timestamp=None,
                  close_signup_timestamp=None):
-        self.Name = name
-        self.Year = year
-        self.SpecialSlots = specslot
-        self.SpecialSlotsName = specslotname
-        self.SpecialSlotsDescription = sepcslotdescription
-        self.Place = place
-        self.Semester = semester
-        self.CreationTimestamp = timestamp
-        self.SignupOpen = signup_open
-        self.OpenSignupTimestamp = open_signup_timestamp
-        self.CloseSignupTimestamp = close_signup_timestamp
-        self.Active = active
-        self.ParticipationFee = pfee
+        self.name = name
+        self.year = year
+        self.special_slots = specslot
+        self.special_slots_name = specslotname
+        self.special_slots_description = sepcslotdescription
+        self.place = place
+        self.semester = semester
+        self.creation_timestamp = timestamp
+        self.signup_open = signup_open
+        self.open_signup_timestamp = open_signup_timestamp
+        self.close_signup_timestamp = close_signup_timestamp
+        self.active = active
+        self.participation_fee = pfee
 
     def get_string_close_signup_timestamp(self, format):
-        return str(self.CloseSignupTimestamp.strftime(format))
+        return str(self.close_signup_timestamp.strftime(format))
 
 
 class AdminUser(db.Model, UserMixin):

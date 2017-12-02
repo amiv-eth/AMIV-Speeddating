@@ -22,19 +22,19 @@ def send_post_signup_email(participant):
     template = env.get_template('post_signup_email.html')
 
     context = {
-        'name': participant.Prename,
+        'name': participant.prename,
         'confirm_link': url_for('confirm_participation',
-                                confirm_token=participant.ConfirmToken,
+                                confirm_token=participant.confirm_token,
                                 _external=True),
         'cancel_link': url_for('cancel_participation',
-                                cancel_token=participant.CancelToken,
+                                cancel_token=participant.cancel_token,
                                 _external=True),
     }
 
     msg = Message(
         html=template.render(**context),
         subject='Deine AMIV-Speeddating Anmeldung',
-        recipients=[participant.EMail])
+        recipients=[participant.email])
     try:
         mail.send(msg)
     except BadHeaderError:
