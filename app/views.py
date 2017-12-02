@@ -1,3 +1,8 @@
+"""
+Contains all views, i.e. anything that is routed to a url
+
+"""
+
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app.models import Events, TimeSlots, Participants, AdminUser
@@ -7,14 +12,14 @@ from app.functions import get_age, export, change_datenr, change_payed, change_p
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
 from flask_mail import Message
-from app.signals import new_signup
+from app.signals import SIGNAL_NEW_SIGNUP
 from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
 
 
-# index page
 @app.route('/')
 @app.route('/index')
 def index():
+    """ Index """
     try:
         event = Events.query.filter(Events.Active == '1').first()
         dates = None
@@ -29,12 +34,12 @@ def index():
     return render_template('index.html', event=event, dates=dates_string)
 
 
-# Get the currently logged in user
 @login_manager.user_loader
 def get_admin_user(id):
+    """ Helper function for flask_login> """
     return AdminUser.query.filter_by(id=id).first()
 
-# Authenticate the user
+
 def check_credentials(username, password):
     """
     Looks for AdminUser with username, checks password
@@ -50,9 +55,10 @@ def check_credentials(username, password):
         return admin
     return None
 
-# login page
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """ Login page to access admin pages """
     form = LoginForm(request.form)
     if request.method == 'POST' and form.validate():
         fusername = request.form['username']
@@ -66,24 +72,24 @@ def login():
     return render_template('login.html', form=form)
 
 
-# logout page
 @app.route('/logout')
 @login_required
 def logout():
+    """ Logout view """
     logout_user()
     return redirect(url_for('admin'))
 
 
-# unauthorized handler redirecting to index
 @login_manager.unauthorized_handler
 def unauthorized_handler():
+    """ Catchall for unauthorized requests, redirect to index """
     return redirect('/')
 
 
-# protected admin overview page
 @app.route('/admin', methods=["GET", "POST"])
 @login_required
 def admin():
+    """ Admin overview page """
     events = None
     if request.method == 'GET':
         try:
@@ -94,10 +100,10 @@ def admin():
     return render_template('admin.html', events=events)
 
 
-# protected admin event view page
 @app.route('/event_view/<int:event_id>', methods=["GET", "POST"])
 @login_required
 def event_view(event_id):
+    """ Event list view """
     if request.method == 'GET':
         slots = None
         eventname = None
@@ -110,10 +116,10 @@ def event_view(event_id):
         return render_template('event_view.html', slots=slots, event=event)
 
 
-# protected admin event view page
 @app.route('/event_participants/<int:event_id>', methods=["GET", "POST"])
 @login_required
 def event_participants(event_id):
+    """ Event participants view """
     if request.method == 'GET':
         eid = event_id
         slots = None
@@ -191,10 +197,10 @@ def event_participants(event_id):
         mailoutm=mailoutm)
 
 
-# protected admin create new event page
 @app.route('/create_event', methods=["GET", "POST"])
 @login_required
 def create_event():
+    """ Event create view """
     form = CreateEventForm(request.form)
     if request.method == 'POST' and form.validate():
         try:
@@ -235,10 +241,10 @@ def create_event():
     return render_template('create_event.html', form=form)
 
 
-# protected admin create new timeslot of an event page
 @app.route('/create_timeslot/<int:event_id>', methods=["GET", "POST"])
 @login_required
 def create_timeslot(event_id):
+    """ Timeslot create view """
     form = CreateTimeSlotForm(request.form)
     eventid = event_id
     if request.method == 'POST' and form.validate():
@@ -265,6 +271,7 @@ def create_timeslot(event_id):
 @app.route('/timeslot_view/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
 def timeslot_view(timeslot_id):
+    """ Timeslot view """
     if request.method == 'GET':
         
         slotid = timeslot_id
@@ -419,9 +426,9 @@ def change_participant_on_timeslot(slot_id, participant_id, action):
     )
 
 
-# signup page
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
+    """ Main signup page """
     form = SignupForm(request.form)
     try:
         event = Events.query.filter(Events.Active == '1').first()
@@ -567,7 +574,7 @@ def signup():
 
                 # The participant signed up successfully
                 # Emit signal and show success page
-                new_signup.send('signup view', participant=new_participant)
+                SIGNAL_NEW_SIGNUP.send('signup view', participant=new_participant)
             else:
                 message = 'Die E-Mail Adresse ' + email + \
                     ' wurde bereits für das Speeddating angewendet. Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
@@ -582,16 +589,14 @@ def signup():
             name=(prename + ' ' + name),
             mail=email,
             datetime=chosen_datetime)
-    # else:
-    #     if session:
-    #         session.close()
 
     return render_template('signup.html', form=form, event=event)
 
 
-# manual signup page
 @app.route('/manual_signup', methods=["GET", "POST"])
+@login_required
 def manual_signup():
+    """ Admin signup page, allows signup outside of registration period """
     form = SignupForm(request.form)
     try:
         event = Events.query.filter(Events.Active == '1').first()
@@ -698,11 +703,10 @@ def manual_signup():
     return render_template('manual_signup.html', form=form, event=event)
 
 
-# link for exporting the participants of a slot for the SpeedMatchTool
 @app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
 def export_slot(timeslot_id):
-
+    """ Export participants of timeslot as CSV suitable for SpeedMatchTool"""
     try:
         slot = TimeSlots.query.filter(TimeSlots.ID == timeslot_id).first()
         women = Participants.query.order_by(
@@ -725,12 +729,14 @@ def export_slot(timeslot_id):
 
 @app.route('/confirm/<string:confirm_token>')
 def confirm_participation(confirm_token):
+    """ Use confirm_token to confirm participation """
     if _confirm_participation(confirm_token):
         return render_template('confirm_success.html')
     abort(404)
 
 @app.route('/cancel/<string:cancel_token>')
 def cancel_participation(cancel_token):
+    """ Use cancel_token to cancel participation """
     if _cancel_participation(cancel_token):
         return render_template('cancel_success.html')
     abort(404)

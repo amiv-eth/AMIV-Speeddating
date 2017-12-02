@@ -1,8 +1,11 @@
-from app.db import Model
+"""
+Contains model declarations for sqlalchemy.
+"""
+from app import db
 from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime
 from flask_login import UserMixin
 
-class Participants(Model):
+class Participants(db.Model):
     """Models a Participant"""
     ID = Column(Integer, primary_key=True)
     DefSlot = Column(Integer, primary_key=False)
@@ -69,7 +72,7 @@ class Participants(Model):
         self.DateNr = datenr
 
 
-class TimeSlots(Model):
+class TimeSlots(db.Model):
     ID = Column(Integer, primary_key=True)
     EventID = Column(Integer, unique=False)
     Date = Column(Date, unique=False)
@@ -90,7 +93,7 @@ class TimeSlots(Model):
         self.SpecialSlot = specialslot
 
 
-class Events(Model):
+class Events(db.Model):
     ID = Column(Integer, primary_key=True)
     Name = Column(String(80), unique=False)
     Year = Column(Date, unique=False)
@@ -138,7 +141,7 @@ class Events(Model):
         return str(self.CloseSignupTimestamp.strftime(format))
 
 
-class AdminUser(Model, UserMixin):
+class AdminUser(db.Model, UserMixin):
     """ Represents an admin user """
     id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True)

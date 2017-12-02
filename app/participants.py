@@ -7,19 +7,19 @@ from app.email import send_post_signup_email
 from app.models import Participants
 
 def create_confirm_token(participant):
-    " Generates ConfirmToken and stores it in participant "
+    """ Generates ConfirmToken and stores it in participant """
     participant.ConfirmToken = token_hex(32)
     db.session.commit()
     return participant.ConfirmToken
 
 def create_edit_token(participant):
-    " Generates EditToken and stores it in participant "
+    """ Generates EditToken and stores it in participant """
     participant.EditToken = token_hex(32)
     db.session.commit()
     return participant.EditToken
 
 def create_cancel_token(participant):
-    " Generates CancelToken and stores it in participant "
+    """ Generates CancelToken and stores it in participant """
     participant.CancelToken = token_hex(32)
     db.session.commit()
     return participant.CancelToken

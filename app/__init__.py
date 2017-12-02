@@ -27,7 +27,9 @@ BCRYPT_HANDLE_LONG_PASSWORDS = True
 participant_signals = Namespace()
 
 
-from app import views, models, forms, signals, email, participants
+from app import views
+from app.signals import SIGNAL_NEW_SIGNUP
+from app.participants import post_signup
 
 # Connect signals
-signals.new_signup.connect(participants.post_signup)
+SIGNAL_NEW_SIGNUP.connect(post_signup)

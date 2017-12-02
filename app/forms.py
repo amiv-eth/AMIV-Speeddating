@@ -1,8 +1,11 @@
-from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField, DateTimeField, validators, HiddenField, widgets, SelectMultipleField
-from wtforms_components import TimeField
-from wtforms.validators import ValidationError
-from flask_wtf import FlaskForm
+"""
+All forms are in this file.
+"""
 from datetime import datetime
+from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField, DateTimeField, validators, HiddenField, widgets, SelectMultipleField
+from wtforms.validators import ValidationError
+from wtforms_components import TimeField
+from flask_wtf import FlaskForm
 
 
 class MultiCheckboxField(SelectMultipleField):
