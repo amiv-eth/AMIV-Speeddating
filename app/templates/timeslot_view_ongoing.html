@@ -48,9 +48,10 @@
     <td>{{ w.DateNr }}</td>
     <td>
       <form action = {{ url_for('timeslot_view_ongoing', timeslot_id=slot.ID) }} method = "POST">
-	{{ render_default_field(form.participant_id, w.ID, false) }}
-	{{ render_field(form.datenr, false) }}
-	<button type = "submit" class="btn btn-default">Go</button>
+        {{ form.csrf_token }}
+	      {{ render_default_field(form.participant_id, w.ID, false) }}
+	      {{ render_field(form.datenr, false) }}
+	      <button type = "submit" class="btn btn-default">Go</button>
       </form>
     </td>
   </tr>
@@ -114,9 +115,10 @@
     <td>{{ m.DateNr }}</td>
     <td>
       <form action = {{ url_for('timeslot_view_ongoing', timeslot_id=slot.ID) }} method = "POST">
-	{{ render_default_field(form.participant_id, m.ID, false) }}
-	{{ render_field(form.datenr, false) }}
-	<button type = "submit" class="btn btn-default">Go</button>
+        {{ form.csrf_token }}
+        {{ render_default_field(form.participant_id, m.ID, false) }}
+	      {{ render_field(form.datenr, false) }}
+	      <button type = "submit" class="btn btn-default">Go</button>
       </form>
     </td>
   </tr>

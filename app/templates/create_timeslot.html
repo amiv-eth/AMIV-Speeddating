@@ -11,6 +11,7 @@
 
 <form action = {{ url_for('create_timeslot', event_id = eid) }} method = "POST">
   <dl>
+    {{ form.csrf_token }}
     {{ render_radio(form.specialslot) }}
     {{ render_date_field(form.date) }}
     {{ render_time_field(form.starttime) }}

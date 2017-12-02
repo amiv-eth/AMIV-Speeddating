@@ -1,10 +1,8 @@
-from wtforms import Form, TextField, DateField, RadioField, StringField, IntegerField, PasswordField, SelectField, DateTimeField, validators, HiddenField, widgets, SelectMultipleField
+from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField, DateTimeField, validators, HiddenField, widgets, SelectMultipleField
 from wtforms_components import TimeField
-from app.models import Participants, TimeSlots, Events
 from wtforms.validators import ValidationError
+from flask_wtf import FlaskForm
 from datetime import datetime
-
-#from flask.ext.wtf import Form, widgets, SelectMultipleField
 
 
 class MultiCheckboxField(SelectMultipleField):
@@ -12,12 +10,12 @@ class MultiCheckboxField(SelectMultipleField):
     option_widget = widgets.CheckboxInput()
 
 
-class LoginForm(Form):
+class LoginForm(FlaskForm):
     username = StringField('Username', [validators.DataRequired()])
     password = PasswordField('Passwort', [validators.DataRequired()])
 
 
-class CreateEventForm(Form):
+class CreateEventForm(FlaskForm):
     name = StringField('Name', [validators.DataRequired()])
     year = IntegerField('Jahr', [
         validators.DataRequired(),
@@ -47,7 +45,7 @@ class CreateEventForm(Form):
                                    [validators.DataRequired()])
 
 
-class CreateTimeSlotForm(Form):
+class CreateTimeSlotForm(FlaskForm):
     date = DateField('Datum', [validators.DataRequired()], format='%Y-%m-%d')
     starttime = TimeField('Start-Zeit', [validators.DataRequired()])
     endtime = TimeField('End-Zeit', [validators.DataRequired()])
@@ -64,7 +62,7 @@ class CreateTimeSlotForm(Form):
         choices=[('0', 'No'), ('1', 'Yes')])
 
 
-class SignupForm(Form):
+class SignupForm(FlaskForm):
     name = StringField('Nachname (*)', [validators.DataRequired()])
     prename = StringField('Vorname (*)', [validators.DataRequired()])
     email = TextField(
@@ -85,9 +83,6 @@ class SignupForm(Form):
     studysemester = StringField('Semester (*)', [validators.DataRequired()])
     perfectdate = StringField('Das perfekte Date?', [validators.Optional()])
     fruit = StringField('Lieblingsfrucht?', [validators.Optional()])
-
-    #availableslots = RadioField('Verfügbare Daten (*) <br> (Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze))', validators = [validators.Optional()], coerce=int)
-    #availablespecialslots = RadioField('Verfügbare Daten Spezial Event (*) (Bitte achte auf die Altersgruppe, (# angemeldete Personen) / (# verfügbare Plätze))', validators = [validators.Optional()], coerce=int)
 
     availableslots = MultiCheckboxField(
         'Verfügbare Daten (*)<br> <span class="notbold">(Bitte achte auf die Altersgruppe und die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare Plätze)</span>',
@@ -136,7 +131,7 @@ class SignupForm(Form):
                 'Du musst dich für genau einen Termin anmelden')
 
 
-class ChangeDateNr(Form):
+class ChangeDateNr(FlaskForm):
     datenr = IntegerField(
         'DateNr (Unique pro Geschlecht!)',
         [validators.DataRequired(),

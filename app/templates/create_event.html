@@ -11,6 +11,7 @@
 
 <form action = {{ url_for('create_event') }} method = "POST">
   <dl>
+    {{ form.csrf_token }}
     {{ render_field(form.name) }}
     {{ render_field(form.year) }}
     {{ render_radio(form.semester) }}
