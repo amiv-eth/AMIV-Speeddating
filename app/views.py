@@ -1,25 +1,21 @@
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash
-from app.models import Events, TimeSlots, Participants
+from app.models import Events, TimeSlots, Participants, AdminUser
 from app.forms import MultiCheckboxField, LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager
 from datetime import datetime
-from app.users import User, check_credentials
+from app.users import check_credentials
 
 # class User(UserMixin):
 #     pass
 
 
+# Get the currently logged in user
 @login_manager.user_loader
-def user_loader(username):
-    if username not in app.config['USERS'].keys():
-        return
-    user = User()
-    user.id = username
-    return user
-
+def get_admin_user(id):
+    return AdminUser.query.filter_by(id=id).first()
 
 # index page
 @app.route('/')
@@ -46,10 +42,8 @@ def login():
     if request.method == 'POST' and form.validate():
         fusername = request.form['username']
         fpassword = request.form['password']
-        if check_credentials(fusername, fpassword) == True:
-            user = User()
-            user.id = fusername
-            login_user(user)
+        if check_credentials(fusername, fpassword):
+            login_user(AdminUser.query.filter_by(username=fusername).first())
             return redirect(url_for('admin'))
         else:
             render_template('login.html', form=form)
