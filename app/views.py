@@ -1,24 +1,11 @@
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash
-from app.models import Events, TimeSlots, Participants
+from app.models import Events, TimeSlots, Participants, AdminUser
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
-from app import app, db, login_manager
+from app import app, db, login_manager, bcrypt
 from datetime import datetime
-from app.users import User, check_credentials
-
-# class User(UserMixin):
-#     pass
-
-
-@login_manager.user_loader
-def user_loader(username):
-    if username not in app.config['USERS'].keys():
-        return
-    user = User()
-    user.id = username
-    return user
 
 
 # index page
@@ -39,6 +26,27 @@ def index():
     return render_template('index.html', event=event, dates=dates_string)
 
 
+# Get the currently logged in user
+@login_manager.user_loader
+def get_admin_user(id):
+    return AdminUser.query.filter_by(id=id).first()
+
+# Authenticate the user
+def check_credentials(username, password):
+    """
+    Looks for AdminUser with username, checks password
+    Returns the AdminUser on success, else None
+    """
+    # Find the user in the database
+    admin = AdminUser.query.filter_by(username=username).first()
+    if admin is None:
+        return None
+
+    # Check password
+    if bcrypt.check_password_hash(admin.password, password):
+        return admin
+    return None
+
 # login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -46,10 +54,9 @@ def login():
     if request.method == 'POST' and form.validate():
         fusername = request.form['username']
         fpassword = request.form['password']
-        if check_credentials(fusername, fpassword) == True:
-            user = User()
-            user.id = fusername
-            login_user(user)
+        admin = check_credentials(fusername, fpassword)
+        if admin is not None:
+            login_user(admin)
             return redirect(url_for('admin'))
         else:
             render_template('login.html', form=form)
