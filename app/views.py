@@ -1,14 +1,14 @@
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app.models import Events, TimeSlots, Participants, AdminUser
-from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr
+from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, ChangeDateNr, ParticipantEditForm
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
 from flask_mail import Message
 from app.signals import new_signup
-from app.participants import confirm_participation as _confirm_participation, edit_participation as _edit_participation, cancel_participation as _cancel_participation
+from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
 
 
 # index page
@@ -690,15 +690,11 @@ def manual_signup():
                     ' wurde bereits für das Speeddating angewendet. Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
                 return render_template('error.html', message=message)
 
-        except Exception as e:
-            print(e)
+        except Exception as exception:
+            print(exception)
             return render_template('error.html')
 
         return render_template('success.html')
-    # else:
-    #     if session:
-    #         session.close()
-
     return render_template('manual_signup.html', form=form, event=event)
 
 
@@ -731,12 +727,6 @@ def export_slot(timeslot_id):
 def confirm_participation(confirm_token):
     if _confirm_participation(confirm_token):
         return render_template('confirm_success.html')
-    abort(404)
-
-@app.route('/edit/<string:edit_token>')
-def edit_participation(edit_token):
-    # TODO: Create edit form
-    
     abort(404)
 
 @app.route('/cancel/<string:cancel_token>')
