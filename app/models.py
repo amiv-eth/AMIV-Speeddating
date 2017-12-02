@@ -1,5 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from app import db
+
 
 class Participants(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
@@ -23,7 +23,26 @@ class Participants(db.Model):
     Payed = db.Column(db.Integer, unique=False)
     DateNr = db.Column(db.Integer, unique=False)
 
-    def __init__(self, timestamp, eventid, name, prename, email, mobileNr, address, bday, gender, dSlot=None, aSlot=None, course=None, semester=None, perfDate=None, fruit=None, confirmed=1, present=0, payed=0, datenr=0):
+    def __init__(self,
+                 timestamp,
+                 eventid,
+                 name,
+                 prename,
+                 email,
+                 mobileNr,
+                 address,
+                 bday,
+                 gender,
+                 dSlot=None,
+                 aSlot=None,
+                 course=None,
+                 semester=None,
+                 perfDate=None,
+                 fruit=None,
+                 confirmed=1,
+                 present=0,
+                 payed=0,
+                 datenr=0):
         self.DefSlot = dSlot
         self.AvailableSlot = aSlot
         self.EventID = eventid
@@ -55,7 +74,8 @@ class TimeSlots(db.Model):
     AgeRange = db.Column(db.Integer, primary_key=False)
     SpecialSlot = db.Column(db.Boolean, unique=False)
 
-    def __init__(self, event_id, date, starttime, endtime, nrCouples, ageRange, specialslot):
+    def __init__(self, event_id, date, starttime, endtime, nrCouples, ageRange,
+                 specialslot):
         self.EventID = event_id
         self.Date = date
         self.StartTime = starttime
@@ -63,6 +83,7 @@ class TimeSlots(db.Model):
         self.NrCouples = nrCouples
         self.AgeRange = ageRange
         self.SpecialSlot = specialslot
+
 
 class Events(db.Model):
     ID = db.Column(db.Integer, primary_key=True)
@@ -80,7 +101,20 @@ class Events(db.Model):
     Active = db.Column(db.Boolean, unique=False)
     ParticipationFee = db.Column(db.String(80), unique=False)
 
-    def __init__(self, name, year, specslot, specslotname, sepcslotdescription, place, semester, timestamp, signup_open, active, pfee, open_signup_timestamp=None, close_signup_timestamp=None):
+    def __init__(self,
+                 name,
+                 year,
+                 specslot,
+                 specslotname,
+                 sepcslotdescription,
+                 place,
+                 semester,
+                 timestamp,
+                 signup_open,
+                 active,
+                 pfee,
+                 open_signup_timestamp=None,
+                 close_signup_timestamp=None):
         self.Name = name
         self.Year = year
         self.SpecialSlots = specslot
@@ -94,3 +128,6 @@ class Events(db.Model):
         self.CloseSignupTimestamp = close_signup_timestamp
         self.Active = active
         self.ParticipationFee = pfee
+
+    def get_string_close_signup_timestamp(self, format):
+        return str(self.CloseSignupTimestamp.strftime(format))
