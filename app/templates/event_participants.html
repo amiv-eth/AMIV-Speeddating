@@ -2,7 +2,7 @@
 
 {% block admin %}class="active"{% endblock %}
 
-<h1>{% block title %}Event {{ event.Name }}{% endblock %}</h1>
+<h1>{% block title %}Event {{ event.name }}{% endblock %}</h1>
 
 {% block content %}
 
@@ -11,7 +11,7 @@
 {% for slot in slots %}
 
 
-<h2>TimeSlot ID {{ slot.ID  }}:   {{ slot.Date.strftime("%d. %B %Y")  }} {{ slot.StartTime  }} - {{ slot.EndTime  }}</h2>
+<h2>TimeSlot ID {{ slot.id  }}:   {{ slot.date.strftime("%d. %B %Y")  }} {{ slot.start_time  }} - {{ slot.end_time  }}</h2>
 
 <div>
   
@@ -57,7 +57,7 @@
   
   {% for w in women[loop.index-1] %}
 
-  {% if w.EMail in inw %}
+  {% if w.email in inw %}
   {% set in = true %}
   {% else %}
   {% set in = false %}
@@ -66,20 +66,20 @@
 				       
   <tr{% if in == true %} class="in" {% endif %}>
     <td>
-      {{ w.Confirmed }}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('register_participant', event_id=event.ID, participant_id = w.ID, register = '0') }}'">an / abmelden</button>
+      {{ w.confirmed }}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('register_participant', event_id=event.id, participant_id = w.id, register = '0') }}'">an / abmelden</button>
     </td>
-    <td>{{ w.Present }}</td>
-    <td>{{ w.Payed }}</td>
-    <td>{{ w.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
-    <td>{{ w.Name }}</td>
-    <td>{{ w.Prename }}</td>
-    <td>{{ w.Birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ w.EMail }}</td>
-    <td>{{ w.MobileNr }}</td>
-    <td>{{ w.Address }}</td>
-    <td>{{ w.StudySemester }}</td>
-    <td>{{ w.StudyCourse }}</td> 
+    <td>{{ w.present }}</td>
+    <td>{{ w.payed }}</td>
+    <td>{{ w.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
+    <td>{{ w.name }}</td>
+    <td>{{ w.prename }}</td>
+    <td>{{ w.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ w.email }}</td>
+    <td>{{ w.mobile_nr }}</td>
+    <td>{{ w.address }}</td>
+    <td>{{ w.study_semester }}</td>
+    <td>{{ w.study_course }}</td> 
   </tr>
   {% else %}
   <tr>
@@ -103,27 +103,27 @@
     <th align="center" colspan="14">Men</th>
   </tr>
   {% for m in men[loop.index-1] %}
-  {% if m.EMail in inm %}
+  {% if m.email in inm %}
   {% set in = true %}
   {% else %}
   {% set in = false %}
   {% endif %}
   <tr{% if in == true %} class="in" {% endif %}>
     <td>
-      {{ m.Confirmed }}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('register_participant', event_id=event.ID, participant_id = m.ID, register = '0') }}'">an / abmelden</button>
+      {{ m.confirmed }}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('register_participant', event_id=event.id, participant_id = m.id, register = '0') }}'">an / abmelden</button>
     </td>
-    <td>{{ m.Present }}</td>
-    <td>{{ m.Payed }}</td>
-    <td>{{ m.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
-    <td>{{ m.Name }}</td>
-    <td>{{ m.Prename }}</td>
-    <td>{{ m.Birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ m.EMail }}</td>
-    <td>{{ m.MobileNr }}</td>
-    <td>{{ m.Address }}</td>
-    <td>{{ m.StudySemester }}</td>
-    <td>{{ m.StudyCourse }}</td>    
+    <td>{{ m.present }}</td>
+    <td>{{ m.payed }}</td>
+    <td>{{ m.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
+    <td>{{ m.name }}</td>
+    <td>{{ m.prename }}</td>
+    <td>{{ m.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ m.email }}</td>
+    <td>{{ m.mobile_nr }}</td>
+    <td>{{ m.address }}</td>
+    <td>{{ m.study_semester }}</td>
+    <td>{{ m.study_course }}</td>    
   </tr>
   <tr>
   </tr>

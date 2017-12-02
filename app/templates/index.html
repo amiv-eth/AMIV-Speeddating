@@ -3,13 +3,13 @@
 
 {% if event != None %}
 
-{% if event.SignupOpen %}
+{% if event.signup_open %}
 {% set open = True %}
 {% else %}
 {% set open = False %}
 {% endif %}
 
-{% if event.Active %}
+{% if event.active %}
 {% set active = True %}
 {% else %}
 {% set active = False %}
@@ -41,8 +41,8 @@
       <tr><td style="text-align: right;">Datum </td><td style="text-align: left; font-weight: bold;">
 	  {{ dates }}
       </td></tr>
-      <tr><td style="text-align: right;">Ort </td><td style="text-align: left; font-weight: bold;"> {{ event.Place }} </td></tr>
-      <tr><td style="text-align: right;">Kosten </td><td style="text-align: left; font-weight: bold;"> {{ event.ParticipationFee }} </td></tr>
+      <tr><td style="text-align: right;">Ort </td><td style="text-align: left; font-weight: bold;"> {{ event.place }} </td></tr>
+      <tr><td style="text-align: right;">Kosten </td><td style="text-align: left; font-weight: bold;"> {{ event.participation_fee }} </td></tr>
       <tr><td style="text-align: right;">Anmeldeschluss </td><td style="text-align: left; font-weight: bold;"> {{ event.get_string_close_signup_timestamp("%d. %B %Y um %H:%M Uhr") }}</td></tr>
     </table>
     {% endif %}
@@ -75,10 +75,10 @@
       nach dem Event geben wir denjenigen Bescheid, die sich gegenseitig wieder sehen m&ouml;chten.</p>
   </div>
   
-  {% if event.SpecialSlots %}
+  {% if event.special_slots %}
   <div id="content0">
-    <h3 class="text-danger"><i>Dieses Semester speziell: {{ event.SpecialSlotsName }} </i></h3>   
-    <p>{{ event.SpecialSlotsDescription }}</p>   
+    <h3 class="text-danger"><i>Dieses Semester speziell: {{ event.special_slots_name }} </i></h3>   
+    <p>{{ event.special_slots_description }}</p>   
   </div>
   {% endif %}
 

@@ -6,17 +6,18 @@ def get_list_women_of_slot(session, slot_id):
     w_out = []
 
     try:
-        slot = TimeSlots.query.filter(TimeSlots.ID == slot_id).first()
-        women = Participants.query.order_by(Participants.CreationTimestamp).filter(
-                Participants.AvailableSlot == slot_id,
-                Participants.Gender == '1').all()
+        slot = TimeSlots.query.filter(TimeSlots.id == slot_id).first()
+        women = Participants.query.order_by(Participants.creation_timestamp).filter(
+                Participants.available_slot == slot_id,
+                Participants.gender == '1').all()
     except Exception as e:
         print(e)
         return e
 
     count = 0
+    print("bla")
     for w in women:
-        if w.Confirmed == 1 and count < slot.NrCouples:
+        if w.confirmed == 1 and count < slot.nr_couples:
             count = count + 1
             w_in.append(w)
         else:
@@ -29,17 +30,17 @@ def get_list_men_of_slot(session, slot_id):
     m_out = []
 
     try:
-        slot = TimeSlots.query.filter(TimeSlots.ID == slot_id).first()
-        men = Participants.query.order_by(Participants.CreationTimestamp).filter(
-                Participants.AvailableSlot == slot_id,
-                Participants.Gender == '0').all()
+        slot = TimeSlots.query.filter(TimeSlots.id == slot_id).first()
+        men = Participants.query.order_by(Participants.creation_timestamp).filter(
+                Participants.available_slot == slot_id,
+                Participants.gender == '0').all()
     except Exception as e:
         print(e)
         return e
 
     count = 0
     for m in men:
-        if m.Confirmed == 1 and count < slot.NrCouples:
+        if m.confirmed == 1 and count < slot.nr_couples:
             count = count + 1
             m_in.append(m)
         else:
@@ -49,7 +50,7 @@ def get_list_men_of_slot(session, slot_id):
 def get_string_mails_of_list(session, slot, plist):
     mail = ""
     for p in plist:
-        mail = mail + p.EMail + "; "
+        mail = mail + p.email + "; "
     return mail[:-2]
 
 def get_string_of_date_list(date_list):

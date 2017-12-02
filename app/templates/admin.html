@@ -27,42 +27,42 @@
     </th>
   </tr>
   {% for e in events %}
-  <tr {% if e.Active %} class="table-success" {% endif %}>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">{{ e.Name }}</td>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">{{ e.Year }}</td> 
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
-       {% if e.Semester %}
+  <tr {% if e.active %} class="table-success" {% endif %}>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">{{ e.name }}</td>
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">{{ e.year }}</td> 
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
+       {% if e.semester %}
           HS
        {% else %}
           FS
        {% endif %}
     </td>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
-      {% if e.SpecialSlots %}
-         Yes:  {{e.SpecialSlotsName}}
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
+      {% if e.special_slots %}
+         Yes:  {{e.special_slots_name}}
       {% else %}
          No
       {% endif %}
     </td>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
-      {% if e.Active %}
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
+      {% if e.active %}
          active
       {% else %}
          -
       {% endif %}
     </td>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.ID) }}'">
-      {% if e.SignupOpen %}
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
+      {% if e.signup_open %}
          open
       {% else %}
          closed
       {% endif %}
     </td>
     <td>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.ID, open = '0') }}'">close</button>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.ID, open = '1') }}'">open</button>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.ID, active = '0') }}'">deactivate</button>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.ID, active = '1') }}'">activate</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.id, open = '0') }}'">close</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.id, open = '1') }}'">open</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.id, active = '0') }}'">deactivate</button>
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.id, active = '1') }}'">activate</button>
     </td>
   </tr>
   <tr>

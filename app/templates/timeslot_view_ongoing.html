@@ -4,7 +4,7 @@
 
 {% block admin %}class="active"{% endblock %}
 
-<h1>{% block title %} TimeSlot {{ slot.Date.strftime("%d. %B %Y")  }} {{ slot.StartTime  }} - {{ slot.EndTime  }}{% endblock %}</h1>
+<h1>{% block title %} TimeSlot {{ slot.date.strftime("%d. %B %Y")  }} {{ slot.start_time  }} - {{ slot.end_time  }}{% endblock %}</h1>
 
 {% block content %}
 
@@ -25,31 +25,31 @@
   {% for w in women %}
   <tr>
     <td>
-      {% if not w.Payed %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = w.ID, action='payed') }}'">
+      {% if not w.payed %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='payed') }}'">
 	bezahlen
       </button>
       {% endif %}
 
     </td>
     <td>
-      {% if w.Payed %}
+      {% if w.payed %}
       Ja
       {% else %}
       Nein
       {% endif %}
     </td>
-    <td>{{ w.Name }}</td>
-    <td>{{ w.Prename }}</td>
-    <td>{{ w.Birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ w.EMail }}</td>
-    <td>{{ w.MobileNr }}</td>
-    <td>{{ w.Address }}</td>
-    <td>{{ w.DateNr }}</td>
+    <td>{{ w.name }}</td>
+    <td>{{ w.prename }}</td>
+    <td>{{ w.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ w.email }}</td>
+    <td>{{ w.mobile_nr }}</td>
+    <td>{{ w.address }}</td>
+    <td>{{ w.date_nr }}</td>
     <td>
-      <form action = {{ url_for('timeslot_view_ongoing', timeslot_id=slot.ID) }} method = "POST">
+      <form action = {{ url_for('timeslot_view_ongoing', timeslot_id=slot.id) }} method = "POST">
         {{ form.csrf_token }}
-	      {{ render_default_field(form.participant_id, w.ID, false) }}
+	      {{ render_default_field(form.participant_id, w.id, false) }}
 	      {{ render_field(form.datenr, false) }}
 	      <button type = "submit" class="btn btn-default">Go</button>
       </form>
@@ -93,30 +93,30 @@
   {% for m in men %}
   <tr>
     <td>
-      {% if not m.Payed %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = m.ID, action='payed') }}'">
+      {% if not m.payed %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='payed') }}'">
 	bezahlen
       </button>
       {% endif %}
     </td>
     <td>
-      {% if m.Payed %}
+      {% if m.payed %}
       Ja
       {% else %}
       Nein
       {% endif %}
     </td>
-    <td>{{ m.Name }}</td>
-    <td>{{ m.Prename }}</td>
-    <td>{{ m.Birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ m.EMail }}</td>
-    <td>{{ m.MobileNr }}</td>
-    <td>{{ m.Address }}</td>
-    <td>{{ m.DateNr }}</td>
+    <td>{{ m.name }}</td>
+    <td>{{ m.prename }}</td>
+    <td>{{ m.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ m.email }}</td>
+    <td>{{ m.mobile_nr }}</td>
+    <td>{{ m.address }}</td>
+    <td>{{ m.date_nr }}</td>
     <td>
-      <form action = {{ url_for('timeslot_view_ongoing', timeslot_id=slot.ID) }} method = "POST">
+      <form action = {{ url_for('timeslot_view_ongoing', timeslot_id=slot.id) }} method = "POST">
         {{ form.csrf_token }}
-        {{ render_default_field(form.participant_id, m.ID, false) }}
+        {{ render_default_field(form.participant_id, m.id, false) }}
 	      {{ render_field(form.datenr, false) }}
 	      <button type = "submit" class="btn btn-default">Go</button>
       </form>
@@ -141,7 +141,7 @@
 </table>
 
 <div style="text-align:center;">
-  <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('export_slot', timeslot_id = slot.ID) }}'">
+  <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('export_slot', timeslot_id = slot.id) }}'">
     Exportieren
   </button>
 </div>

@@ -16,12 +16,12 @@ from app.participants import confirm_participation as _confirm_participation, ca
 @app.route('/index')
 def index():
     try:
-        event = Events.query.filter(Events.Active == '1').first()
+        event = Events.query.filter(Events.active == '1').first()
         dates = None
         if event != None:
             timeslots = TimeSlots.query.filter(
-                TimeSlots.EventID == event.ID).all()
-            dates = list(set(list(slot.Date for slot in timeslots)))
+                TimeSlots.event_id == event.id).all()
+            dates = list(set(list(slot.date for slot in timeslots)))
         dates_string = get_string_of_date_list(dates)
     except Exception as e:
         print(e)
@@ -102,8 +102,8 @@ def event_view(event_id):
         slots = None
         eventname = None
         try:
-            slots = TimeSlots.query.filter(TimeSlots.EventID == event_id)
-            event = Events.query.filter(Events.ID == event_id).first()
+            slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
+            event = Events.query.filter(Events.id == event_id).first()
         except Exception as e:
             print(e)
             return render_template('error.html')
@@ -128,20 +128,20 @@ def event_participants(event_id):
         mailoutm = []
 
         try:
-            event = Events.query.filter(Events.ID == eid).first()
-            slots = TimeSlots.query.filter(TimeSlots.EventID == eid)
+            event = Events.query.filter(Events.id == eid).first()
+            slots = TimeSlots.query.filter(TimeSlots.event_id == eid)
             if slots != None:
                 for slot in slots:
                     w = Participants.query.order_by(
-                        (Participants.CreationTimestamp)).filter(
-                            Participants.EventID == eid,
-                            Participants.AvailableSlot == slot.ID,
-                            Participants.Gender == '1').all()
+                        (Participants.creation_timestamp)).filter(
+                            Participants.event_id == eid,
+                            Participants.available_slot == slot.id,
+                            Participants.gender == '1').all()
                     m = Participants.query.order_by(
-                        (Participants.CreationTimestamp)).filter(
-                            Participants.EventID == eid,
-                            Participants.AvailableSlot == slot.ID,
-                            Participants.Gender == '0').all()
+                        (Participants.creation_timestamp)).filter(
+                            Participants.event_id == eid,
+                            Participants.available_slot == slot.id,
+                            Participants.gender == '0').all()
                     women.append(w)
                     men.append(m)
         except Exception as e:
@@ -153,12 +153,12 @@ def event_participants(event_id):
         outmail = ""
         wcount = 0
         for w in wslot:
-            if w.Confirmed == 1 and wcount < 12:
+            if w.confirmed == 1 and wcount < 12:
                 wcount = wcount + 1
-                inw.append(w.EMail)
-                inmail = inmail + w.EMail + "; "
+                inw.append(w.email)
+                inmail = inmail + w.email + "; "
             else:
-                outmail = outmail + w.EMail + "; "
+                outmail = outmail + w.email + "; "
 
         mailinw.append(inmail)
         mailoutw.append(outmail)
@@ -168,12 +168,12 @@ def event_participants(event_id):
         outmail = ""
         mcount = 0
         for m in mslot:
-            if m.Confirmed == 1 and mcount < 12:
+            if m.confirmed == 1 and mcount < 12:
                 mcount = mcount + 1
-                inm.append(m.EMail)
-                inmail = inmail + m.EMail + "; "
+                inm.append(m.email)
+                inmail = inmail + m.email + "; "
             else:
-                outmail = outmail + m.EMail + "; "
+                outmail = outmail + m.email + "; "
         mailinm.append(inmail)
         mailoutm.append(outmail)
 
@@ -276,16 +276,16 @@ def timeslot_view(timeslot_id):
         [m_in, m_out] = get_list_men_of_slot(db.session, timeslot_id)
 
         try:
-            slot = TimeSlots.query.filter(TimeSlots.ID == slotid).first()
+            slot = TimeSlots.query.filter(TimeSlots.id == slotid).first()
             women = Participants.query.order_by(
-                (Participants.CreationTimestamp)).filter(
-                    Participants.AvailableSlot == slotid,
-                    Participants.Gender == '1').all()
+                (Participants.creation_timestamp)).filter(
+                    Participants.available_slot == slotid,
+                    Participants.gender == '1').all()
             men = Participants.query.order_by(
-                (Participants.CreationTimestamp)).filter(
-                    Participants.AvailableSlot == slotid,
-                    Participants.Gender == '0').all()
-            event = Events.query.filter(Events.ID == slot.EventID).first()
+                (Participants.creation_timestamp)).filter(
+                    Participants.available_slot == slotid,
+                    Participants.gender == '0').all()
+            event = Events.query.filter(Events.id == slot.event_id).first()
         except Exception as e:
             print(e)
             return render_template('error.html')
@@ -327,16 +327,16 @@ def timeslot_view_ongoing(timeslot_id):
 
     # "GET":
     try:
-        slot = TimeSlots.query.filter(TimeSlots.ID == timeslot_id).first()
+        slot = TimeSlots.query.filter(TimeSlots.id == timeslot_id).first()
         women = Participants.query.order_by(
-            (Participants.CreationTimestamp)).filter(
-                Participants.AvailableSlot == timeslot_id,
-                Participants.Gender == '1', Participants.Present == '1').all()
+            (Participants.creation_timestamp)).filter(
+                Participants.available_slot == timeslot_id,
+                Participants.gender == '1', Participants.present == '1').all()
         men = Participants.query.order_by(
-            (Participants.CreationTimestamp)).filter(
-                Participants.AvailableSlot == timeslot_id,
-                Participants.Gender == '0', Participants.Present == '1').all()
-        event = Events.query.filter(Events.ID == slot.EventID).first()
+            (Participants.creation_timestamp)).filter(
+                Participants.available_slot == timeslot_id,
+                Participants.gender == '0', Participants.present == '1').all()
+        event = Events.query.filter(Events.id == slot.event_id).first()
     except Exception as e:
         print(e)
         return render_template('error.html')
@@ -424,11 +424,11 @@ def change_participant_on_timeslot(slot_id, participant_id, action):
 def signup():
     form = SignupForm(request.form)
     try:
-        event = Events.query.filter(Events.Active == '1').first()
+        event = Events.query.filter(Events.active == '1').first()
         if event != None:
-            eventid = event.ID
+            eventid = event.id
             timeslots = TimeSlots.query.filter(
-                TimeSlots.EventID == eventid).all()
+                TimeSlots.event_id == eventid).all()
             if timeslots != None:
                 age_strings = []
                 age_strings.append('< 22'.ljust(6))
@@ -440,53 +440,53 @@ def signup():
                 strings_non_special = []
                 strings_special = []
                 for s in timeslots:
-                    if s.SpecialSlot == 1:
-                        ids_special.append(int(s.ID))
+                    if s.special_slot == 1:
+                        ids_special.append(int(s.id))
                         women = Participants.query.filter(
-                            Participants.AvailableSlot == s.ID,
-                            Participants.Confirmed == '1',
-                            Participants.Gender == '1').count()
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '1').count()
                         men = Participants.query.filter(
-                            Participants.AvailableSlot == s.ID,
-                            Participants.Confirmed == '1',
-                            Participants.Gender == '0').count()
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '0').count()
                         stri = '&nbsp &nbsp &nbsp'
                         stri = stri + \
-                            s.Date.strftime("%a %d. %b %y") + \
+                            s.date.strftime("%a %d. %b %y") + \
                             '&nbsp &nbsp &nbsp'
                         stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                            s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
                         stri = stri + '&nbsp &nbsp &nbsp'
                         stri = stri + 'Altersgruppe: &nbsp' + \
-                            age_strings[s.AgeRange]
+                            age_strings[s.age_range]
                         stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
-                            str(men) + '/' + str(s.NrCouples)
+                            str(men) + '/' + str(s.nr_couples)
                         stri = stri + '&nbsp &nbsp W: ' + \
-                            str(women) + '/' + str(s.NrCouples)
+                            str(women) + '/' + str(s.nr_couples)
                         strings_special.append(stri)
-                    elif s.SpecialSlot == 0:
-                        ids_nonspecial.append(int(s.ID))
+                    elif s.special_slot == 0:
+                        ids_nonspecial.append(int(s.id))
                         women = Participants.query.filter(
-                            Participants.AvailableSlot == s.ID,
-                            Participants.Confirmed == '1',
-                            Participants.Gender == '1').count()
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '1').count()
                         men = Participants.query.filter(
-                            Participants.AvailableSlot == s.ID,
-                            Participants.Confirmed == '1',
-                            Participants.Gender == '0').count()
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '0').count()
                         stri = '&nbsp &nbsp &nbsp'
                         stri = stri + \
-                            s.Date.strftime("%a %d. %b %y") + \
+                            s.date.strftime("%a %d. %b %y") + \
                             '&nbsp &nbsp &nbsp'
                         stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                            s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
                         stri = stri + '&nbsp &nbsp &nbsp'
                         stri = stri + 'Altersgruppe: &nbsp' + \
-                            age_strings[s.AgeRange]
+                            age_strings[s.age_range]
                         stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
-                            str(men) + '/' + str(s.NrCouples)
+                            str(men) + '/' + str(s.nr_couples)
                         stri = stri + '&nbsp &nbsp W: ' + \
-                            str(women) + '/' + str(s.NrCouples)
+                            str(women) + '/' + str(s.nr_couples)
                         strings_non_special.append(stri)
 
                 form.availableslots.choices = [
@@ -516,7 +516,7 @@ def signup():
             studysemester = str(request.form['studysemester'])
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
-            if event.SpecialSlots == 1:
+            if event.special_slots == 1:
                 availablespecialslots = request.form.getlist(
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
@@ -535,13 +535,13 @@ def signup():
 
             bday = datetime.strptime(birthday, '%d.%m.%Y')
             count = Participants.query.filter(
-                Participants.EMail == email,
-                Participants.EventID == eventid).count()
+                Participants.email == email,
+                Participants.event_id == eventid).count()
             chosen_timeslot = TimeSlots.query.filter(
-                TimeSlots.ID == int(slots)).first()
+                TimeSlots.id == int(slots)).first()
             chosen_datetime = str(
-                chosen_timeslot.Date.strftime("%a %d. %b %y")) + '  ' + str(
-                    chosen_timeslot.StartTime)
+                chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
+                    chosen_timeslot.start_time)
 
             if count == 0:
                 new_participant = Participants(
@@ -594,11 +594,11 @@ def signup():
 def manual_signup():
     form = SignupForm(request.form)
     try:
-        event = Events.query.filter(Events.Active == '1').first()
+        event = Events.query.filter(Events.active == '1').first()
         if event != None:
-            eventid = event.ID
+            eventid = event.id
             timeslots = TimeSlots.query.filter(
-                TimeSlots.EventID == eventid).all()
+                TimeSlots.event_id == eventid).all()
             if timeslots != None:
                 age_strings = []
                 age_strings.append('< 22'.ljust(6))
@@ -608,23 +608,23 @@ def manual_signup():
                 ids = []
                 strings = []
                 for s in timeslots:
-                    ids.append(int(s.ID))
+                    ids.append(int(s.id))
                     women = Participants.query.filter(
-                        Participants.AvailableSlot == s.ID,
-                        Participants.Confirmed == '1',
-                        Participants.Gender == '1').count()
+                        Participants.available_slot == s.id,
+                        Participants.confirmed == '1',
+                        Participants.gender == '1').count()
                     men = Participants.query.filter(
-                        Participants.AvailableSlot == s.ID,
-                        Participants.Confirmed == '1',
-                        Participants.Gender == '0').count()
+                        Participants.available_slot == s.id,
+                        Participants.confirmed == '1',
+                        Participants.gender == '0').count()
                     stri = '&nbsp &nbsp '
                     stri = stri + \
-                        s.Date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
+                        s.date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
                     stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                        s.StartTime)[:-3] + ' - ' + str(s.EndTime)[:-3]
+                        s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
                     stri = stri + '&nbsp &nbsp '
                     stri = stri + 'Altersgruppe: &nbsp' + \
-                        age_strings[s.AgeRange]
+                        age_strings[s.age_range]
                     stri = stri + \
                         '&nbsp &nbsp # angemeldete Personen: &nbsp &nbsp  M: ' + \
                         str(men)
@@ -661,8 +661,8 @@ def manual_signup():
             bday = datetime.strptime(birthday, '%d.%m.%Y')
 
             count = Participants.query.filter(
-                Participants.EMail == email,
-                Participants.EventID == eventid).count()
+                Participants.email == email,
+                Participants.event_id == eventid).count()
 
             if count == 0:
                 new_participant = Participants(
@@ -704,15 +704,15 @@ def manual_signup():
 def export_slot(timeslot_id):
 
     try:
-        slot = TimeSlots.query.filter(TimeSlots.ID == timeslot_id).first()
+        slot = TimeSlots.query.filter(TimeSlots.id == timeslot_id).first()
         women = Participants.query.order_by(
-            (Participants.CreationTimestamp)).filter(
-                Participants.AvailableSlot == timeslot_id,
-                Participants.Gender == '1', Participants.Present == '1').all()
+            (Participants.creation_timestamp)).filter(
+                Participants.available_slot == timeslot_id,
+                Participants.gender == '1', Participants.present == '1').all()
         men = Participants.query.order_by(
-            (Participants.CreationTimestamp)).filter(
-                Participants.AvailableSlot == timeslot_id,
-                Participants.Gender == '0', Participants.Present == '1').all()
+            (Participants.creation_timestamp)).filter(
+                Participants.available_slot == timeslot_id,
+                Participants.gender == '0', Participants.present == '1').all()
         exported = export(women, men, slot)
 
     except Exception as e:

@@ -2,11 +2,11 @@
 
 {% block admin %}class="active"{% endblock %}
 
-<h1>{% block title %}Event {{ event.Name }}{% endblock %}</h1>
+<h1>{% block title %}Event {{ event.name }}{% endblock %}</h1>
 
 {% block content %}
 
-<h2>All Timeslots of {{ event.Name }}:</h2>
+<h2>All Timeslots of {{ event.name }}:</h2>
 <table class="table table-striped table-hover">
   <tr>
     <th>ID</th>
@@ -17,31 +17,31 @@
     <th>Age <br> Range</th>
     <th>Special <br> Slot</th>
     <th>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_timeslot', event_id = event.ID) }}'">
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_timeslot', event_id = event.id) }}'">
 	<span class="glyphicon glyphicon-plus"></span>
       </button>
     </th>
   </tr>
   {% for s in slots %}
-  <tr onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.ID) }}'">
-    <td>{{ s.ID }}</td>
-    <td>{{ s.Date.strftime("%A %d. %B %Y") }}</td>
-    <td>{{ s.StartTime }}</td>
-    <td>{{ s.EndTime }}</td>
-    <td>{{ s.NrCouples }}</td>
-    {% if s.AgeRange == 0 %}
+  <tr onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">
+    <td>{{ s.id }}</td>
+    <td>{{ s.date.strftime("%A %d. %B %Y") }}</td>
+    <td>{{ s.start_time }}</td>
+    <td>{{ s.end_time }}</td>
+    <td>{{ s.nr_couples }}</td>
+    {% if s.age_range == 0 %}
     <td> < 22 </td>
-    {% elif s.AgeRange == 1 %}
+    {% elif s.age_range == 1 %}
     <td> 22-25 </td>
-    {% elif s.AgeRange == 2 %}
+    {% elif s.age_range == 2 %}
     <td> > 25 </td>
     {% else %}
     <td> does not matter </td>
     {% endif %}
-    {% if s.SpecialSlot == 0 %}
+    {% if s.special_slot == 0 %}
     <td> - </td>
-    {% elif s.SpecialSlot == 1 %}
-    <td> {{ event.SpecialSlotsName }} </td>
+    {% elif s.special_slot == 1 %}
+    <td> {{ event.special_slots_name }} </td>
     {% endif %}
     <td></td>
   </tr>
@@ -61,6 +61,6 @@
   {% endfor %}
 </table>
 
-<button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = event.ID) }}'"> See all Participants </button>
+<button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = event.id) }}'"> See all Participants </button>
 
 {% endblock %}

@@ -2,12 +2,12 @@
 
 {% block admin %}class="active"{% endblock %}
 
-<h1>{% block title %} TimeSlot {{ slot.Date.strftime("%d. %B %Y")  }} {{ slot.StartTime  }} - {{ slot.EndTime  }}{% endblock %}</h1>
+<h1>{% block title %} TimeSlot {{ slot.date.strftime("%d. %B %Y")  }} {{ slot.start_time  }} - {{ slot.end_time  }}{% endblock %}</h1>
 
 {% block content %}
 <div>
   <p>
-    EMail Adressen Dabei:
+    email Adressen Dabei:
   </p>
   <p>
     {{ mailinw }}
@@ -15,7 +15,7 @@
   </p>
   <br>
   <p>
-    EMail Adressen nicht Dabei:
+    email Adressen nicht Dabei:
   </p>
   <p>
     {{ mailoutw }}
@@ -26,7 +26,7 @@
 
 <br>
 <div style="text-align:left;">
-  <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('timeslot_view_ongoing', timeslot_id=slot.ID) }}'">
+  <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('timeslot_view_ongoing', timeslot_id=slot.id) }}'">
     On-going Event
   </button>
 </div>
@@ -50,7 +50,7 @@
     <th>Adresse</th>
   </tr>
   {% for w in women %}
-  {% if w.EMail in inw %}
+  {% if w.email in inw %}
   {% set in = true %}
   {% else %}
   {% set in = false %}
@@ -58,16 +58,16 @@
  
   <tr{% if in == true %} class="in" {% endif %}>
     <td>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = w.ID, action='present') }}'">
-	{% if w.Present %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='present') }}'">
+	{% if w.present %}
 	abwesend
 	{% else %}
 	anwesend
 	{% endif %}
       </button>
-      {% if w.Present %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = w.ID, action='payed') }}'">
-	{% if w.Payed %}
+      {% if w.present %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='payed') }}'">
+	{% if w.payed %}
 	nicht bezahlt
 	{% else %}
 	bezahlt
@@ -76,25 +76,25 @@
       {% endif %}
     </td>
     <td>
-      {% if w.Present %}
+      {% if w.present %}
       Ja
       {% else %}
       Nein
       {% endif %}
       /
-      {% if w.Payed %}
+      {% if w.payed %}
       Ja
       {% else %}
       Nein
       {% endif %}
     </td>
-    <td>{{ w.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
-    <td>{{ w.Name }}</td>
-    <td>{{ w.Prename }}</td>
-    <td>{{ w.Birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ w.EMail }}</td>
-    <td>{{ w.MobileNr }}</td>
-    <td>{{ w.Address }}</td> 
+    <td>{{ w.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
+    <td>{{ w.name }}</td>
+    <td>{{ w.prename }}</td>
+    <td>{{ w.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ w.email }}</td>
+    <td>{{ w.mobile_nr }}</td>
+    <td>{{ w.address }}</td> 
   </tr>
   <tr>
   </tr>
@@ -134,23 +134,23 @@
     <th>Adresse</th>
   </tr>
   {% for m in men %}
-  {% if m.EMail in inm %}
+  {% if m.email in inm %}
   {% set in = true %}
   {% else %}
   {% set in = false %}
   {% endif %}
   <tr{% if in == true %} class="in" {% endif %}>
     <td>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = m.ID, action='present') }}'">
-	{% if m.Present %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='present') }}'">
+	{% if m.present %}
 	abwesend
 	{% else %}
 	anwesend
 	{% endif %}
       </button>
-      {% if m.Present %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.ID, participant_id = m.ID, action='payed') }}'">
-	{% if m.Payed %}
+      {% if m.present %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='payed') }}'">
+	{% if m.payed %}
 	nicht bezahlt
 	{% else %}
 	bezahlt
@@ -159,25 +159,25 @@
       {% endif %}
     </td>
     <td>
-      {% if m.Present %}
+      {% if m.present %}
       Ja
       {% else %}
       Nein
       {% endif %}
       /
-      {% if m.Payed %}
+      {% if m.payed %}
       Ja
       {% else %}
       Nein
       {% endif %}
     </td>
-    <td>{{ m.CreationTimestamp.strftime("%d.%m %H:%M") }}</td>
-    <td>{{ m.Name }}</td>
-    <td>{{ m.Prename }}</td>
-    <td>{{ m.Birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ m.EMail }}</td>
-    <td>{{ m.MobileNr }}</td>
-    <td>{{ m.Address }}</td>
+    <td>{{ m.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
+    <td>{{ m.name }}</td>
+    <td>{{ m.prename }}</td>
+    <td>{{ m.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ m.email }}</td>
+    <td>{{ m.mobile_nr }}</td>
+    <td>{{ m.address }}</td>
   </tr>
   <tr>
   </tr>
