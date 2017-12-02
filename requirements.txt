@@ -8,3 +8,5 @@ wtforms_components
 pylint
 flask_bcrypt
 flask_wtf
+Flask-Mail
+blinker

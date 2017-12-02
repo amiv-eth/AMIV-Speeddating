@@ -23,6 +23,9 @@ class Participants(db.Model):
     Present = db.Column(db.Integer, unique=False)
     Payed = db.Column(db.Integer, unique=False)
     DateNr = db.Column(db.Integer, unique=False)
+    ConfirmToken = db.Column(db.String(64), unique=True)
+    EditToken = db.Column(db.String(64), unique=True)
+    CancelToken = db.Column(db.String(64), unique=True)
 
     def __init__(self,
                  timestamp,
