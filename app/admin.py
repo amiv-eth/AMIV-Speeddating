@@ -1,9 +1,8 @@
 """
-Contains admin functions and helpers
+Contains admin helper functions
 """
 import csv
 import io
-from datetime import date
 from app.models import Participants, Events
 
 
@@ -131,10 +130,10 @@ def export(women, men, slot):
         res = csv.writer(output, delimiter=',')
         for w in women:
             res.writerow([str(w.date_nr)] + ['f'] + [w.prename] + [w.name] +
-                         [str(get_age(w.birthday))] + [w.mobile_nr] + [w.email])
+                         [str(w.get_age())] + [w.mobile_nr] + [w.email])
         for m in men:
             res.writerow([str(m.date_nr)] + ['m'] + [m.prename] + [m.name] +
-                         [str(get_age(m.birthday))] + [m.mobile_nr] + [m.email])
+                         [str(m.get_age())] + [m.mobile_nr] + [m.email])
 
         result = output.getvalue()
         output.close()
@@ -142,10 +141,3 @@ def export(women, men, slot):
     except Exception as e:
         print(e)
         return ''
-
-
-def get_age(born):
-    """ Calculate age given the birth date """
-    today = date.today()
-    return today.year - born.year - ((today.month, today.day) <
-                                     (born.month, born.day))

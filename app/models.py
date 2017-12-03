@@ -1,6 +1,7 @@
 """
 Contains model declarations for sqlalchemy.
 """
+from datetime import date
 from enum import Enum
 from app import db
 from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time, Enum as EnumSQLAlchemy
@@ -87,6 +88,12 @@ class Participants(db.Model):
 
     def __repr__(self):
         return self.__str__()
+
+    def get_age(self):
+        """ Calculate age """
+        today = date.today()
+        return today.year - self.birthday.year - ((today.month, today.day) <
+                                        (self.birthday.month, self.birthday.day))
 
 
 class TimeSlots(db.Model):
