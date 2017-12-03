@@ -26,3 +26,4 @@ MAIL_USE_TLS = True
 MAIL_DEFAULT_SENDER = 'speeddating@amiv.ethz.ch'
 MAIL_USERNAME = ''
 MAIL_PASSWORD = ''
+MAIL_ADMINS = 'speeddating@amiv.ethz.ch'
