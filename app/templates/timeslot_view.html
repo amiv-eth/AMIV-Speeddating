@@ -50,7 +50,7 @@
     <th>Adresse</th>
   </tr>
   {% for w in women %}
-  {% if w.email in inw %}
+  {% if w.email in mailinw %}
   {% set in = true %}
   {% else %}
   {% set in = false %}
@@ -134,7 +134,7 @@
     <th>Adresse</th>
   </tr>
   {% for m in men %}
-  {% if m.email in inm %}
+  {% if m.email in mailinm %}
   {% set in = true %}
   {% else %}
   {% set in = false %}
