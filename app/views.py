@@ -641,24 +641,18 @@ def manual_signup():
 @login_required
 def export_slot(timeslot_id):
     """ Export participants of timeslot as CSV suitable for SpeedMatchTool"""
-    try:
-        slot = TimeSlots.query.filter(TimeSlots.id == timeslot_id).first()
-        women = Participants.query.order_by(
-            (Participants.creation_timestamp)).filter(
-                Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.FEMALE, Participants.present == '1').all()
-        men = Participants.query.order_by(
-            (Participants.creation_timestamp)).filter(
-                Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.MALE, Participants.present is True).all()
-        exported = export(women, men, slot)
+    slot = TimeSlots.query.get(timeslot_id)
+    if slot is None:
+        abort(404)
+    
+    # Fetch list of confirmed participants
+    women = participants_in_slot(slot, Gender.FEMALE)[0]
+    men = participants_in_slot(slot, Gender.MALE)[0]
 
-    except Exception as e:
-        print(e)
-        return render_template('error.html')
-
+    exported = export(women, men, slot)
     if exported != '':
         return render_template('csv.html', slot=slot, exported=exported)
+    
     return render_template('error.html')
 
 
