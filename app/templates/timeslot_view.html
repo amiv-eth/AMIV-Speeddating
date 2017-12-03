@@ -66,8 +66,8 @@
 	{% endif %}
       </button>
       {% if w.present %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='payed') }}'">
-	{% if w.payed %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='paid') }}'">
+	{% if w.paid %}
 	nicht bezahlt
 	{% else %}
 	bezahlt
@@ -82,7 +82,7 @@
       Nein
       {% endif %}
       /
-      {% if w.payed %}
+      {% if w.paid %}
       Ja
       {% else %}
       Nein
@@ -149,8 +149,8 @@
 	{% endif %}
       </button>
       {% if m.present %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='payed') }}'">
-	{% if m.payed %}
+      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='paid') }}'">
+	{% if m.paid %}
 	nicht bezahlt
 	{% else %}
 	bezahlt
@@ -165,7 +165,7 @@
       Nein
       {% endif %}
       /
-      {% if m.payed %}
+      {% if m.paid %}
       Ja
       {% else %}
       Nein

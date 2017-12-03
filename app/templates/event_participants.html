@@ -70,7 +70,7 @@
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('register_participant', event_id=event.id, participant_id = w.id, register = '0') }}'">an / abmelden</button>
     </td>
     <td>{{ w.present }}</td>
-    <td>{{ w.payed }}</td>
+    <td>{{ w.paid }}</td>
     <td>{{ w.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ w.name }}</td>
     <td>{{ w.prename }}</td>
@@ -114,7 +114,7 @@
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('register_participant', event_id=event.id, participant_id = m.id, register = '0') }}'">an / abmelden</button>
     </td>
     <td>{{ m.present }}</td>
-    <td>{{ m.payed }}</td>
+    <td>{{ m.paid }}</td>
     <td>{{ m.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ m.name }}</td>
     <td>{{ m.prename }}</td>

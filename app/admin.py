@@ -87,17 +87,17 @@ def change_present(session, participant_id):
         return False
 
 
-def change_payed(session, participant_id):
+def change_paid(session, participant_id):
     """ Set a participant's payment status """
     try:
         participant = session.query(Participants).filter_by(
             id=participant_id).first()
 
         if participant.present == 1:
-            if participant.payed == 0:
-                participant.payed = int(1)
+            if not participant.paid:
+                participant.paid = True
             else:
-                participant.payed = int(0)
+                participant.paid = False
         else:
             return False
 

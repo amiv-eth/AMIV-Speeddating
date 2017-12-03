@@ -22,8 +22,8 @@ endblock %}
   {% for w in women %}
   <tr>
     <td>
-      {% if not w.payed %}
-      <button style="float:right" type="button" class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='payed') }}">
+      {% if not w.paid %}
+      <button style="float:right" type="button" class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='paid') }}">
         bezahlen
       </button>
       {% endif %}
@@ -32,7 +32,7 @@ endblock %}
       </button>
     </td>
     <td>
-      {% if w.payed %} Ja {% else %} Nein {% endif %}
+      {% if w.paid %} Ja {% else %} Nein {% endif %}
     </td>
     <td>{{ w.name }}</td>
     <td>{{ w.prename }}</td>
@@ -86,8 +86,8 @@ endblock %}
   {% for m in men %}
   <tr>
     <td>
-      {% if not m.payed %}
-      <button style="float:right" type="button" class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='payed') }}'">
+      {% if not m.paid %}
+      <button style="float:right" type="button" class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='paid') }}'">
         bezahlen
       </button>
       {% endif %}
@@ -96,7 +96,7 @@ endblock %}
       </button>
     </td>
     <td>
-      {% if m.payed %} Ja {% else %} Nein {% endif %}
+      {% if m.paid %} Ja {% else %} Nein {% endif %}
     </td>
     <td>{{ m.name }}</td>
     <td>{{ m.prename }}</td>

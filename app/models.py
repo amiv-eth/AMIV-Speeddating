@@ -35,7 +35,7 @@ class Participants(db.Model):
     creation_timestamp = Column(DateTime, unique=False)
     confirmed = Column(Boolean, unique=False)
     present = Column(Boolean, unique=False)
-    payed = Column(Integer, unique=False)
+    paid = Column(Boolean, unique=False)
     date_nr = Column(Integer, unique=False)
     confirm_token = Column(String(64), unique=True)
     edit_token = Column(String(64), unique=True)
@@ -61,7 +61,7 @@ class Participants(db.Model):
                  fruit=None,
                  confirmed=True,
                  present=False,
-                 payed=0,
+                 paid=False,
                  datenr=0):
         self.def_slot = dSlot
         self.available_slot = aSlot
@@ -80,7 +80,7 @@ class Participants(db.Model):
         self.creation_timestamp = timestamp
         self.confirmed = confirmed
         self.present = present
-        self.payed = payed
+        self.paid = paid
         self.date_nr = datenr
 
     def __str__(self):

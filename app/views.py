@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from app.models import Events, TimeSlots, Participants, AdminUser, Gender
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
-from app.admin import export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
+from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
 from flask_mail import Message
@@ -415,8 +415,8 @@ def change_participant_on_timeslot(slot_id, participant_id, action):
     try:
         if action == 'present':
             changed = change_present(db.session, participant_id)
-        elif action == 'payed':
-            changed = change_payed(db.session, participant_id)
+        elif action == 'paid':
+            changed = change_paid(db.session, participant_id)
     except Exception as e:
         print(e)
         return render_template('error.html')
@@ -470,7 +470,7 @@ def signup():
             availableslots = request.form.getlist('availableslots')
             confirmed = False
             present = False
-            payed = 0
+            paid = False
 
             slots = 0
             if availableslots:
@@ -507,7 +507,7 @@ def signup():
                     aSlot=slots,
                     confirmed=confirmed,
                     present=present,
-                    payed=payed)
+                    paid=paid)
                 db.session.add(new_participant)
                 db.session.commit()
 
@@ -576,7 +576,7 @@ def manual_signup():
             availableslots = request.form.getlist('availableslots')
             confirmed = False
             present = False
-            payed = 0
+            paid = False
 
             slots = 0
             if availableslots:
@@ -612,7 +612,7 @@ def manual_signup():
                     aSlot=slots,
                     confirmed=confirmed,
                     present=present,
-                    payed=payed)
+                    paid=paid)
                 db.session.add(new_participant)
                 db.session.commit()
             else:
