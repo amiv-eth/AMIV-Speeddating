@@ -58,10 +58,10 @@ def event_change_register_status(session, p_id):
     """ Confirm / unconfirm a participant's registration """
     try:
         participant = session.query(Participants).filter_by(id=p_id).first()
-        if participant.confirmed == 0:
-            participant.confirmed = 1
+        if participant.confirmed is False:
+            participant.confirmed = True
         else:
-            participant.confirmed = 0
+            participant.confirmed = False
         session.commit()
         return True
     except Exception as e:

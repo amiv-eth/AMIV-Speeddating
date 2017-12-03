@@ -35,11 +35,11 @@ def get_slots_choices(timeslots):
             ids_special.append(int(slot.id))
             nr_women = Participants.query.filter(
                 Participants.available_slot == slot.id,
-                Participants.confirmed == '1',
+                Participants.confirmed is True,
                 Participants.gender == Gender.FEMALE).count()
             nr_men = Participants.query.filter(
                 Participants.available_slot == slot.id,
-                Participants.confirmed == '1',
+                Participants.confirmed is True,
                 Participants.gender == Gender.MALE).count()
             stri = '&nbsp &nbsp &nbsp'
             stri = stri + \
@@ -59,11 +59,11 @@ def get_slots_choices(timeslots):
             ids_nonspecial.append(int(slot.id))
             nr_women = Participants.query.filter(
                 Participants.available_slot == slot.id,
-                Participants.confirmed == '1',
+                Participants.confirmed is True,
                 Participants.gender == Gender.FEMALE).count()
             nr_men = Participants.query.filter(
                 Participants.available_slot == slot.id,
-                Participants.confirmed == '1',
+                Participants.confirmed is True,
                 Participants.gender == Gender.MALE).count()
             stri = '&nbsp &nbsp &nbsp'
             stri = stri + \

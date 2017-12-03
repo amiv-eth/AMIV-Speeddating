@@ -33,7 +33,7 @@ class Participants(db.Model):
     perfect_date = Column(String(300), unique=False)
     fruit = Column(String(300), unique=False)
     creation_timestamp = Column(DateTime, unique=False)
-    confirmed = Column(Integer, unique=False)
+    confirmed = Column(Boolean, unique=False)
     present = Column(Integer, unique=False)
     payed = Column(Integer, unique=False)
     date_nr = Column(Integer, unique=False)

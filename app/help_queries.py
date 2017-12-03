@@ -19,7 +19,7 @@ def get_list_women_of_slot(session, slot_id):
 
     count = 0
     for woman in women:
-        if woman.confirmed == 1 and count < slot.nr_couples:
+        if woman.confirmed is True and count < slot.nr_couples:
             count = count + 1
             w_in.append(woman)
         else:
@@ -43,7 +43,7 @@ def get_list_men_of_slot(session, slot_id):
 
     count = 0
     for man in men:
-        if man.confirmed == 1 and count < slot.nr_couples:
+        if man.confirmed is True and count < slot.nr_couples:
             count = count + 1
             m_in.append(man)
         else:

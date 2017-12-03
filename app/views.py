@@ -159,7 +159,7 @@ def event_participants(event_id):
         outmail = ""
         wcount = 0
         for woman in wslot:
-            if woman.confirmed == 1 and wcount < 12:
+            if woman.confirmed is True and wcount < 12:
                 wcount = wcount + 1
                 inw.append(woman.email)
                 inmail = inmail + woman.email + "; "
@@ -174,7 +174,7 @@ def event_participants(event_id):
         outmail = ""
         mcount = 0
         for man in mslot:
-            if man.confirmed == 1 and mcount < 12:
+            if man.confirmed is True and mcount < 12:
                 mcount = mcount + 1
                 inm.append(man.email)
                 inmail = inmail + man.email + "; "
@@ -468,7 +468,7 @@ def signup():
                 availablespecialslots = request.form.getlist(
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
-            confirmed = 0
+            confirmed = False
             present = 0
             payed = 0
 
@@ -574,7 +574,7 @@ def manual_signup():
                 availablespecialslots = request.form.getlist(
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
-            confirmed = 0
+            confirmed = False
             present = 0
             payed = 0
 
