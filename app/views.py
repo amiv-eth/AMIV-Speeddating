@@ -138,18 +138,18 @@ def event_participants(event_id):
             slots = TimeSlots.query.filter(TimeSlots.event_id == eid)
             if slots != None:
                 for slot in slots:
-                    women = Participants.query.order_by(
+                    woman = Participants.query.order_by(
                         (Participants.creation_timestamp)).filter(
                             Participants.event_id == eid,
                             Participants.available_slot == slot.id,
                             Participants.gender == '1').all()
-                    men = Participants.query.order_by(
+                    man = Participants.query.order_by(
                         (Participants.creation_timestamp)).filter(
                             Participants.event_id == eid,
                             Participants.available_slot == slot.id,
                             Participants.gender == '0').all()
-                    women.append(women)
-                    men.append(men)
+                    women.append(woman)
+                    men.append(man)
         except Exception as e:
             print(e)
             return render_template('error.html')
@@ -158,13 +158,13 @@ def event_participants(event_id):
         inmail = ""
         outmail = ""
         wcount = 0
-        for women in wslot:
-            if women.confirmed == 1 and wcount < 12:
+        for woman in wslot:
+            if woman.confirmed == 1 and wcount < 12:
                 wcount = wcount + 1
-                inw.append(women.email)
-                inmail = inmail + women.email + "; "
+                inw.append(woman.email)
+                inmail = inmail + woman.email + "; "
             else:
-                outmail = outmail + women.email + "; "
+                outmail = outmail + woman.email + "; "
 
         mailinw.append(inmail)
         mailoutw.append(outmail)
@@ -173,13 +173,13 @@ def event_participants(event_id):
         inmail = ""
         outmail = ""
         mcount = 0
-        for men in mslot:
-            if men.confirmed == 1 and mcount < 12:
+        for man in mslot:
+            if man.confirmed == 1 and mcount < 12:
                 mcount = mcount + 1
-                inm.append(men.email)
-                inmail = inmail + men.email + "; "
+                inm.append(man.email)
+                inmail = inmail + man.email + "; "
             else:
-                outmail = outmail + men.email + "; "
+                outmail = outmail + man.email + "; "
         mailinm.append(inmail)
         mailoutm.append(outmail)
 
@@ -673,6 +673,7 @@ def cancel_participation(cancel_token):
         return render_template('cancel_success.html')
     abort(404)
 
+
 @app.route('/edit_likes/<int:participant_id>', methods=['GET', 'POST'])
 @login_required
 def edit_likes(participant_id):
@@ -680,7 +681,7 @@ def edit_likes(participant_id):
     participant = Participants.query.filter_by(id=participant_id).first()
     if participant is None:
         abort(404)
-    
+
     if request.method == 'GET':
         form = LikeForm(likes=participant.likes)
     else:
@@ -689,8 +690,9 @@ def edit_likes(participant_id):
             participant.likes = form.likes.data
             db.session.commit()
             return redirect(url_for('timeslot_view_ongoing', timeslot_id=participant.available_slot))
-    
+
     return render_template('likes.html', form=form, participant_id=participant_id, email=participant.email)
+
 
 @app.route('/matches/<int:timeslot_id>', methods=['GET', 'POST'])
 @login_required
