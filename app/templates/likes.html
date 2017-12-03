@@ -1,0 +1,14 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends 'base.html' %}
+{% block content %}
+<h2>Likes bearbeiten von {{email}}</h2>
+<div class="row">
+    <div class="col-8">
+        <form action="/edit_likes/{{ participant_id }}" method="post">
+            {{ form.csrf_token }}
+            {{ render_field(form.likes) }}
+            <button class="btn btn-primary">Speichern</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

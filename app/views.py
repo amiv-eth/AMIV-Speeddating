@@ -6,7 +6,7 @@ Contains all views, i.e. anything that is routed to a url
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app.models import Events, TimeSlots, Participants, AdminUser
-from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm
+from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager, bcrypt, mail
@@ -14,6 +14,7 @@ from datetime import datetime
 from flask_mail import Message
 from app.signals import SIGNAL_NEW_SIGNUP
 from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
+from app.matcher import find_matches, inform_matches
 
 
 @app.route('/')
@@ -797,3 +798,36 @@ def cancel_participation(cancel_token):
     if _cancel_participation(cancel_token):
         return render_template('cancel_success.html')
     abort(404)
+
+@app.route('/edit_likes/<int:participant_id>', methods=['GET', 'POST'])
+@login_required
+def edit_likes(participant_id):
+    """ Enter for each participant, which other participants they liked. """
+    participant = Participants.query.filter_by(id=participant_id).first()
+    if participant is None:
+        abort(404)
+    
+    if request.method == 'GET':
+        form = LikeForm(likes=participant.likes)
+    else:
+        form = LikeForm(request.form)
+        if form.validate_on_submit():
+            participant.likes = form.likes.data
+            db.session.commit()
+            return redirect(url_for('timeslot_view_ongoing', timeslot_id=participant.available_slot))
+    
+    return render_template('likes.html', form=form, participant_id=participant_id, email=participant.email)
+
+@app.route('/matches/<int:timeslot_id>', methods=['GET', 'POST'])
+@login_required
+def matches(timeslot_id):
+    """ Show the matches within a timeslot """
+    if request.method == 'POST':
+        form = SendMatchesForm(request.form)
+        if form.validate():
+            inform_matches(find_matches(timeslot_id))
+            return redirect(url_for('timeslot_view', timeslot_id=timeslot_id))
+
+    matches = find_matches(timeslot_id)
+    form = SendMatchesForm()
+    return render_template('matches.html', matches=matches, form=form, timeslot_id=timeslot_id)

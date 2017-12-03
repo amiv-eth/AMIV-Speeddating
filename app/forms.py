@@ -4,7 +4,7 @@ All forms are in this file.
 from datetime import datetime
 from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField,\
                     DateTimeField, validators, HiddenField, widgets, SelectMultipleField
-from wtforms.validators import ValidationError
+from wtforms.validators import ValidationError, DataRequired, Regexp
 from wtforms_components import TimeField
 from flask_wtf import FlaskForm
 
@@ -154,3 +154,12 @@ class DateNrChangeForm(FlaskForm):
         [validators.DataRequired(),
          validators.NumberRange(min=0, max=20)])
     participant_id = HiddenField('Teilnehmer ID', [validators.DataRequired()])
+
+
+class LikeForm(FlaskForm):
+    """ Represents a form to update a participant's likes """
+    likes = StringField('Likes', validators=[Regexp(r'^(\d+(,\d+)*)?$')])
+
+class SendMatchesForm(FlaskForm):
+    """ Allows an admin to send out matches via email """
+    pass

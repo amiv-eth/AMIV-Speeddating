@@ -1,0 +1,16 @@
+<p>Hi {{ name }}!</p>
+
+<p>Folgende Personen würden gerne von dir hören:</p>
+
+{% for match in matches %}
+    <p>
+        {{ match.prename }} {{ match.name }}<br>
+        {{ match.email}}<br>
+        {{ match.mobile_nr }}
+    </p>
+{% endfor %}
+
+<p>
+    Danke fürs Mitmachen und viel Spass!<br>
+    Dein AMIV-Speeddating-OK
+</p>
