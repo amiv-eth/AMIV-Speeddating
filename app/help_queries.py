@@ -12,7 +12,7 @@ def get_list_women_of_slot(session, slot_id):
         slot = TimeSlots.query.filter(TimeSlots.id == slot_id).first()
         women = Participants.query.order_by(Participants.creation_timestamp).filter(
             Participants.available_slot == slot_id,
-            Participants.gender == '1').all()
+            Participants.gender == Gender.FEMALE).all()
     except Exception as e:
         print(e)
         return e
@@ -36,7 +36,7 @@ def get_list_men_of_slot(session, slot_id):
         slot = TimeSlots.query.filter(TimeSlots.id == slot_id).first()
         men = Participants.query.order_by(Participants.creation_timestamp).filter(
             Participants.available_slot == slot_id,
-            Participants.gender == '0').all()
+            Participants.gender == Gender.MALE).all()
     except Exception as e:
         print(e)
         return e
