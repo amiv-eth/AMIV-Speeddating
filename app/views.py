@@ -610,35 +610,70 @@ def manual_signup():
                 age_strings.append('< 22'.ljust(6))
                 age_strings.append('22-25'.ljust(6))
                 age_strings.append('> 25'.ljust(6))
-
+                age_strings.append('alle'.ljust(6))
+                ids_nonspecial = []
+                ids_special = []
+                strings_non_special = []
+                strings_special = []
                 ids = []
                 strings = []
                 for s in timeslots:
-                    ids.append(int(s.id))
-                    women = Participants.query.filter(
-                        Participants.available_slot == s.id,
-                        Participants.confirmed == '1',
-                        Participants.gender == '1').count()
-                    men = Participants.query.filter(
-                        Participants.available_slot == s.id,
-                        Participants.confirmed == '1',
-                        Participants.gender == '0').count()
-                    stri = '&nbsp &nbsp '
-                    stri = stri + \
-                        s.date.strftime("%a %d. %B %Y") + '&nbsp &nbsp '
-                    stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                        s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
-                    stri = stri + '&nbsp &nbsp '
-                    stri = stri + 'Altersgruppe: &nbsp' + \
-                        age_strings[s.age_range]
-                    stri = stri + \
-                        '&nbsp &nbsp # angemeldete Personen: &nbsp &nbsp  M: ' + \
-                        str(men)
-                    stri = stri + '&nbsp &nbsp W: ' + str(women)
-                    strings.append(stri)
+                    if s.special_slot == 1:
+                        ids_special.append(int(s.id))
+                        women = Participants.query.filter(
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '1').count()
+                        men = Participants.query.filter(
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '0').count()
+                        stri = '&nbsp &nbsp &nbsp'
+                        stri = stri + \
+                            s.date.strftime("%a %d. %b %y") + \
+                            '&nbsp &nbsp &nbsp'
+                        stri = str(stri).ljust(50, ' ' [0:1]) + str(
+                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
+                        stri = stri + '&nbsp &nbsp &nbsp'
+                        stri = stri + 'Altersgruppe: &nbsp' + \
+                            age_strings[s.age_range]
+                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
+                            str(men) + '/' + str(s.nr_couples)
+                        stri = stri + '&nbsp &nbsp W: ' + \
+                            str(women) + '/' + str(s.nr_couples)
+                        strings_special.append(stri)
+                    elif s.special_slot == 0:
+                        ids_nonspecial.append(int(s.id))
+                        women = Participants.query.filter(
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '1').count()
+                        men = Participants.query.filter(
+                            Participants.available_slot == s.id,
+                            Participants.confirmed == '1',
+                            Participants.gender == '0').count()
+                        stri = '&nbsp &nbsp &nbsp'
+                        stri = stri + \
+                            s.date.strftime("%a %d. %b %y") + \
+                            '&nbsp &nbsp &nbsp'
+                        stri = str(stri).ljust(50, ' ' [0:1]) + str(
+                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
+                        stri = stri + '&nbsp &nbsp &nbsp'
+                        stri = stri + 'Altersgruppe: &nbsp' + \
+                            age_strings[s.age_range]
+                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
+                            str(men) + '/' + str(s.nr_couples)
+                        stri = stri + '&nbsp &nbsp W: ' + \
+                            str(women) + '/' + str(s.nr_couples)
+                        strings_non_special.append(stri)
 
                 form.availableslots.choices = [
-                    (ids[i], strings[i]) for i in range(0, len(timeslots))
+                    (ids_nonspecial[i], strings_non_special[i])
+                    for i in range(0, len(ids_nonspecial))
+                ]
+                form.availablespecialslots.choices = [
+                    (ids_special[i], strings_special[i])
+                    for i in range(0, len(ids_special))
                 ]
 
     except Exception as e:
@@ -659,16 +694,32 @@ def manual_signup():
             studysemester = str(request.form['studysemester'])
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
-            availableslots = int(request.form['availableslots'])
-            confirmed = 1
-            present = 1
+            if event.special_slots == 1:
+                availablespecialslots = request.form.getlist(
+                    'availablespecialslots')
+            availableslots = request.form.getlist('availableslots')
+            confirmed = 0
+            present = 0
             payed = 0
 
-            bday = datetime.strptime(birthday, '%d.%m.%Y')
+            slots = 0
+            if availableslots:
+                slots = int(availableslots[0])
+            elif availablespecialslots:
+                slots = int(availablespecialslots[0])
+            else:
+                message = 'Du hast kein passendes Datum ausgewählt! Bitte geh zurück und wähle ein dir passendes Datum aus.'
+                return render_template('error.html', message=message)
 
+            bday = datetime.strptime(birthday, '%d.%m.%Y')
             count = Participants.query.filter(
                 Participants.email == email,
                 Participants.event_id == eventid).count()
+            chosen_timeslot = TimeSlots.query.filter(
+                TimeSlots.id == int(slots)).first()
+            chosen_datetime = str(
+                chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
+                    chosen_timeslot.start_time)
 
             if count == 0:
                 new_participant = Participants(
@@ -685,7 +736,7 @@ def manual_signup():
                     semester=studysemester,
                     perfDate=perfectdate,
                     fruit=fruit,
-                    aSlot=availableslots,
+                    aSlot=slots,
                     confirmed=confirmed,
                     present=present,
                     payed=payed)
@@ -698,10 +749,14 @@ def manual_signup():
                 return render_template('error.html', message=message)
 
         except Exception as exception:
-            print(exception)
+            print('Exception of type {} occurred'.format(type(e)))
             return render_template('error.html')
 
-        return render_template('success.html')
+        return render_template(
+            'success.html',
+            name=(prename + ' ' + name),
+            mail=email,
+            datetime=chosen_datetime)
     return render_template('manual_signup.html', form=form, event=event)
 
 

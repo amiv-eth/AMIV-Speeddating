@@ -2,6 +2,7 @@
 
 {% extends 'base.html' %}
 
+{% block anmeldung %}class="active"{% endblock %}
 
 <h1>{% block title %}Manuelle Anmeldung{% endblock %}</h1>
 
@@ -27,9 +28,12 @@
   {% if form.availableslots.choices %}
   {{ render_radio(form.availableslots) }}
   {% endif %}
+  {% if form.availablespecialslots.choices %}
+  {{ render_radio(form.availablespecialslots) }}
+  {% endif %}
   {{ render_field(form.perfectdate) }}
   {{ render_field(form.fruit) }}
-  <button type = "submit" class="btn btn-default">Submit</button>
+  <button type = "submit" class="btn btn-default">Anmeldung</button>
 </form>
 
 {% endblock %}
