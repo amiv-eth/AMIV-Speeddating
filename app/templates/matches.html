@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col">
+            <h2>Matches für Timeslot {{ timeslot_id }}</h2>
+            {% if matches|length <= 0 %}
+                <p>Es gibt keine Matches in diesem Timeslot :(</p>
+            {% else %}
+                <ul>
+                    {% for match in matches %}
+                        <li>{{ match[0] }} hat Interesse an {{ match[1] }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <form action="/matches/{{ timeslot_id }}" method="post">
+            {{ form.csrf_token }}
+            <button class="btn btn-default">
+                Matches verschicken
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

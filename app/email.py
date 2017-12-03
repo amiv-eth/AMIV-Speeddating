@@ -59,3 +59,28 @@ def send_post_signup_email(participant):
         logging.info('E-Mail sent to {}'.format(participant.email))
     except BadHeaderError:
         logging.error('Failed to send e-mail to {}: BadHeaderError'.format(participant.email))
+
+
+def send_matches_email(participant, matches):
+    """ Inform participant about their matches """
+    env = Environment(
+        loader=PackageLoader('app.email', 'templates/email')
+    )
+    template = env.get_template('matches_email.html')
+
+    context = {
+        'name': participant.prename,
+        'matches': matches
+    }
+
+    msg = Message(
+        html=template.render(**context),
+        subject='AMIV-Speeddating - Deine Matches',
+        recipients=[participant.email]
+    )
+
+    try:
+        mail.send(msg)
+        logging.info('E-Mail sent to {}'.format(participant.email))
+    except BadHeaderError:
+        logging.error('Failed to send e-mail to {}: BadHeaderError'.format(participant.email))
