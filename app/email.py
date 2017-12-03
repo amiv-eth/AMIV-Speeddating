@@ -3,12 +3,29 @@ All e-mail sending is done through this file.
 """
 
 import logging
+from logging.handlers import SMTPHandler
 from flask import url_for
 from flask_mail import Message, BadHeaderError
-from app import mail
+from app import app, mail
 from jinja2 import Environment, PackageLoader
 
-logging.basicConfig(filename='logging/email.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+# File handler will log everything except debug
+file_handler = logging.FileHandler('app/logging/email.log')
+file_handler.setLevel(logging.INFO)
+logger.addHandler(file_handler)
+
+# E-Mail handler will only handle warnings and worse
+email_handler = SMTPHandler(
+    mailhost='{}:{}'.format(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
+    fromaddr=app.config['MAIL_DEFAULT_SENDER'],
+    toaddrs=app.config['MAIL_ADMINS'],
+    subject='[AMIV-Speeddating] Issue',
+    credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD']))
+email_handler.setLevel(logging.WARNING)
+logger.addHandler(email_handler)
 
 def send_post_signup_email(participant):
     """Send e-mail to participant after successful signup
