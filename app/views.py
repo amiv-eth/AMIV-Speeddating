@@ -14,6 +14,7 @@ from datetime import datetime
 from flask_mail import Message
 from app.signals import SIGNAL_NEW_SIGNUP
 from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
+from app.signup import get_slots_choices, check_if_mail_unique_within_event
 
 
 @app.route('/')
@@ -438,73 +439,11 @@ def signup():
             timeslots = TimeSlots.query.filter(
                 TimeSlots.event_id == eventid).all()
             if timeslots != None:
-                age_strings = []
-                age_strings.append('< 22'.ljust(6))
-                age_strings.append('22-25'.ljust(6))
-                age_strings.append('> 25'.ljust(6))
-                age_strings.append('alle'.ljust(6))
-                ids_nonspecial = []
-                ids_special = []
-                strings_non_special = []
-                strings_special = []
-                for s in timeslots:
-                    if s.special_slot == 1:
-                        ids_special.append(int(s.id))
-                        women = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '1').count()
-                        men = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '0').count()
-                        stri = '&nbsp &nbsp &nbsp'
-                        stri = stri + \
-                            s.date.strftime("%a %d. %b %y") + \
-                            '&nbsp &nbsp &nbsp'
-                        stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
-                        stri = stri + '&nbsp &nbsp &nbsp'
-                        stri = stri + 'Altersgruppe: &nbsp' + \
-                            age_strings[s.age_range]
-                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
-                            str(men) + '/' + str(s.nr_couples)
-                        stri = stri + '&nbsp &nbsp W: ' + \
-                            str(women) + '/' + str(s.nr_couples)
-                        strings_special.append(stri)
-                    elif s.special_slot == 0:
-                        ids_nonspecial.append(int(s.id))
-                        women = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '1').count()
-                        men = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '0').count()
-                        stri = '&nbsp &nbsp &nbsp'
-                        stri = stri + \
-                            s.date.strftime("%a %d. %b %y") + \
-                            '&nbsp &nbsp &nbsp'
-                        stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
-                        stri = stri + '&nbsp &nbsp &nbsp'
-                        stri = stri + 'Altersgruppe: &nbsp' + \
-                            age_strings[s.age_range]
-                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
-                            str(men) + '/' + str(s.nr_couples)
-                        stri = stri + '&nbsp &nbsp W: ' + \
-                            str(women) + '/' + str(s.nr_couples)
-                        strings_non_special.append(stri)
+                [available_slots_choices, available_special_slots_choices] = get_slots_choices(
+                    timeslots)
 
-                form.availableslots.choices = [
-                    (ids_nonspecial[i], strings_non_special[i])
-                    for i in range(0, len(ids_nonspecial))
-                ]
-                form.availablespecialslots.choices = [
-                    (ids_special[i], strings_special[i])
-                    for i in range(0, len(ids_special))
-                ]
+                form.availableslots.choices = available_slots_choices
+                form.availablespecialslots.choices = available_special_slots_choices
 
     except Exception as e:
         print(e)
@@ -528,7 +467,7 @@ def signup():
                 availablespecialslots = request.form.getlist(
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
-            confirmed = 1
+            confirmed = 0
             present = 0
             payed = 0
 
@@ -538,20 +477,18 @@ def signup():
             elif availablespecialslots:
                 slots = int(availablespecialslots[0])
             else:
-                message = 'Du hast kein passendes Datum ausgewählt! Bitte geh zurück und wähle ein dir passendes Datum aus.'
+                message = 'Du hast kein passendes Datum ausgewählt!\
+                Bitte geh zurück und wähle ein dir passendes Datum aus.'
                 return render_template('error.html', message=message)
 
             bday = datetime.strptime(birthday, '%d.%m.%Y')
-            count = Participants.query.filter(
-                Participants.email == email,
-                Participants.event_id == eventid).count()
             chosen_timeslot = TimeSlots.query.filter(
                 TimeSlots.id == int(slots)).first()
             chosen_datetime = str(
                 chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
                     chosen_timeslot.start_time)
 
-            if count == 0:
+            if check_if_mail_unique_within_event(email, event) is True:
                 new_participant = Participants(
                     timestamp,
                     eventid,
@@ -575,10 +512,12 @@ def signup():
 
                 # The participant signed up successfully
                 # Emit signal and show success page
-                SIGNAL_NEW_SIGNUP.send('signup view', participant=new_participant)
+                SIGNAL_NEW_SIGNUP.send(
+                    'signup view', participant=new_participant)
             else:
                 message = 'Die E-Mail Adresse ' + email + \
-                    ' wurde bereits für das Speeddating angewendet. Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
+                    ' wurde bereits für das Speeddating angewendet.\
+                    Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
                 return render_template('error.html', message=message)
 
         except Exception as e:
@@ -606,75 +545,11 @@ def manual_signup():
             timeslots = TimeSlots.query.filter(
                 TimeSlots.event_id == eventid).all()
             if timeslots != None:
-                age_strings = []
-                age_strings.append('< 22'.ljust(6))
-                age_strings.append('22-25'.ljust(6))
-                age_strings.append('> 25'.ljust(6))
-                age_strings.append('alle'.ljust(6))
-                ids_nonspecial = []
-                ids_special = []
-                strings_non_special = []
-                strings_special = []
-                ids = []
-                strings = []
-                for s in timeslots:
-                    if s.special_slot == 1:
-                        ids_special.append(int(s.id))
-                        women = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '1').count()
-                        men = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '0').count()
-                        stri = '&nbsp &nbsp &nbsp'
-                        stri = stri + \
-                            s.date.strftime("%a %d. %b %y") + \
-                            '&nbsp &nbsp &nbsp'
-                        stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
-                        stri = stri + '&nbsp &nbsp &nbsp'
-                        stri = stri + 'Altersgruppe: &nbsp' + \
-                            age_strings[s.age_range]
-                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
-                            str(men) + '/' + str(s.nr_couples)
-                        stri = stri + '&nbsp &nbsp W: ' + \
-                            str(women) + '/' + str(s.nr_couples)
-                        strings_special.append(stri)
-                    elif s.special_slot == 0:
-                        ids_nonspecial.append(int(s.id))
-                        women = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '1').count()
-                        men = Participants.query.filter(
-                            Participants.available_slot == s.id,
-                            Participants.confirmed == '1',
-                            Participants.gender == '0').count()
-                        stri = '&nbsp &nbsp &nbsp'
-                        stri = stri + \
-                            s.date.strftime("%a %d. %b %y") + \
-                            '&nbsp &nbsp &nbsp'
-                        stri = str(stri).ljust(50, ' ' [0:1]) + str(
-                            s.start_time)[:-3] + ' - ' + str(s.end_time)[:-3]
-                        stri = stri + '&nbsp &nbsp &nbsp'
-                        stri = stri + 'Altersgruppe: &nbsp' + \
-                            age_strings[s.age_range]
-                        stri = stri + '&nbsp &nbsp &nbsp Anmeldungsstand: &nbsp &nbsp  M: ' + \
-                            str(men) + '/' + str(s.nr_couples)
-                        stri = stri + '&nbsp &nbsp W: ' + \
-                            str(women) + '/' + str(s.nr_couples)
-                        strings_non_special.append(stri)
+                [available_slots_choices, available_special_slots_choices] = get_slots_choices(
+                    timeslots)
 
-                form.availableslots.choices = [
-                    (ids_nonspecial[i], strings_non_special[i])
-                    for i in range(0, len(ids_nonspecial))
-                ]
-                form.availablespecialslots.choices = [
-                    (ids_special[i], strings_special[i])
-                    for i in range(0, len(ids_special))
-                ]
+                form.availableslots.choices = available_slots_choices
+                form.availablespecialslots.choices = available_special_slots_choices
 
     except Exception as e:
         print(e)
@@ -712,16 +587,13 @@ def manual_signup():
                 return render_template('error.html', message=message)
 
             bday = datetime.strptime(birthday, '%d.%m.%Y')
-            count = Participants.query.filter(
-                Participants.email == email,
-                Participants.event_id == eventid).count()
             chosen_timeslot = TimeSlots.query.filter(
                 TimeSlots.id == int(slots)).first()
             chosen_datetime = str(
                 chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
                     chosen_timeslot.start_time)
 
-            if count == 0:
+            if check_if_mail_unique_within_event(email, event) is True:
                 new_participant = Participants(
                     timestamp,
                     eventid,
@@ -784,12 +656,14 @@ def export_slot(timeslot_id):
         return render_template('csv.html', slot=slot, exported=exported)
     return render_template('error.html')
 
+
 @app.route('/confirm/<string:confirm_token>')
 def confirm_participation(confirm_token):
     """ Use confirm_token to confirm participation """
     if _confirm_participation(confirm_token):
         return render_template('confirm_success.html')
     abort(404)
+
 
 @app.route('/cancel/<string:cancel_token>')
 def cancel_participation(cancel_token):
