@@ -34,7 +34,7 @@ class Participants(db.Model):
     fruit = Column(String(300), unique=False)
     creation_timestamp = Column(DateTime, unique=False)
     confirmed = Column(Boolean, unique=False)
-    present = Column(Integer, unique=False)
+    present = Column(Boolean, unique=False)
     payed = Column(Integer, unique=False)
     date_nr = Column(Integer, unique=False)
     confirm_token = Column(String(64), unique=True)
@@ -59,8 +59,8 @@ class Participants(db.Model):
                  semester=None,
                  perfDate=None,
                  fruit=None,
-                 confirmed=1,
-                 present=0,
+                 confirmed=True,
+                 present=False,
                  payed=0,
                  datenr=0):
         self.def_slot = dSlot
@@ -93,7 +93,7 @@ class Participants(db.Model):
         """ Calculate age """
         today = date.today()
         return today.year - self.birthday.year - ((today.month, today.day) <
-                                        (self.birthday.month, self.birthday.day))
+                                                  (self.birthday.month, self.birthday.day))
 
 
 class TimeSlots(db.Model):

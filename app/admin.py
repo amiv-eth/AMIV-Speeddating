@@ -75,10 +75,10 @@ def change_present(session, participant_id):
         participant = session.query(Participants).filter_by(
             id=participant_id).first()
 
-        if participant.present == 0:
-            participant.present = int(1)
+        if not participant.present:
+            participant.present = True
         else:
-            participant.present = int(0)
+            participant.present = False
 
         session.commit()
         return True

@@ -337,11 +337,11 @@ def timeslot_view_ongoing(timeslot_id):
         women = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.FEMALE, Participants.present == '1').all()
+                Participants.gender == Gender.FEMALE, Participants.present is True).all()
         men = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.MALE, Participants.present == '1').all()
+                Participants.gender == Gender.MALE, Participants.present is True).all()
         event = Events.query.filter(Events.id == slot.event_id).first()
     except Exception as e:
         print(e)
@@ -469,7 +469,7 @@ def signup():
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
             confirmed = False
-            present = 0
+            present = False
             payed = 0
 
             slots = 0
@@ -575,7 +575,7 @@ def manual_signup():
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
             confirmed = False
-            present = 0
+            present = False
             payed = 0
 
             slots = 0
@@ -646,7 +646,7 @@ def export_slot(timeslot_id):
         men = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.MALE, Participants.present == '1').all()
+                Participants.gender == Gender.MALE, Participants.present is True).all()
         exported = export(women, men, slot)
 
     except Exception as e:
