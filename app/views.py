@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from app.models import Events, TimeSlots, Participants, AdminUser, Gender
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
-from app.functions import export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
+from app.admin import export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
 from flask_mail import Message
