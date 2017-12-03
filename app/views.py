@@ -341,11 +341,11 @@ def timeslot_view_ongoing(timeslot_id):
         women = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.FEMALE, Participants.present is True).all()
+                Participants.gender == Gender.FEMALE, Participants.present).all()
         men = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.MALE, Participants.present is True).all()
+                Participants.gender == Gender.MALE, Participants.present).all()
         event = Events.query.filter(Events.id == slot.event_id).first()
     except Exception as e:
         print(e)
