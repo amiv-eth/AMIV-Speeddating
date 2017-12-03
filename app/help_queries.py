@@ -1,54 +1,30 @@
 """
 Collection of frequently used queries
 """
-from app.models import Participants, TimeSlots, Gender
-
-def get_list_women_of_slot(session, slot_id):
-    """ Returns two lists, one with the women in the slot, one with the women not in the slot """
-    w_in = []
-    w_out = []
-
-    try:
-        slot = TimeSlots.query.filter(TimeSlots.id == slot_id).first()
-        women = Participants.query.order_by(Participants.creation_timestamp).filter(
-            Participants.available_slot == slot_id,
-            Participants.gender == Gender.FEMALE).all()
-    except Exception as e:
-        print(e)
-        return e
-
-    count = 0
-    for woman in women:
-        if woman.confirmed is True and count < slot.nr_couples:
-            count = count + 1
-            w_in.append(woman)
-        else:
-            w_out.append(woman)
-    return [w_in, w_out]
+from app.models import Participants
 
 
-def get_list_men_of_slot(session, slot_id):
-    """ Returns two lists, one with the men in the slot, one with the men not in the slot """
-    m_in = []
-    m_out = []
+def participants_in_slot(slot, gender=None):
+    """ Returns a list of two lists, one containing the participants who made the slot,
+    one containing those on the waiting list """
+    # Only select Participants who have confirmed their participation
+    participants = Participants.query.filter(
+        Participants.available_slot == slot.id,
+        Participants.confirmed
+    ).order_by(Participants.creation_timestamp)
 
-    try:
-        slot = TimeSlots.query.filter(TimeSlots.id == slot_id).first()
-        men = Participants.query.order_by(Participants.creation_timestamp).filter(
-            Participants.available_slot == slot_id,
-            Participants.gender == Gender.MALE).all()
-    except Exception as e:
-        print(e)
-        return e
+    # Optional gender filtering
+    if gender is not None:
+        participants = participants.filter(Participants.gender == gender)
 
-    count = 0
-    for man in men:
-        if man.confirmed is True and count < slot.nr_couples:
-            count = count + 1
-            m_in.append(man)
-        else:
-            m_out.append(man)
-    return [m_in, m_out]
+    participants_list = participants.all()
+    nr_couples = slot.nr_couples
+
+    # If there are more Participants than slots, only the first few will get in
+    if len(participants_list) > nr_couples:
+        return [participants_list[:nr_couples], participants_list[nr_couples:]]
+    return [participants_list, []]
+
 
 def get_string_mails_of_list(session, slot, plist):
     """ Create list of email addresses as a string """

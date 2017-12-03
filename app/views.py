@@ -7,7 +7,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app.models import Events, TimeSlots, Participants, AdminUser, Gender
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
-from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
+from app.help_queries import participants_in_slot, get_string_of_date_list, get_string_mails_of_list
 from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
@@ -274,10 +274,14 @@ def timeslot_view(timeslot_id):
     """ Timeslot view """
     if request.method == 'GET':
 
+        slot = TimeSlots.query.get(timeslot_id)
+        if slot is None:
+            abort(404)
+        
         slotid = timeslot_id
 
-        [w_in, w_out] = get_list_women_of_slot(db.session, timeslot_id)
-        [m_in, m_out] = get_list_men_of_slot(db.session, timeslot_id)
+        [w_in, w_out] = participants_in_slot(slot, gender=Gender.FEMALE)
+        [m_in, m_out] = participants_in_slot(slot, gender=Gender.MALE)
 
         try:
             slot = TimeSlots.query.filter(TimeSlots.id == slotid).first()
