@@ -1,7 +1,7 @@
 """
 Collection of frequently used queries
 """
-from app.models import Participants, TimeSlots
+from app.models import Participants, TimeSlots, Gender
 
 def get_list_women_of_slot(session, slot_id):
     """ Returns two lists, one with the women in the slot, one with the women not in the slot """

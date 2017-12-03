@@ -5,7 +5,7 @@ Contains all views, i.e. anything that is routed to a url
 
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
-from app.models import Events, TimeSlots, Participants, AdminUser
+from app.models import Events, TimeSlots, Participants, AdminUser, Gender
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import get_string_of_date_list, get_list_women_of_slot, get_list_men_of_slot, get_string_mails_of_list
 from app.functions import get_age, export, change_datenr, change_payed, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
@@ -142,12 +142,12 @@ def event_participants(event_id):
                         (Participants.creation_timestamp)).filter(
                             Participants.event_id == eid,
                             Participants.available_slot == slot.id,
-                            Participants.gender == '1').all()
+                            Participants.gender == Gender.FEMALE).all()
                     man = Participants.query.order_by(
                         (Participants.creation_timestamp)).filter(
                             Participants.event_id == eid,
                             Participants.available_slot == slot.id,
-                            Participants.gender == '0').all()
+                            Participants.gender == Gender.MALE).all()
                     women.append(woman)
                     men.append(man)
         except Exception as e:
@@ -284,11 +284,11 @@ def timeslot_view(timeslot_id):
             women = Participants.query.order_by(
                 (Participants.creation_timestamp)).filter(
                     Participants.available_slot == slotid,
-                    Participants.gender == '1').all()
+                    Participants.gender == Gender.FEMALE).all()
             men = Participants.query.order_by(
                 (Participants.creation_timestamp)).filter(
                     Participants.available_slot == slotid,
-                    Participants.gender == '0').all()
+                    Participants.gender == Gender.MALE).all()
             event = Events.query.filter(Events.id == slot.event_id).first()
         except Exception as e:
             print(e)
@@ -337,11 +337,11 @@ def timeslot_view_ongoing(timeslot_id):
         women = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == '1', Participants.present == '1').all()
+                Participants.gender == Gender.FEMALE, Participants.present == '1').all()
         men = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == '0', Participants.present == '1').all()
+                Participants.gender == Gender.MALE, Participants.present == '1').all()
         event = Events.query.filter(Events.id == slot.event_id).first()
     except Exception as e:
         print(e)
@@ -455,7 +455,7 @@ def signup():
             timestamp = datetime.now()
             name = str(request.form['name'])
             prename = str(request.form['prename'])
-            gender = int(request.form['gender'])
+            gender = Gender(int(request.form['gender']))
             email = str(request.form['email'])
             mobile = str(request.form['mobilenr'])
             address = str(request.form['address'])
@@ -561,7 +561,7 @@ def manual_signup():
             timestamp = datetime.now()
             name = str(request.form['name'])
             prename = str(request.form['prename'])
-            gender = int(request.form['gender'])
+            gender = Gender(int(request.form['gender']))
             email = str(request.form['email'])
             mobile = str(request.form['mobilenr'])
             address = str(request.form['address'])
@@ -642,11 +642,11 @@ def export_slot(timeslot_id):
         women = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == '1', Participants.present == '1').all()
+                Participants.gender == Gender.FEMALE, Participants.present == '1').all()
         men = Participants.query.order_by(
             (Participants.creation_timestamp)).filter(
                 Participants.available_slot == timeslot_id,
-                Participants.gender == '0', Participants.present == '1').all()
+                Participants.gender == Gender.MALE, Participants.present == '1').all()
         exported = export(women, men, slot)
 
     except Exception as e:

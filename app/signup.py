@@ -4,7 +4,7 @@ Contains all functions etc that help the signup view
 """
 
 from app import db
-from app.models import Participants, TimeSlots
+from app.models import Participants, TimeSlots, Gender
 
 
 def get_age_string_list():
@@ -36,11 +36,11 @@ def get_slots_choices(timeslots):
             nr_women = Participants.query.filter(
                 Participants.available_slot == slot.id,
                 Participants.confirmed == '1',
-                Participants.gender == '1').count()
+                Participants.gender == Gender.FEMALE).count()
             nr_men = Participants.query.filter(
                 Participants.available_slot == slot.id,
                 Participants.confirmed == '1',
-                Participants.gender == '0').count()
+                Participants.gender == Gender.MALE).count()
             stri = '&nbsp &nbsp &nbsp'
             stri = stri + \
                 slot.date.strftime("%a %d. %b %y") + \
@@ -60,11 +60,11 @@ def get_slots_choices(timeslots):
             nr_women = Participants.query.filter(
                 Participants.available_slot == slot.id,
                 Participants.confirmed == '1',
-                Participants.gender == '1').count()
+                Participants.gender == Gender.FEMALE).count()
             nr_men = Participants.query.filter(
                 Participants.available_slot == slot.id,
                 Participants.confirmed == '1',
-                Participants.gender == '0').count()
+                Participants.gender == Gender.MALE).count()
             stri = '&nbsp &nbsp &nbsp'
             stri = stri + \
                 slot.date.strftime("%a %d. %b %y") + \
@@ -89,7 +89,7 @@ def get_slots_choices(timeslots):
 
 
 def check_if_mail_unique_within_event(email, event):
-    """ return True if mail is unique wihtin the event, else False """
+    """ return True if mail is unique within the event, else False """
     count = Participants.query.filter(Participants.email == email,
                                       Participants.event_id == event.id).count()
     if count == 0:

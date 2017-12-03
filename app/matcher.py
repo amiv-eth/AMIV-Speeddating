@@ -10,7 +10,7 @@ def find_matches(timeslot_id):
     matches = []
     participants = Participants.query.filter_by(available_slot=timeslot_id)
     for participant in participants:
-        target_gender = 1 - participant.gender
+        target_gender = participant.gender.other()
         interest_ids = participant.likes.split(',')
         # Iterate over participant's interests
         for interest_id in interest_ids:

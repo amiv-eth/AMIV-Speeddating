@@ -1,9 +1,18 @@
 """
 Contains model declarations for sqlalchemy.
 """
+from enum import Enum
 from app import db
-from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time
+from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time, Enum as EnumSQLAlchemy
 from flask_login import UserMixin
+
+class Gender(Enum):
+    """ Enum type to represent gender information """
+    MALE = 0
+    FEMALE = 1
+    def other(self):
+        """ Return the other gender """
+        return Gender(1 - self.value)
 
 class Participants(db.Model):
     """Models a Participant"""
@@ -17,7 +26,7 @@ class Participants(db.Model):
     mobile_nr = Column(String(20), unique=False)
     address = Column(String(200), unique=False)
     birthday = Column(Date, unique=False)
-    gender = Column(Integer, unique=False)
+    gender = Column(EnumSQLAlchemy(Gender), unique=False)
     study_course = Column(String(80), unique=False)
     study_semester = Column(String(80), unique=False)
     perfect_date = Column(String(300), unique=False)
