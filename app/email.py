@@ -2,11 +2,13 @@
 All e-mail sending is done through this file.
 """
 
+import logging
 from flask import url_for
 from flask_mail import Message, BadHeaderError
 from app import mail
 from jinja2 import Environment, PackageLoader
 
+logging.basicConfig(filename='logging/email.log', level=logging.INFO)
 
 def send_post_signup_email(participant):
     """Send e-mail to participant after successful signup
@@ -37,5 +39,6 @@ def send_post_signup_email(participant):
         recipients=[participant.email])
     try:
         mail.send(msg)
+        logging.info('E-Mail sent to {}'.format(participant.email))
     except BadHeaderError:
-        print('A BadHeaderError ocurred')
+        logging.error('Failed to send e-mail to {}: BadHeaderError'.format(participant.email))
