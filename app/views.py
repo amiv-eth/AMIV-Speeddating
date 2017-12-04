@@ -7,7 +7,7 @@ from flask_login import LoginManager, UserMixin, login_required, login_user, log
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app.models import Events, TimeSlots, Participants, AdminUser, Gender
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
-from app.help_queries import participants_in_slot, get_string_of_date_list, get_string_mails_of_list
+from app.help_queries import participants_in_slot, get_string_of_date_list
 from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
@@ -298,10 +298,11 @@ def timeslot_view(timeslot_id):
             print(e)
             return render_template('error.html')
 
-        w_in_mail = get_string_mails_of_list(db.session, slot, w_in)
-        w_out_mail = get_string_mails_of_list(db.session, slot, w_out)
-        m_in_mail = get_string_mails_of_list(db.session, slot, m_in)
-        m_out_mail = get_string_mails_of_list(db.session, slot, m_out)
+        # Create semicolon-separated list of email addresses
+        w_in_mail = '; '.join([w.email for w in w_in])
+        w_out_mail = '; '.join([w.email for w in w_out])
+        m_in_mail = '; '.join([m.email for m in m_in])
+        m_out_mail = '; '.join([m.email for m in m_out])
 
         return render_template(
             'timeslot_view.html',
@@ -652,7 +653,7 @@ def export_slot(timeslot_id):
     exported = export(women, men, slot)
     if exported != '':
         return render_template('csv.html', slot=slot, exported=exported)
-    
+
     return render_template('error.html')
 
 

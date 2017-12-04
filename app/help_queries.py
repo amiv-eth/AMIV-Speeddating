@@ -25,15 +25,6 @@ def participants_in_slot(slot, gender=None):
         return [participants_list[:nr_couples], participants_list[nr_couples:]]
     return [participants_list, []]
 
-
-def get_string_mails_of_list(session, slot, plist):
-    """ Create list of email addresses as a string """
-    mail = ""
-    for p in plist:
-        mail = mail + p.email + "; "
-    return mail[:-2]
-
-
 def get_string_of_date_list(date_list):
     """ Create list of timeslots as a string """
     dates_string = ''
