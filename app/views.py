@@ -23,11 +23,11 @@ from app.matcher import find_matches, inform_matches
 def index():
     """ Index """
     try:
-        event = Events.query.filter(Events.active == '1').first()
+        # Only one event is shown at a time
+        event = Events.query.filter(Events.active).first()
         dates = None
-        if event != None:
-            timeslots = TimeSlots.query.filter(
-                TimeSlots.event_id == event.id).all()
+        if event is not None:
+            timeslots = TimeSlots.query.filter(TimeSlots.event_id == event.id).all()
             dates = list(set(list(slot.date for slot in timeslots)))
         dates_string = get_string_of_date_list(dates)
     except Exception as exception:
@@ -219,8 +219,8 @@ def create_event():
                 str(request.form['closesignuptimestamp']), format_string)
             place = str(request.form['place'])
             participationfee = str(request.form['participationfee'])
-            signup_open = 0
-            active = 0
+            signup_open = False
+            active = False
 
         except Exception as e:
             print(e)
@@ -440,7 +440,7 @@ def signup():
     """ Main signup page """
     form = SignupForm(request.form)
     try:
-        event = Events.query.filter(Events.active == '1').first()
+        event = Events.query.filter(Events.active).first()
         if event != None:
             eventid = event.id
             timeslots = TimeSlots.query.filter(
@@ -467,17 +467,17 @@ def signup():
             address = str(request.form['address'])
             birthday = str(request.form['birthday'])
             studycourse = str(request.form['studycourse'])
-            studysemester = str(request.form['studysemester'])
+            studysemester = int(request.form['studysemester'])
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
-            if event.special_slots == 1:
+            availablespecialslots = None
+            if event.special_slots:
                 availablespecialslots = request.form.getlist(
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
             confirmed = False
             present = False
             paid = False
-
             slots = 0
             if availableslots:
                 slots = int(availableslots[0])
@@ -487,14 +487,12 @@ def signup():
                 message = 'Du hast kein passendes Datum ausgewählt!\
                 Bitte geh zurück und wähle ein dir passendes Datum aus.'
                 return render_template('error.html', message=message)
-
             bday = datetime.strptime(birthday, '%d.%m.%Y')
             chosen_timeslot = TimeSlots.query.filter(
                 TimeSlots.id == int(slots)).first()
             chosen_datetime = str(
                 chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
                     chosen_timeslot.start_time)
-
             if check_if_mail_unique_within_event(email, event) is True:
                 new_participant = Participants(
                     creation_timestamp=timestamp,
@@ -506,17 +504,16 @@ def signup():
                     address=address,
                     birthday=bday,
                     gender=gender,
-                    course=studycourse,
-                    semester=studysemester,
-                    perfDate=perfectdate,
+                    study_course=studycourse,
+                    study_semester=studysemester,
+                    perfect_date=perfectdate,
                     fruit=fruit,
-                    aSlot=slots,
+                    available_slot=slots,
                     confirmed=confirmed,
                     present=present,
                     paid=paid)
                 db.session.add(new_participant)
                 db.session.commit()
-
                 # The participant signed up successfully
                 # Emit signal and show success page
                 SIGNAL_NEW_SIGNUP.send(
@@ -528,12 +525,12 @@ def signup():
                 return render_template('error.html', message=message)
 
         except Exception as e:
-            print('Exception of type {} occurred'.format(type(e)))
+            print('Exception of type {} occurred: {}'.format(type(e), str(e)))
             return render_template('error.html')
 
         return render_template(
             'success.html',
-            name=(prename + ' ' + name),
+            name=('{} {}'.format(prename, name)),
             mail=email,
             datetime=chosen_datetime)
 
@@ -546,12 +543,11 @@ def manual_signup():
     """ Admin signup page, allows signup outside of registration period """
     form = SignupForm(request.form)
     try:
-        event = Events.query.filter(Events.active == '1').first()
-        if event != None:
+        event = Events.query.filter(Events.active).first()
+        if event is not None:
             eventid = event.id
-            timeslots = TimeSlots.query.filter(
-                TimeSlots.event_id == eventid).all()
-            if timeslots != None:
+            timeslots = TimeSlots.query.filter(TimeSlots.event_id == eventid).all()
+            if timeslots is not None:
                 [available_slots_choices, available_special_slots_choices] = get_slots_choices(
                     timeslots)
 
@@ -576,7 +572,8 @@ def manual_signup():
             studysemester = str(request.form['studysemester'])
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
-            if event.special_slots == 1:
+            availablespecialslots = None
+            if event.special_slots:
                 availablespecialslots = request.form.getlist(
                     'availablespecialslots')
             availableslots = request.form.getlist('availableslots')
@@ -611,11 +608,11 @@ def manual_signup():
                     address=address,
                     birthday=bday,
                     gender=gender,
-                    course=studycourse,
-                    semester=studysemester,
-                    perfDate=perfectdate,
+                    study_course=studycourse,
+                    study_semester=studysemester,
+                    perfect_date=perfectdate,
                     fruit=fruit,
-                    aSlot=slots,
+                    available_slot=slots,
                     confirmed=confirmed,
                     present=present,
                     paid=paid)
