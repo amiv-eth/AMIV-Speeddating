@@ -105,7 +105,7 @@ def admin():
 @app.route('/event_view/<int:event_id>', methods=["GET", "POST"])
 @login_required
 def event_view(event_id):
-    """ Event list view """
+    """ Show timeslots of view """
     if request.method == 'GET':
         slots = None
         try:
@@ -120,7 +120,7 @@ def event_view(event_id):
 @app.route('/event_participants/<int:event_id>', methods=["GET", "POST"])
 @login_required
 def event_participants(event_id):
-    """ Event participants view """
+    """ Shows all participants in all timeslots of an event, confirmed or not """
     if request.method == 'GET':
         eid = event_id
         slots = None
@@ -134,7 +134,7 @@ def event_participants(event_id):
         mailoutm = []
 
         try:
-            event = Events.query.filter(Events.id == eid).first()
+            event = Events.query.get(eid)
             slots = TimeSlots.query.filter(TimeSlots.event_id == eid)
             if slots != None:
                 for slot in slots:
