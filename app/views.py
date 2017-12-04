@@ -228,10 +228,11 @@ def create_event():
                 'error.html', message=str(request.form['opensignuptimestamp']))
 
         try:
-            event = Events(name, year, specialslot, specialslotname,
-                           specialslotdescription, place, semester, timestamp,
-                           signup_open, active, participationfee,
-                           opensignuptimestamp, closesignuptimestamp)
+            event = Events(name=name, year=year, special_slots=specialslot, special_slots_name=specialslotname,
+                           special_slots_description=specialslotdescription, place=place, semester=semester,
+                           creation_timestamp=timestamp, signup_open=signup_open, active=active,
+                           participation_fee=participationfee, open_signup_timestamp=opensignuptimestamp,
+                           close_signup_timestamp=closesignuptimestamp)
             db.session.add(event)
             db.session.commit()
         except Exception as e:
@@ -255,8 +256,8 @@ def create_timeslot(event_id):
             nrcouples = int(request.form['nrcouples'])
             agerange = int(request.form['agerange'])
             specialslot = int(request.form['specialslot'])
-            slot = TimeSlots(eventid, date, starttime, endtime, nrcouples,
-                             agerange, specialslot)
+            slot = TimeSlots(event_id=eventid, date=date, start_time=starttime, end_time=endtime,
+                             nr_couples=nrcouples, age_range=agerange, special_slot=specialslot)
             db.session.add(slot)
             db.session.commit()
 
@@ -496,15 +497,15 @@ def signup():
 
             if check_if_mail_unique_within_event(email, event) is True:
                 new_participant = Participants(
-                    timestamp,
-                    eventid,
-                    name,
-                    prename,
-                    email,
-                    mobile,
-                    address,
-                    bday,
-                    gender,
+                    creation_timestamp=timestamp,
+                    event_id=eventid,
+                    name=name,
+                    prename=prename,
+                    email=email,
+                    mobile_nr=mobile,
+                    address=address,
+                    birthday=bday,
+                    gender=gender,
                     course=studycourse,
                     semester=studysemester,
                     perfDate=perfectdate,
@@ -601,15 +602,15 @@ def manual_signup():
 
             if check_if_mail_unique_within_event(email, event) is True:
                 new_participant = Participants(
-                    timestamp,
-                    eventid,
-                    name,
-                    prename,
-                    email,
-                    mobile,
-                    address,
-                    bday,
-                    gender,
+                    creation_timestamp=timestamp,
+                    event_id=eventid,
+                    name=name,
+                    prename=prename,
+                    email=email,
+                    mobile_nr=mobile,
+                    address=address,
+                    birthday=bday,
+                    gender=gender,
                     course=studycourse,
                     semester=studysemester,
                     perfDate=perfectdate,
