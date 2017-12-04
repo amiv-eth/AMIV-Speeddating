@@ -122,7 +122,7 @@ class Events(db.Model):
     """Models an Event and can include multiple TimeSlots"""
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=False)
-    year = Column(Date, unique=False)
+    year = Column(Integer, unique=False)
     special_slots = Column(Boolean, unique=False)
     special_slots_name = Column(Text, unique=False)
     special_slots_description = Column(Text, unique=False)
