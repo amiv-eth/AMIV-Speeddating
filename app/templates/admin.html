@@ -1,62 +1,48 @@
-{% extends 'base.html' %}
-
-{% block admin %}class="active"{% endblock %}
+{% extends 'base.html' %} {% block admin %}class="active"{% endblock %}
 
 <h1>{% block title %}Admin Page{% endblock %}</h1>
 
 {% block content %}
 <p>
-  In the Table you can find all events of the last years.<br>
-  By pressing the cross button ont the top right corner you can add a new event.<br>
-  By pressing on an event you come to the overview of the selected event, where you can add/remove/edit the timeslots of the event or viewing the participants. <br>
+  In the Table you can find all events of the last years.
+  <br> By pressing the cross button ont the top right corner you can add a new event.
+  <br> By pressing on an event you come to the overview of the selected event, where you can add/remove/edit the timeslots of
+  the event or viewing the participants.
+  <br>
 </p>
 
 <h2>All Events:</h2>
 <table class="table table-striped table-hover">
   <tr>
     <th>Name</th>
-    <th>Year</th> 
+    <th>Year</th>
     <th>Sem.</th>
-    <th>Special <br> Slots</th>
+    <th>Special
+      <br> Slots</th>
     <th>Active</th>
-    <th>Signup <br> Status</th>
+    <th>Signup
+      <br> Status</th>
     <th>
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_event') }}'">
-	<span class="glyphicon glyphicon-plus"></span>
+        <span class="glyphicon glyphicon-plus"></span>
       </button>
     </th>
   </tr>
   {% for e in events %}
   <tr {% if e.active %} class="table-success" {% endif %}>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">{{ e.name }}</td>
-    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">{{ e.year }}</td> 
+    <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">{{ e.year }}</td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
-       {% if e.semester %}
-          HS
-       {% else %}
-          FS
-       {% endif %}
+      {{ e.semester.name }}
     </td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
-      {% if e.special_slots %}
-         Yes:  {{e.special_slots_name}}
-      {% else %}
-         No
-      {% endif %}
+      {% if e.special_slots %} Yes: {{e.special_slots_name}} {% else %} No {% endif %}
     </td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
-      {% if e.active %}
-         active
-      {% else %}
-         -
-      {% endif %}
+      {% if e.active %} active {% else %} - {% endif %}
     </td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
-      {% if e.signup_open %}
-         open
-      {% else %}
-         closed
-      {% endif %}
+      {% if e.signup_open %} open {% else %} closed {% endif %}
     </td>
     <td>
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.id, open = '0') }}'">close</button>

@@ -67,6 +67,11 @@ class TimeSlots(db.Model):
     special_slot = Column(Boolean, unique=False)
 
 
+class Semester(Enum):
+    """ Enum type to represent the semester """
+    HS = 0
+    FS = 1
+
 
 class Events(db.Model):
     """Models an Event and can include multiple TimeSlots"""
@@ -76,7 +81,7 @@ class Events(db.Model):
     special_slots = Column(Boolean, unique=False)
     special_slots_name = Column(Text, unique=False)
     special_slots_description = Column(Text, unique=False)
-    semester = Column(Boolean, unique=False)
+    semester = Column(EnumSQLAlchemy(Semester), unique=False)
     creation_timestamp = Column(DateTime, unique=False)
     signup_open = Column(Boolean, unique=False)
     open_signup_timestamp = Column(DateTime, unique=False)

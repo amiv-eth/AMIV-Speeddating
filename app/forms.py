@@ -7,6 +7,7 @@ from wtforms import TextField, DateField, RadioField, StringField, IntegerField,
 from wtforms.validators import ValidationError, DataRequired, Regexp
 from wtforms_components import TimeField
 from flask_wtf import FlaskForm
+from app.models import Semester
 
 
 class MultiCheckboxField(SelectMultipleField):
@@ -30,10 +31,10 @@ class CreateEventForm(FlaskForm):
     ])
     semester = RadioField(
         'Semester', [validators.DataRequired()],
-        choices=[('0', 'FS'), ('1', 'HS')])
+        choices=[(0, 'HS'), (1, 'FS')])
     specialslot = RadioField(
         'Add special type of timeslots', [validators.DataRequired()],
-        choices=[('0', 'No'), ('1', 'Yes')])
+        choices=[(0, 'No'), (1, 'Yes')])
     specialslotname = TextField(
         'Name of the special timeslots (e.g. "Blind Speeddating"')
     specialslotdescription = TextField(

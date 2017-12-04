@@ -5,7 +5,7 @@ Contains all views, i.e. anything that is routed to a url
 
 from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
-from app.models import Events, TimeSlots, Participants, AdminUser, Gender
+from app.models import Events, TimeSlots, Participants, AdminUser, Gender, Semester
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import participants_in_slot, get_string_of_date_list
 from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
@@ -207,7 +207,7 @@ def create_event():
             format_string = '%Y-%m-%dT%H:%M'
             name = str(request.form['name'])
             year = int(request.form['year'])
-            semester = int(request.form['semester'])
+            semester = Semester(int(request.form['semester']))
             specialslot = int(request.form['specialslot'])
             specialslotname = str(request.form['specialslotname'])
             specialslotdescription = str(
