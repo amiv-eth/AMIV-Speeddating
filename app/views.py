@@ -304,21 +304,15 @@ def timeslot_view_ongoing(timeslot_id):
         form=form)
 
 
-@app.route(
-    '/activate_event/<int:event_id>/<int:active>', methods=["GET", "POST"])
+@app.route('/activate_event/<int:event_id>/<int:active>', methods=["GET", "POST"])
 @login_required
 def activate_event(event_id, active):
     """ Action to activate / deactivate an event.
     Activating an event will show the info on the front page.
     """
-    try:
-        activated = event_change_active_status(db.session, event_id, active)
-    except Exception as e:
-        print(e)
-        return render_template('error.html')
-    if activated:
-        return redirect(url_for('admin'))
-    return render_template('error.html')
+    if not event_change_active_status(event_id, active):
+        return render_template('error.html', message='Unable to change event status')
+    return redirect(url_for('admin'))
 
 
 @app.route(

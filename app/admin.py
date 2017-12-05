@@ -7,31 +7,34 @@ from app.models import Participants, Events
 from app import db
 
 
-def event_change_active_status(session, event_id, active):
+def event_change_active_status(event_id, active):
     """ Set an event to active / inactive """
-    try:
-        nr_active_events = session.query(Events).filter(
-            Events.active == active).count()
+    nr_active_events = Events.query.filter_by(active=active).count()
 
-        if active == 1:
-            if nr_active_events > 0:
-                events = session.query(Events).all()
-                for e in events:
-                    e.active = 0
+    # Set event to active
+    if active == 1:
+        # Assert that there is at most one active event
+        if nr_active_events > 0:
+            events = Events.query.all()
+            for event in events:
+                event.active = False
 
-            event = session.query(Events).filter(Events.id == event_id).first()
-            event.active = int(active)
+        event = Events.query.get(event_id)
+        if event is None:
+            return False
 
-        if active == 0:
-            event = session.query(Events).filter(Events.id == event_id).first()
-            event.active = int(active)
+        event.active = True
 
-        session.commit()
-        return True
+    # Deactivate event
+    if active == 0:
+        event = Events.query.get(event_id)
+        if event is None:
+            return False
 
-    except Exception as e:
-        print(e)
-        return False
+        event.active = False
+
+    db.session.commit()
+    return True
 
 
 def event_change_register_status(session, p_id):
