@@ -14,7 +14,7 @@ from datetime import datetime
 from flask_mail import Message
 from app.signals import SIGNAL_NEW_SIGNUP
 from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
-from app.signup import get_slots_choices, check_if_mail_unique_within_event
+from app.signup import get_slots_choices
 from app.matcher import find_matches, inform_matches
 
 
@@ -412,7 +412,7 @@ def signup():
             chosen_datetime = str(
                 chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
                     chosen_timeslot.start_time)
-            if check_if_mail_unique_within_event(email, event) is True:
+            try:
                 new_participant = Participants(
                     creation_timestamp=timestamp,
                     event_id=eventid,
@@ -437,7 +437,7 @@ def signup():
                 # Emit signal and show success page
                 SIGNAL_NEW_SIGNUP.send(
                     'signup view', participant=new_participant)
-            else:
+            except Participants.AlreadySignedUpException:
                 message = 'Die E-Mail Adresse ' + email + \
                     ' wurde bereits für das Speeddating angewendet.\
                     Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
@@ -516,7 +516,7 @@ def manual_signup():
                 chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
                     chosen_timeslot.start_time)
 
-            if check_if_mail_unique_within_event(email, event) is True:
+            try:
                 new_participant = Participants(
                     creation_timestamp=timestamp,
                     event_id=eventid,
@@ -537,7 +537,7 @@ def manual_signup():
                     paid=paid)
                 db.session.add(new_participant)
                 db.session.commit()
-            else:
+            except Participants.AlreadySignedUpException:
                 message = 'Die E-Mail Adresse ' + email + \
                     ' wurde bereits für das Speeddating angewendet.\
                     Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'

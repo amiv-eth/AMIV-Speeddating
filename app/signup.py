@@ -86,8 +86,3 @@ def get_slots_choices(timeslots):
                                        for i in range(0, len(ids_special))]
 
     return [available_slots_choices, available_special_slots_choices]
-
-
-def check_if_mail_unique_within_event(email, event):
-    """ return True if mail is unique within the event, else False """
-    return Participants.query.filter_by(email=email, event_id=event.id).count() == 0

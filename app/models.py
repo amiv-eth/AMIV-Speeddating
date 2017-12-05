@@ -58,6 +58,21 @@ class Participants(db.Model):
         return today.year - self.birthday.year - ((today.month, today.day) <
                                                   (self.birthday.month, self.birthday.day))
 
+    class AlreadySignedUpException(Exception):
+        """ Raised if an attempt is made to sign up a Participant for the same Event twice """
+        pass
+
+    def __init__(self, *args, **kwargs):
+        try:
+            event_id = kwargs['event_id']
+            email = kwargs['email']
+        except KeyError as key_error:
+            raise key_error
+
+        participant = Participants.query.filter_by(event_id=event_id, email=email).first()
+        if participant is not None:
+            raise self.AlreadySignedUpException()
+        super(Participants, self).__init__(*args, **kwargs)
 
 class TimeSlots(db.Model):
     """Models a TimeSlot of an Event"""
