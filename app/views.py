@@ -122,8 +122,6 @@ def event_view(event_id):
 def event_participants(event_id):
     """ Shows all participants in all timeslots of an event, confirmed or not """
     if request.method == 'GET':
-        eid = event_id
-        slots = None
         women = []
         men = []
         inw = []
@@ -133,55 +131,24 @@ def event_participants(event_id):
         mailinm = []
         mailoutm = []
 
-        try:
-            event = Events.query.get(eid)
-            slots = TimeSlots.query.filter(TimeSlots.event_id == eid)
-            if slots != None:
-                for slot in slots:
-                    woman = Participants.query.order_by(
-                        (Participants.creation_timestamp)).filter(
-                            Participants.event_id == eid,
-                            Participants.available_slot == slot.id,
-                            Participants.gender == Gender.FEMALE).all()
-                    man = Participants.query.order_by(
-                        (Participants.creation_timestamp)).filter(
-                            Participants.event_id == eid,
-                            Participants.available_slot == slot.id,
-                            Participants.gender == Gender.MALE).all()
-                    women.append(woman)
-                    men.append(man)
-        except Exception as e:
-            print(e)
-            return render_template('error.html')
+        event = Events.query.get(event_id)
+        if event is None:
+            abort(404)
 
-    for wslot in women:
-        inmail = ""
-        outmail = ""
-        wcount = 0
-        for woman in wslot:
-            if woman.confirmed is True and wcount < 12:
-                wcount = wcount + 1
-                inw.append(woman.email)
-                inmail = inmail + woman.email + "; "
-            else:
-                outmail = outmail + woman.email + "; "
+        slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
+        if slots is not None:
+            for slot in slots:
+                women.append(slot.get_participants(gender=Gender.FEMALE))
+                men.append(slot.get_participants(gender=Gender.MALE))
 
-        mailinw.append(inmail)
-        mailoutw.append(outmail)
+                inw.extend(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.FEMALE))
+                inm.extend(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.MALE))
 
-    for mslot in men:
-        inmail = ""
-        outmail = ""
-        mcount = 0
-        for man in mslot:
-            if man.confirmed is True and mcount < 12:
-                mcount = mcount + 1
-                inm.append(man.email)
-                inmail = inmail + man.email + "; "
-            else:
-                outmail = outmail + man.email + "; "
-        mailinm.append(inmail)
-        mailoutm.append(outmail)
+                # Create email strings
+                mailinw.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.FEMALE)))
+                mailoutw.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=True, gender=Gender.FEMALE)))
+                mailinm.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.MALE)))
+                mailoutm.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=True, gender=Gender.MALE)))
 
     return render_template(
         'event_participants.html',
