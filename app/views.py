@@ -107,10 +107,7 @@ def admin():
 def event_view(event_id):
     """ Show timeslots of event """
     if request.method == 'GET':
-        event = Events.query.get(event_id)
-        if event is None:
-            abort(404)
-
+        event = Events.query.get_or_404(event_id)
         slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
         return render_template('event_view.html', slots=slots, event=event)
 
@@ -129,9 +126,7 @@ def event_participants(event_id):
         mailinm = []
         mailoutm = []
 
-        event = Events.query.get(event_id)
-        if event is None:
-            abort(404)
+        event = Events.query.get_or_404(event_id)
 
         slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
         if slots is not None:
@@ -239,25 +234,19 @@ def create_timeslot(event_id):
 def timeslot_view(timeslot_id):
     """ Timeslot view """
     if request.method == 'GET':
-
-        slot = TimeSlots.query.get(timeslot_id)
-        if slot is None:
-            abort(404)
-        
-        slotid = timeslot_id
+        slot = TimeSlots.query.get_or_404(timeslot_id)
 
         [w_in, w_out] = participants_in_slot(slot, gender=Gender.FEMALE)
         [m_in, m_out] = participants_in_slot(slot, gender=Gender.MALE)
 
         try:
-            slot = TimeSlots.query.filter(TimeSlots.id == slotid).first()
             women = Participants.query.order_by(
                 (Participants.creation_timestamp)).filter(
-                    Participants.available_slot == slotid,
+                    Participants.available_slot == timeslot_id,
                     Participants.gender == Gender.FEMALE).all()
             men = Participants.query.order_by(
                 (Participants.creation_timestamp)).filter(
-                    Participants.available_slot == slotid,
+                    Participants.available_slot == timeslot_id,
                     Participants.gender == Gender.MALE).all()
             event = Events.query.filter(Events.id == slot.event_id).first()
         except Exception as e:
@@ -351,9 +340,7 @@ def activate_event(event_id, active):
     methods=["GET", "POST"])
 @login_required
 def register_participant(event_id, participant_id):
-    """ Action to confirm / cancel a participant
-    """
-
+    """ Action to confirm / cancel a participant """
     try:
         registered = event_change_register_status(db.session, participant_id)
     except Exception as e:
@@ -592,9 +579,7 @@ def manual_signup():
 @login_required
 def export_slot(timeslot_id):
     """ Export participants of timeslot as CSV suitable for SpeedMatchTool"""
-    slot = TimeSlots.query.get(timeslot_id)
-    if slot is None:
-        abort(404)
+    slot = TimeSlots.query.get_or_404(timeslot_id)
     
     # Fetch list of confirmed participants
     women = participants_in_slot(slot, Gender.FEMALE)[0]
@@ -627,9 +612,7 @@ def cancel_participation(cancel_token):
 @login_required
 def edit_likes(participant_id):
     """ Enter for each participant, which other participants they liked. """
-    participant = Participants.query.filter_by(id=participant_id).first()
-    if participant is None:
-        abort(404)
+    participant = Participants.query.get_or_404(participant_id)
 
     if request.method == 'GET':
         form = LikeForm(likes=participant.likes)
