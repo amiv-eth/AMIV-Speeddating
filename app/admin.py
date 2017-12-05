@@ -4,6 +4,7 @@ Contains admin helper functions
 import csv
 import io
 from app.models import Participants, Events
+from app import db
 
 
 def event_change_signup_status(session, event_id, open):
@@ -108,20 +109,15 @@ def change_paid(session, participant_id):
         return False
 
 
-def change_datenr(session, participant_id, datenr):
+def change_datenr(participant_id, datenr):
     """ Change a participant's date number """
-    try:
-        participant = session.query(Participants).filter_by(
-            id=participant_id).first()
-
-        participant.date_nr = int(datenr)
-
-        session.commit()
-        return True
-    except Exception as e:
-        print(e)
+    participant = Participants.query.get(participant_id)
+    if participant is None:
         return False
 
+    participant.date_nr = datenr
+    db.session.commit()
+    return True
 
 def export(women, men, slot):
     """ Export a slot's participant list as CSV """

@@ -289,34 +289,22 @@ def timeslot_view(timeslot_id):
 def timeslot_view_ongoing(timeslot_id):
     """ View to assign date numbers to participants """
     form = DateNrChangeForm(request.form)
-    csv = ''
 
     if request.method == 'POST' and form.validate():
-        try:
-            participant_id = int(request.form['participant_id'])
-            datenr = int(request.form['datenr'])
-            if not change_datenr(db.session, participant_id, datenr):
-                return render_template('error.html', message='Datenr. konnte nicht geändert werden')
-
-        except Exception as e:
-            print(e)
-            return render_template('error.html')
+        participant_id = int(request.form['participant_id'])
+        datenr = int(request.form['datenr'])
+        if not change_datenr(participant_id, datenr):
+            return render_template('error.html', message='Datenr. konnte nicht geändert werden')
 
     # "GET":
-    try:
-        slot = TimeSlots.query.filter(TimeSlots.id == timeslot_id).first()
-        women = Participants.query.order_by(
-            (Participants.creation_timestamp)).filter(
-                Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.FEMALE, Participants.present).all()
-        men = Participants.query.order_by(
-            (Participants.creation_timestamp)).filter(
-                Participants.available_slot == timeslot_id,
-                Participants.gender == Gender.MALE, Participants.present).all()
-        event = Events.query.filter(Events.id == slot.event_id).first()
-    except Exception as e:
-        print(e)
-        return render_template('error.html')
+    slot = TimeSlots.query.get_or_404(timeslot_id)
+    women = slot.get_participants(gender=Gender.FEMALE, present=True)
+    men = slot.get_participants(gender=Gender.MALE, present=True)
+
+    event = Events.query.get(slot.event_id)
+    if event is None:
+        return render_template('error.html', message='Timeslot has invalid event id')
+
     form.datenr.data = ''
     return render_template(
         'timeslot_view_ongoing.html',
@@ -324,8 +312,7 @@ def timeslot_view_ongoing(timeslot_id):
         slot=slot,
         women=women,
         men=men,
-        form=form,
-        csv=csv)
+        form=form)
 
 
 @app.route('/change_signup/<int:event_id>/<int:open>', methods=["GET", "POST"])
