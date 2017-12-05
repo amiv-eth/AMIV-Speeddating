@@ -7,25 +7,6 @@ from app.models import Participants, Events
 from app import db
 
 
-def event_change_signup_status(session, event_id, open):
-    """ Open / close an event's signup window """
-    try:
-        event = Events.query.filter_by(id=event_id).first()
-        if event.active == 1:
-            if open == 1:
-                event.signup_open = int(open)
-            else:
-                event.signup_open = int(open)
-        else:
-            if open == 0:
-                event.signup_open = int(open)
-        session.commit()
-        return True
-    except Exception as e:
-        print(e)
-        return False
-
-
 def event_change_active_status(session, event_id, active):
     """ Set an event to active / inactive """
     try:
@@ -36,14 +17,12 @@ def event_change_active_status(session, event_id, active):
             if nr_active_events > 0:
                 events = session.query(Events).all()
                 for e in events:
-                    event_change_signup_status(session, e.id, 0)
                     e.active = 0
 
             event = session.query(Events).filter(Events.id == event_id).first()
             event.active = int(active)
 
         if active == 0:
-            event_change_signup_status(session, event_id, 0)
             event = session.query(Events).filter(Events.id == event_id).first()
             event.active = int(active)
 

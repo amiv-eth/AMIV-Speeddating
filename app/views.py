@@ -8,7 +8,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from app.models import Events, TimeSlots, Participants, AdminUser, Gender, Semester
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import participants_in_slot, get_string_of_date_list
-from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status, event_change_signup_status
+from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status
 from app import app, db, login_manager, bcrypt, mail
 from datetime import datetime
 from flask_mail import Message
@@ -302,20 +302,6 @@ def timeslot_view_ongoing(timeslot_id):
         women=women,
         men=men,
         form=form)
-
-
-@app.route('/change_signup/<int:event_id>/<int:open>', methods=["GET", "POST"])
-@login_required
-def change_signup(event_id, open):
-    """ Action to open/close the signup """
-    try:
-        changed = event_change_signup_status(db.session, event_id, open)
-    except Exception as e:
-        print(e)
-        return render_template('error.html')
-    if changed:
-        return redirect(url_for('admin'))
-    return render_template('error.html')
 
 
 @app.route(
