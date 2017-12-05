@@ -7,13 +7,16 @@ from app import db
 from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time, Enum as EnumSQLAlchemy
 from flask_login import UserMixin
 
+
 class Gender(Enum):
     """ Enum type to represent gender information """
     MALE = 0
     FEMALE = 1
+
     def other(self):
         """ Return the other gender """
         return Gender(1 - self.value)
+
 
 class Participants(db.Model):
     """Models a Participant"""
@@ -65,6 +68,31 @@ class TimeSlots(db.Model):
     nr_couples = Column(Integer, primary_key=False)
     age_range = Column(Integer, primary_key=False)
     special_slot = Column(Boolean, unique=False)
+
+    def get_participants(self, on_waiting_list=None, **kwargs):
+        """ Get list of participants that are signed up for the event
+        in ascending order of creation_timestamp.
+        Additional filtering can be done using keyword arguments.
+        Optionally, the 'on_waiting_list' parameter allows to only show participants
+        who 'made' the slot.
+        """
+        participants = Participants.query.filter(
+            Participants.available_slot == self.id).order_by(Participants.creation_timestamp)
+
+        # Optional filtering by kwargs
+        if kwargs is not None:
+            participants = participants.filter_by(**kwargs)
+
+        # Convert to list
+        participant_list = participants.all()
+
+        # Optional filtering by waiting list status
+        if on_waiting_list is not None:
+            if not on_waiting_list:
+                return participant_list[:self.nr_couples]
+            return participant_list[self.nr_couples:]
+
+        return participant_list
 
 
 class Semester(Enum):
