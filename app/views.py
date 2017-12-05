@@ -84,8 +84,8 @@ def logout():
 
 @login_manager.unauthorized_handler
 def unauthorized_handler():
-    """ Catchall for unauthorized requests, redirect to index """
-    return redirect('/')
+    """ Catchall for unauthorized requests, redirect to login """
+    return redirect(url_for('login'))
 
 
 @app.route('/admin', methods=["GET", "POST"])
