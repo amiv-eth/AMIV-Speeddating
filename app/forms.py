@@ -31,10 +31,10 @@ class CreateEventForm(FlaskForm):
     ])
     semester = RadioField(
         'Semester', [validators.DataRequired()],
-        choices=[(0, 'HS'), (1, 'FS')])
+        choices=[('0', 'HS'), ('1', 'FS')])
     specialslot = RadioField(
         'Add special type of timeslots', [validators.DataRequired()],
-        choices=[(0, 'No'), (1, 'Yes')])
+        choices=[('0', 'No'), ('1', 'Yes')])
     specialslotname = TextField(
         'Name of the special timeslots (e.g. "Blind Speeddating"')
     specialslotdescription = TextField(
