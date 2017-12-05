@@ -105,15 +105,13 @@ def admin():
 @app.route('/event_view/<int:event_id>', methods=["GET", "POST"])
 @login_required
 def event_view(event_id):
-    """ Show timeslots of view """
+    """ Show timeslots of event """
     if request.method == 'GET':
-        slots = None
-        try:
-            slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
-            event = Events.query.filter(Events.id == event_id).first()
-        except Exception as e:
-            print(e)
-            return render_template('error.html')
+        event = Events.query.get(event_id)
+        if event is None:
+            abort(404)
+
+        slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
         return render_template('event_view.html', slots=slots, event=event)
 
 
