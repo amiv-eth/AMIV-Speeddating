@@ -27,7 +27,7 @@ class Participants(db.Model):
     event_id = Column(Integer, unique=False)
     name = Column(String(80), unique=False)
     prename = Column(String(80), unique=False)
-    email = Column(String(120), unique=True)
+    email = Column(String(120), unique=False)
     mobile_nr = Column(String(20), unique=False)
     address = Column(String(200), unique=False)
     birthday = Column(Date, unique=False)
