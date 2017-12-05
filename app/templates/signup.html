@@ -28,7 +28,7 @@
 </div>
 
 {% if event != None %}
-{% if event.signup_open and event.active %}
+{% if event.is_open() and event.active %}
 {% set open = True %}
 {% else %}
 {% set open = False %}

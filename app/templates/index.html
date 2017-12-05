@@ -3,7 +3,7 @@
 
 {% if event != None %}
 
-{% if event.signup_open %}
+{% if event.is_open() %}
 {% set open = True %}
 {% else %}
 {% set open = False %}

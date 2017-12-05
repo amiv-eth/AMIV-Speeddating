@@ -27,13 +27,19 @@ bcrypt = Bcrypt(app)
 # Will probably never happen but better to be safe
 BCRYPT_HANDLE_LONG_PASSWORDS = True
 
-# The participant_signals namespace contains all signals related to the participant side
+# Contains signals related to the participant side
 participant_signals = Namespace()
+
+# Contains signals related to Events and TimeSlots
+event_signals = Namespace()
 
 
 from app import views
-from app.signals import SIGNAL_NEW_SIGNUP
+from app.admin import registration_opened, registration_closed
+from app.signals import SIGNAL_NEW_SIGNUP, SIGNAL_REGISTRATION_OPENED, SIGNAL_REGISTRATION_CLOSED
 from app.participants import post_signup
 
 # Connect signals
 SIGNAL_NEW_SIGNUP.connect(post_signup)
+SIGNAL_REGISTRATION_OPENED.connect(registration_opened)
+SIGNAL_REGISTRATION_CLOSED.connect(registration_closed)

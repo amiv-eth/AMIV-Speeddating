@@ -42,11 +42,9 @@
       {% if e.active %} active {% else %} - {% endif %}
     </td>
     <td onclick="window.location.href='{{ url_for('event_view', event_id = e.id) }}'">
-      {% if e.signup_open %} open {% else %} closed {% endif %}
+      {% if e.is_open() %} open {% else %} closed {% endif %}
     </td>
     <td>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.id, open = '0') }}'">close</button>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_signup', event_id = e.id, open = '1') }}'">open</button>
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.id, active = '0') }}'">deactivate</button>
       <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('activate_event', event_id = e.id, active = '1') }}'">activate</button>
     </td>

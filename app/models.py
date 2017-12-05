@@ -1,9 +1,10 @@
 """
 Contains model declarations for sqlalchemy.
 """
-from datetime import date
+from datetime import date, datetime
 from enum import Enum
 from app import db
+from app.signals import SIGNAL_REGISTRATION_OPENED, SIGNAL_REGISTRATION_CLOSED
 from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time, Enum as EnumSQLAlchemy
 from flask_login import UserMixin
 
@@ -120,6 +121,23 @@ class Events(db.Model):
 
     def get_string_close_signup_timestamp(self, format):
         return str(self.close_signup_timestamp.strftime(format))
+
+    def is_open(self):
+        """ Check if we're in the signup timeslot 
+        Registration status should only be checked via this method.
+        """
+                
+        if self.open_signup_timestamp <= datetime.now() and datetime.now() <= self.close_signup_timestamp:
+            if not self.signup_open:
+                SIGNAL_REGISTRATION_OPENED.send(self)
+            self.signup_open = True
+        else:
+            if self.signup_open:
+                SIGNAL_REGISTRATION_CLOSED.send(self)
+            self.signup_open = False
+
+        db.session.commit()
+        return self.signup_open
 
 
 class AdminUser(db.Model, UserMixin):

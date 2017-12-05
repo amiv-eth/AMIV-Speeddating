@@ -137,3 +137,13 @@ def export(women, men, slot):
     except Exception as e:
         print(e)
         return ''
+
+
+def registration_opened(event):
+    """ Hook for after an Event's signup_open is automatically set to True """
+    print('Signup for event {} has been opened'.format(event))
+
+
+def registration_closed(event):
+    """ Hook for after an Event's signup_open is automatically set to False """
+    print('Signup for event {} has been closed'.format(event))
