@@ -90,9 +90,4 @@ def get_slots_choices(timeslots):
 
 def check_if_mail_unique_within_event(email, event):
     """ return True if mail is unique within the event, else False """
-    count = Participants.query.filter(Participants.email == email,
-                                      Participants.event_id == event.id).count()
-    if count == 0:
-        return True
-    else:
-        return False
+    return Participants.query.filter_by(email=email, event_id=event.id).count() == 0

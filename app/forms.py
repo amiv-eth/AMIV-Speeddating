@@ -9,6 +9,8 @@ from wtforms_components import TimeField
 from flask_wtf import FlaskForm
 from app.models import Semester
 
+# Format string as used by HTML5's datetime-local input type
+DATETIME_LOCAL_FORMAT_STRING = '%Y-%m-%dT%H:%M'
 
 class MultiCheckboxField(SelectMultipleField):
     """ Field containing multiple checkboxes. """
@@ -43,11 +45,11 @@ class CreateEventForm(FlaskForm):
     opensignuptimestamp = DateTimeField(
         'Zeitpunkt der Oeffnung des Anmeldefensters',
         [validators.DataRequired()],
-        format='%Y-%m-%dT%H:%M')
+        format=DATETIME_LOCAL_FORMAT_STRING)
     closesignuptimestamp = DateTimeField(
         'Zeitpunkt der Schliessung des Anmeldefensters',
         [validators.DataRequired()],
-        format='%Y-%m-%dT%H:%M')
+        format=DATETIME_LOCAL_FORMAT_STRING)
     place = StringField('Ort', [validators.DataRequired()])
     participationfee = StringField('Teilnahmegebühr',
                                    [validators.DataRequired()])

@@ -544,7 +544,7 @@ def manual_signup():
                 return render_template('error.html', message=message)
 
         except Exception as exception:
-            print('Exception of type {} occurred'.format(type(e)))
+            print('Exception of type {} occurred:{}'.format(type(exception), str(exception)))
             return render_template('error.html')
 
         return render_template(
