@@ -22,7 +22,6 @@ class Gender(Enum):
 class Participants(db.Model):
     """Models a Participant"""
     id = Column(Integer, primary_key=True)
-    def_slot = Column(Integer, primary_key=False)
     available_slot = Column(String(50), primary_key=False)
     event_id = Column(Integer, unique=False)
     name = Column(String(80), unique=False)
