@@ -83,13 +83,15 @@ class TimeSlots(db.Model):
     __tablename__ = 'timeslots'
 
     id = Column(Integer, primary_key=True)
-    event_id = Column(Integer, unique=False)
+    event_id = Column(Integer, ForeignKey('events.id'), nullable=False)
+
     date = Column(Date, unique=False)
     start_time = Column(Time, unique=False)
     end_time = Column(Time, unique=False)
     nr_couples = Column(Integer, primary_key=False)
     age_range = Column(Integer, primary_key=False)
     special_slot = Column(Boolean, unique=False)
+
     participants = relationship('Participants', backref='timeslot', lazy='dynamic')
 
     def get_participants(self, on_waiting_list=None, **kwargs):
@@ -140,8 +142,9 @@ class Events(db.Model):
     place = Column(String(80), unique=False)
     active = Column(Boolean, unique=False)
     participation_fee = Column(String(80), unique=False)
-    
+
     participants = relationship('Participants', backref='event', lazy='dynamic')
+    slots = relationship('TimeSlots', backref='event', lazy='dynamic')
 
     def get_string_close_signup_timestamp(self, format):
         return str(self.close_signup_timestamp.strftime(format))
