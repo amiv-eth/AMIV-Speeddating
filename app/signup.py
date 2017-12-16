@@ -33,14 +33,9 @@ def get_slots_choices(timeslots):
     for slot in timeslots:
         if slot.special_slot == 1:
             ids_special.append(int(slot.id))
-            nr_women = Participants.query.filter(
-                Participants.available_slot == slot.id,
-                Participants.confirmed is True,
-                Participants.gender == Gender.FEMALE).count()
-            nr_men = Participants.query.filter(
-                Participants.available_slot == slot.id,
-                Participants.confirmed is True,
-                Participants.gender == Gender.MALE).count()
+        
+            nr_women = slot.participants.filter_by(confirmed=True, gender=Gender.FEMALE).count()
+            nr_men = slot.participants.filter_by(confirmed=True, gender=Gender.MALE).count()
             stri = '&nbsp &nbsp &nbsp'
             stri = stri + \
                 slot.date.strftime("%a %d. %b %y") + \
@@ -57,14 +52,8 @@ def get_slots_choices(timeslots):
             strings_special.append(stri)
         elif slot.special_slot == 0:
             ids_nonspecial.append(int(slot.id))
-            nr_women = Participants.query.filter(
-                Participants.available_slot == slot.id,
-                Participants.confirmed is True,
-                Participants.gender == Gender.FEMALE).count()
-            nr_men = Participants.query.filter(
-                Participants.available_slot == slot.id,
-                Participants.confirmed is True,
-                Participants.gender == Gender.MALE).count()
+            nr_women = slot.participants.filter_by(confirmed=True, gender=Gender.FEMALE).count()
+            nr_men = slot.participants.filter_by(confirmed=True, gender=Gender.MALE).count()
             stri = '&nbsp &nbsp &nbsp'
             stri = stri + \
                 slot.date.strftime("%a %d. %b %y") + \

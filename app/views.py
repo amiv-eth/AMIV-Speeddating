@@ -240,14 +240,8 @@ def timeslot_view(timeslot_id):
         [m_in, m_out] = participants_in_slot(slot, gender=Gender.MALE)
 
         try:
-            women = Participants.query.order_by(
-                (Participants.creation_timestamp)).filter(
-                    Participants.available_slot == timeslot_id,
-                    Participants.gender == Gender.FEMALE).all()
-            men = Participants.query.order_by(
-                (Participants.creation_timestamp)).filter(
-                    Participants.available_slot == timeslot_id,
-                    Participants.gender == Gender.MALE).all()
+            women = slot.participants.filter_by(gender=Gender.FEMALE).order_by(Participants.creation_timestamp).all()
+            men = slot.participants.filter_by(gender=Gender.MALE).order_by(Participants.creation_timestamp).all()
             event = Events.query.filter(Events.id == slot.event_id).first()
         except Exception as e:
             print(e)
@@ -427,7 +421,7 @@ def signup():
                     study_semester=studysemester,
                     perfect_date=perfectdate,
                     fruit=fruit,
-                    available_slot=slots,
+                    slot=slots,
                     confirmed=confirmed,
                     present=present,
                     paid=paid)
@@ -531,7 +525,7 @@ def manual_signup():
                     study_semester=studysemester,
                     perfect_date=perfectdate,
                     fruit=fruit,
-                    available_slot=slots,
+                    slot=slots,
                     confirmed=confirmed,
                     present=present,
                     paid=paid)
@@ -601,7 +595,7 @@ def edit_likes(participant_id):
         if form.validate_on_submit():
             participant.likes = form.likes.data
             db.session.commit()
-            return redirect(url_for('timeslot_view_ongoing', timeslot_id=participant.available_slot))
+            return redirect(url_for('timeslot_view_ongoing', timeslot_id=participant.slot))
 
     return render_template('likes.html', form=form, participant_id=participant_id, email=participant.email)
 

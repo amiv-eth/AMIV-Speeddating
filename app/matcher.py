@@ -2,13 +2,15 @@
 A tool which automatically computes matches between participants and exchanges contact data
 """
 from app import db
-from app.models import Participants
+from app.models import Participants, TimeSlots
 from app.email import send_matches_email
 
 def find_matches(timeslot_id):
     """ Finds all matches of a given timeslot """
     matches = []
-    participants = Participants.query.filter_by(available_slot=timeslot_id)
+    slot = TimeSlots.get_or_404(timeslot_id)
+    participants = slot.participants
+
     for participant in participants:
         target_gender = participant.gender.other()
         interest_ids = participant.likes.split(',')

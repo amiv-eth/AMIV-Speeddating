@@ -8,9 +8,7 @@ def participants_in_slot(slot, gender=None, confirmed=None):
     """ Returns a list of two lists, one containing the participants who made the slot,
     one containing those on the waiting list """
     # Select participants signed up for slot in ascending order by signup timestamp
-    participants = Participants.query.filter(
-        Participants.available_slot == slot.id
-    ).order_by(Participants.creation_timestamp)
+    participants = slot.participants.order_by(Participants.creation_timestamp)
 
     # Optional gender filtering
     if gender is not None:

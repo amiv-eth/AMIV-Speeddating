@@ -5,7 +5,8 @@ from datetime import date, datetime
 from enum import Enum
 from app import db
 from app.signals import SIGNAL_REGISTRATION_OPENED, SIGNAL_REGISTRATION_CLOSED
-from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time, Enum as EnumSQLAlchemy
+from sqlalchemy import Column, Boolean, Integer, String, Text, Date, DateTime, Time, ForeignKey, Enum as EnumSQLAlchemy
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 
 
@@ -21,8 +22,10 @@ class Gender(Enum):
 
 class Participants(db.Model):
     """Models a Participant"""
+    __tablename__ = 'participants'
+
     id = Column(Integer, primary_key=True)
-    available_slot = Column(String(50), primary_key=False)
+    slot = Column(Integer, ForeignKey('timeslots.id'), nullable=False)
     event_id = Column(Integer, unique=False)
     name = Column(String(80), unique=False)
     prename = Column(String(80), unique=False)
@@ -75,6 +78,8 @@ class Participants(db.Model):
 
 class TimeSlots(db.Model):
     """Models a TimeSlot of an Event"""
+    __tablename__ = 'timeslots'
+    
     id = Column(Integer, primary_key=True)
     event_id = Column(Integer, unique=False)
     date = Column(Date, unique=False)
@@ -83,6 +88,7 @@ class TimeSlots(db.Model):
     nr_couples = Column(Integer, primary_key=False)
     age_range = Column(Integer, primary_key=False)
     special_slot = Column(Boolean, unique=False)
+    participants = relationship('Participants', backref='timeslot', lazy='dynamic')
 
     def get_participants(self, on_waiting_list=None, **kwargs):
         """ Get list of participants that are signed up for the event
@@ -91,9 +97,7 @@ class TimeSlots(db.Model):
         Optionally, the 'on_waiting_list' parameter allows to only show participants
         who 'made' the slot.
         """
-        participants = Participants.query.filter(
-            Participants.available_slot == self.id).order_by(Participants.creation_timestamp)
-
+        participants = self.participants.order_by(Participants.creation_timestamp)
         # Optional filtering by kwargs
         if kwargs is not None:
             participants = participants.filter_by(**kwargs)
@@ -118,6 +122,8 @@ class Semester(Enum):
 
 class Events(db.Model):
     """Models an Event and can include multiple TimeSlots"""
+    __tablename__ = 'events'
+    
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=False)
     year = Column(Integer, unique=False)
@@ -156,6 +162,8 @@ class Events(db.Model):
 
 class AdminUser(db.Model, UserMixin):
     """ Represents an admin user """
+    __tablename__ = 'adminusers'
+    
     id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True)
     password = Column(String(60), unique=False)
