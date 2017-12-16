@@ -26,7 +26,8 @@ class Participants(db.Model):
 
     id = Column(Integer, primary_key=True)
     slot = Column(Integer, ForeignKey('timeslots.id'), nullable=False)
-    event_id = Column(Integer, unique=False)
+    event_id = Column(Integer, ForeignKey('events.id'), nullable=False)
+
     name = Column(String(80), unique=False)
     prename = Column(String(80), unique=False)
     email = Column(String(120), unique=False)
@@ -76,10 +77,11 @@ class Participants(db.Model):
             raise self.AlreadySignedUpException()
         super(Participants, self).__init__(*args, **kwargs)
 
+
 class TimeSlots(db.Model):
     """Models a TimeSlot of an Event"""
     __tablename__ = 'timeslots'
-    
+
     id = Column(Integer, primary_key=True)
     event_id = Column(Integer, unique=False)
     date = Column(Date, unique=False)
@@ -123,7 +125,7 @@ class Semester(Enum):
 class Events(db.Model):
     """Models an Event and can include multiple TimeSlots"""
     __tablename__ = 'events'
-    
+
     id = Column(Integer, primary_key=True)
     name = Column(String(80), unique=False)
     year = Column(Integer, unique=False)
@@ -138,6 +140,8 @@ class Events(db.Model):
     place = Column(String(80), unique=False)
     active = Column(Boolean, unique=False)
     participation_fee = Column(String(80), unique=False)
+    
+    participants = relationship('Participants', backref='event', lazy='dynamic')
 
     def get_string_close_signup_timestamp(self, format):
         return str(self.close_signup_timestamp.strftime(format))
@@ -146,7 +150,7 @@ class Events(db.Model):
         """ Check if we're in the signup timeslot 
         Registration status should only be checked via this method.
         """
-                
+
         if self.open_signup_timestamp <= datetime.now() and datetime.now() <= self.close_signup_timestamp:
             if not self.signup_open:
                 SIGNAL_REGISTRATION_OPENED.send(self)
@@ -163,7 +167,7 @@ class Events(db.Model):
 class AdminUser(db.Model, UserMixin):
     """ Represents an admin user """
     __tablename__ = 'adminusers'
-    
+
     id = Column(Integer, primary_key=True)
     username = Column(String(64), unique=True)
     password = Column(String(60), unique=False)
