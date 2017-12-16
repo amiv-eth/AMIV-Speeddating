@@ -37,46 +37,52 @@ def event_change_active_status(event_id, active):
     return True
 
 
-def event_change_register_status(session, p_id):
+def event_change_register_status(p_id):
     """ Confirm / unconfirm a participant's registration """
     try:
-        participant = session.query(Participants).filter_by(id=p_id).first()
-        if participant.confirmed is False:
+        participant = Participants.query.get(p_id)
+        if participant is None:
+            return False
+
+        if not participant.confirmed:
             participant.confirmed = True
         else:
             participant.confirmed = False
-        session.commit()
+
+        db.session.commit()
         return True
     except Exception as e:
         print(e)
         return False
 
 
-def change_present(session, participant_id):
+def change_present(participant_id):
     """ Mark a participant as present / absent """
     try:
-        participant = session.query(Participants).filter_by(
-            id=participant_id).first()
+        participant = Participants.get(participant_id)
+        if participant is None:
+            return False
 
         if not participant.present:
             participant.present = True
         else:
             participant.present = False
 
-        session.commit()
+        db.session.commit()
         return True
     except Exception as e:
         print(e)
         return False
 
 
-def change_paid(session, participant_id):
+def change_paid(participant_id):
     """ Set a participant's payment status """
     try:
-        participant = session.query(Participants).filter_by(
-            id=participant_id).first()
+        participant = Participants.query.get(participant_id)
+        if participant is None:
+            return False
 
-        if participant.present == 1:
+        if participant.present:
             if not participant.paid:
                 participant.paid = True
             else:
@@ -84,7 +90,7 @@ def change_paid(session, participant_id):
         else:
             return False
 
-        session.commit()
+        db.session.commit()
         return True
     except Exception as e:
         print(e)
@@ -100,6 +106,7 @@ def change_datenr(participant_id, datenr):
     participant.date_nr = datenr
     db.session.commit()
     return True
+
 
 def export(women, men, slot):
     """ Export a slot's participant list as CSV """

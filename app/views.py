@@ -316,7 +316,7 @@ def activate_event(event_id, active):
 def register_participant(event_id, participant_id):
     """ Action to confirm / cancel a participant """
     try:
-        registered = event_change_register_status(db.session, participant_id)
+        registered = event_change_register_status(participant_id)
     except Exception as e:
         print(e)
         return render_template('error.html')
@@ -333,9 +333,9 @@ def change_participant_on_timeslot(slot_id, participant_id, action):
     """ Action to confirm attendance and payment """
     try:
         if action == 'present':
-            changed = change_present(db.session, participant_id)
+            changed = change_present(participant_id)
         elif action == 'paid':
-            changed = change_paid(db.session, participant_id)
+            changed = change_paid(participant_id)
     except Exception as e:
         print(e)
         return render_template('error.html')
