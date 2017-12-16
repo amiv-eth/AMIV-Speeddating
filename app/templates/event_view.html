@@ -38,10 +38,10 @@
     {% else %}
     <td> does not matter </td>
     {% endif %}
-    {% if s.special_slot == 0 %}
-    <td> - </td>
-    {% elif s.special_slot == 1 %}
-    <td> {{ event.special_slots_name }} </td>
+    {% if not s.special_slot %}
+      <td>no</td>
+    {% elif s.special_slot %}
+      <td>yes</td>
     {% endif %}
     <td></td>
   </tr>
