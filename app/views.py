@@ -378,12 +378,12 @@ def signup():
             prename = str(request.form['prename'])
             gender = Gender(int(request.form['gender']))
             email = str(request.form['email'])
-            mobile = str(request.form['mobilenr'])
+            mobile = str(request.form['mobile_nr'])
             address = str(request.form['address'])
             birthday = str(request.form['birthday'])
-            studycourse = str(request.form['studycourse'])
-            studysemester = int(request.form['studysemester'])
-            perfectdate = str(request.form['perfectdate'])
+            studycourse = str(request.form['study_course'])
+            studysemester = int(request.form['study_semester'])
+            perfectdate = str(request.form['perfect_date'])
             fruit = str(request.form['fruit'])
             availablespecialslots = None
             if event.special_slots:
