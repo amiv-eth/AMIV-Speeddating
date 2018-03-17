@@ -4,7 +4,7 @@
 
 {% block anmeldung %}class="active"{% endblock %}
 
-<h1>{% block title %}Manuelle Anmeldung{% endblock %}</h1>
+<h1>{% block title %}Änderung des Teilnehmers <strong>{{ participant }}</strong> {% endblock %}</h1>
 
 
 {% block content %}
@@ -14,7 +14,7 @@
 </p>
 <br>
 
-<form action = {{ url_for('manual_signup') }} method = "POST">
+<form action = {{ url_for('edit_participant', timeslot_id=slot.id, participant_id=participant.id ) }} method = "POST">
   {{ form.csrf_token }}
   {{ render_field(form.name) }}
   {{ render_field(form.prename) }}
@@ -33,14 +33,15 @@
   {% endif %}
   {{ render_field(form.perfect_date) }}
   {{ render_field(form.fruit) }}
-  
+
   <div class="btn-group"> 
-      <button id="btn-space" style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_view', event_id=event.id) }}'">
-          <span class="glyphicon glyphicon-arrow-left"></span> Zurück
-      </button>
-  
-      <button type = "submit" class="btn btn-default">Anmelden</button>
-    </div>
+    <button id="btn-space" style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = slot.id) }}'">
+        <span class="glyphicon glyphicon-arrow-left"></span> Zurück zum Timeslot
+    </button>
+
+    <button type = "submit" class="btn btn-default">Anpassen</button>
+  </div>
 </form>
+
 
 {% endblock %}

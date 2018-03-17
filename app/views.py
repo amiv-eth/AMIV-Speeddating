@@ -371,6 +371,8 @@ def signup():
 
     if request.method == 'POST' and form.validate():
         try:
+            #new_participant = Participants()
+            #form.populate_obj(new_participant)
             timestamp = datetime.now()
             name = str(request.form['name'])
             prename = str(request.form['prename'])
@@ -552,12 +554,37 @@ def manual_signup():
 
     return render_template('manual_signup.html', form=form, event=event)
 
+@app.route('/edit_participant/<int:timeslot_id>/<int:participant_id>', methods=["GET", "POST"])
+@login_required
+def edit_participant(timeslot_id, participant_id):
+    """ Admin edit signed up participants, allows to do changes
+        on an already signed up particpant """
+    event = Events.query.filter(Events.active).first()
+    slot = TimeSlots.query.get_or_404(timeslot_id)
+    participant = Participants.query.get_or_404(participant_id)
+    form = SignupForm(request.form, obj=participant)
+    form.birthday.data = participant.birthday.strftime("%d.%m.%Y")
+
+    if request.method == 'POST' and form.validate():
+        try:
+            form.populate_obj(participant)
+            gender = Gender(int(request.form['gender']))
+            birthday = str(request.form['birthday'])
+            participant.birthday = datetime.strptime(birthday, '%d.%m.%Y')
+            participant.gender = gender
+            db.session.commit()
+        except Exception as e:
+            print('Exception of type {} occurred: {}'.format(type(e), str(e)))
+            return render_template('error.html')
+        return redirect(request.referrer)
+    return render_template('edit_participant.html', form=form, event=event, slot=slot, participant=participant)
+
 @app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
 def export_slot(timeslot_id):
     """ Export participants of timeslot as CSV suitable for SpeedMatchTool"""
     slot = TimeSlots.query.get_or_404(timeslot_id)
-    
+
     # Fetch list of confirmed participants
     women = participants_in_slot(slot, Gender.FEMALE)[0]
     men = participants_in_slot(slot, Gender.MALE)[0]

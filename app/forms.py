@@ -7,7 +7,7 @@ from wtforms import TextField, DateField, RadioField, StringField, IntegerField,
 from wtforms.validators import ValidationError, DataRequired, Regexp
 from wtforms_components import TimeField
 from flask_wtf import FlaskForm
-from app.models import Semester
+from app.models import Semester, Gender
 
 # Format string as used by HTML5's datetime-local input type
 DATETIME_LOCAL_FORMAT_STRING = '%Y-%m-%dT%H:%M'
@@ -81,7 +81,7 @@ class SignupForm(FlaskForm):
         'E-Mail Adresse (*)',
         validators=[validators.DataRequired(),
                     validators.Email()])
-    mobilenr = StringField('Handynummer (*)', [validators.DataRequired()])
+    mobile_nr = StringField('Handynummer (*)', [validators.DataRequired()])
     address = TextField('Adresse (*)', [validators.DataRequired()])
     birthday = StringField(
         'Geburtstag (*)', [validators.DataRequired()],
@@ -91,9 +91,9 @@ class SignupForm(FlaskForm):
     gender = RadioField(
         'Geschlecht (*)', [validators.DataRequired()],
         choices=[('1', 'w'), ('0', 'm')])
-    studycourse = StringField('Studiengang (*)', [validators.DataRequired()])
-    studysemester = StringField('Semester (*)', [validators.DataRequired()])
-    perfectdate = StringField('Das perfekte Date?', [validators.Optional()])
+    study_course = StringField('Studiengang (*)', [validators.DataRequired()])
+    study_semester = StringField('Semester (*)', [validators.DataRequired()])
+    perfect_date = StringField('Das perfekte Date?', [validators.Optional()])
     fruit = StringField('Lieblingsfrucht?', [validators.Optional()])
 
     availableslots = MultiCheckboxField(

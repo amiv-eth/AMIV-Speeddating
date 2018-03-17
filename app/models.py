@@ -19,6 +19,14 @@ class Gender(Enum):
         """ Return the other gender """
         return Gender(1 - self.value)
 
+    @classmethod
+    def choices(cls):
+        """ Returns a list of all choices """
+        return [(choice.value, choice.name) for choice in cls]
+
+    def __str__(self):
+        return str(self.value)
+
 
 class Participants(db.Model):
     """Models a Participant"""
