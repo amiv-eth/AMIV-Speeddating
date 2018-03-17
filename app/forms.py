@@ -33,25 +33,25 @@ class CreateEventForm(FlaskForm):
     ])
     semester = RadioField(
         'Semester', [validators.DataRequired()],
-        choices=[('0', 'HS'), ('1', 'FS')])
-    specialslot = RadioField(
+        choices=[('0', 'Herbstsemester'), ('1', 'Frühlingsemester')])
+    special_slots = RadioField(
         'Add special type of timeslots', [validators.DataRequired()],
         choices=[('0', 'No'), ('1', 'Yes')])
-    specialslotname = TextField(
+    special_slots_name = TextField(
         'Name of the special timeslots (e.g. "Blind Speeddating"')
-    specialslotdescription = TextField(
+    special_slots_description = TextField(
         'Description of the special timeslots (will be shown on the startpage)'
     )
-    opensignuptimestamp = DateTimeField(
+    open_signup_timestamp = DateTimeField(
         'Zeitpunkt der Oeffnung des Anmeldefensters',
         [validators.DataRequired()],
         format=DATETIME_LOCAL_FORMAT_STRING)
-    closesignuptimestamp = DateTimeField(
+    close_signup_timestamp = DateTimeField(
         'Zeitpunkt der Schliessung des Anmeldefensters',
         [validators.DataRequired()],
         format=DATETIME_LOCAL_FORMAT_STRING)
     place = StringField('Ort', [validators.DataRequired()])
-    participationfee = StringField('Teilnahmegebühr',
+    participation_fee = StringField('Teilnahmegebühr',
                                    [validators.DataRequired()])
 
 

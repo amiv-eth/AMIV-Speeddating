@@ -178,17 +178,17 @@ def create_event():
             name = str(request.form['name'])
             year = int(request.form['year'])
             semester = Semester(int(request.form['semester']))
-            specialslot = int(request.form['specialslot'])
-            specialslotname = str(request.form['specialslotname'])
+            specialslot = int(request.form['special_slots'])
+            specialslotname = str(request.form['special_slots_name'])
             specialslotdescription = str(
-                request.form['specialslotdescription'])
+                request.form['special_slots_description'])
             timestamp = datetime.now()
             opensignuptimestamp = datetime.strptime(
-                str(request.form['opensignuptimestamp']), format_string)
+                str(request.form['open_signup_timestamp']), format_string)
             closesignuptimestamp = datetime.strptime(
-                str(request.form['closesignuptimestamp']), format_string)
+                str(request.form['close_signup_timestamp']), format_string)
             place = str(request.form['place'])
-            participationfee = str(request.form['participationfee'])
+            participationfee = str(request.form['participation_fee'])
             signup_open = False
             active = False
 
@@ -645,6 +645,28 @@ def edit_timeslot(timeslot_id):
             return render_template('error.html')
         return redirect(request.referrer)
     return render_template('edit_timeslot.html', form=form, slot=slot, event=event)
+
+
+@app.route('/edit_event/<int:event_id>', methods=["GET", "POST"])
+@login_required
+def edit_event(event_id):
+    """ Admin edit event, allows to do changes
+        on an already created event """
+    event = Events.query.get_or_404(event_id)
+    form = CreateEventForm(request.form, obj=event)
+    form.special_slots.data = str(int(event.special_slots))
+    form.semester.data = str(event.semester.value)
+    if request.method == 'POST' and form.validate():
+        try:
+            form.populate_obj(event)
+            semester = Semester(int(request.form['semester']))
+            event.semester = semester
+            db.session.commit()
+        except Exception as e:
+            print('Exception of type {} occurred: {}'.format(type(e), str(e)))
+            return render_template('error.html')
+        return redirect(request.referrer)
+    return render_template('edit_event.html', form=form, event=event)
 
 @app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
