@@ -103,6 +103,9 @@ endblock %}
 </table>
 
 <div style="text-align:center;" class="btn-group">
+  <button id="btn-space" style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = slot.id) }}'">
+      <span class="glyphicon glyphicon-arrow-left"></span> Zurück zur Übersicht
+  </button>
   <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('export_slot', timeslot_id = slot.id) }}'">
     Exportieren
   </button>

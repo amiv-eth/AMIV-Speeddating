@@ -25,7 +25,10 @@
 </div>
 
 <br>
-<div style="text-align:left;">
+<div style="text-align:left;" class="btn-group">
+    <button id="btn-space" style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_view', event_id = slot.event_id) }}'">
+        <span class="glyphicon glyphicon-arrow-left"></span> Zurück zur Übersicht
+    </button>
   <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('timeslot_view_ongoing', timeslot_id=slot.id) }}'">
     On-going Event
   </button>

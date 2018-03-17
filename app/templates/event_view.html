@@ -73,6 +73,10 @@
   {% endfor %}
 </table>
 
-<button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = event.id) }}'"> See all Participants </button>
-
+<div class="btn-group">
+  <button id="btn-space" style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('admin') }}'">
+    <span class="glyphicon glyphicon-arrow-left"></span> Zurück zur Übersicht
+  </button>
+  <button class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_participants', event_id = event.id) }}'"> See all Participants </button>
+</div>
 {% endblock %}
