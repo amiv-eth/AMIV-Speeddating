@@ -563,7 +563,24 @@ def edit_participant(timeslot_id, participant_id):
     slot = TimeSlots.query.get_or_404(timeslot_id)
     participant = Participants.query.get_or_404(participant_id)
     form = SignupForm(request.form, obj=participant)
+    if event != None:
+        eventid = event.id
+        timeslots = TimeSlots.query.filter(
+            TimeSlots.event_id == eventid).all()
+        if timeslots != None:
+            [available_slots_choices, available_special_slots_choices] = get_slots_choices(
+                timeslots)
+            form.availableslots.choices = available_slots_choices
+            form.availablespecialslots.choices = available_special_slots_choices
     form.birthday.data = participant.birthday.strftime("%d.%m.%Y")
+    if len(available_slots_choices) > 0:
+        for i in range(0,len(available_slots_choices)):
+            if participant.slot in available_slots_choices[i]:
+                form.availableslots.data = [participant.slot]
+    if len(available_special_slots_choices) > 0:
+        for i in range(0,len(available_special_slots_choices)):
+            if participant.slot in available_special_slots_choices[i]:
+                form.availablespecialslots.data = [participant.slot]
 
     if request.method == 'POST' and form.validate():
         try:
@@ -572,6 +589,21 @@ def edit_participant(timeslot_id, participant_id):
             birthday = str(request.form['birthday'])
             participant.birthday = datetime.strptime(birthday, '%d.%m.%Y')
             participant.gender = gender
+            availablespecialslots = None
+            if event.special_slots:
+                availablespecialslots = request.form.getlist(
+                    'availablespecialslots')
+            availableslots = request.form.getlist('availableslots')
+            slots = 0
+            if availableslots:
+                slots = int(availableslots[0])
+            elif availablespecialslots:
+                slots = int(availablespecialslots[0])
+            else:
+                message = 'Du hast kein passendes Datum ausgewählt!\
+                Bitte geh zurück und wähle ein dir passendes Datum aus.'
+                return render_template('error.html', message=message)
+            participant.slot = int(slots)
             db.session.commit()
         except Exception as e:
             print('Exception of type {} occurred: {}'.format(type(e), str(e)))
