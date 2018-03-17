@@ -59,7 +59,7 @@ def event_change_register_status(p_id):
 def change_present(participant_id):
     """ Mark a participant as present / absent """
     try:
-        participant = Participants.get(participant_id)
+        participant = Participants.query.get(participant_id)
         if participant is None:
             return False
 
