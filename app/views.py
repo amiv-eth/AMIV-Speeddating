@@ -236,8 +236,8 @@ def timeslot_view(timeslot_id):
     if request.method == 'GET':
         slot = TimeSlots.query.get_or_404(timeslot_id)
 
-        [w_in, w_out] = participants_in_slot(slot, gender=Gender.FEMALE)
-        [m_in, m_out] = participants_in_slot(slot, gender=Gender.MALE)
+        [w_in, w_out] = participants_in_slot(slot, gender=Gender.FEMALE, confirmed=1)
+        [m_in, m_out] = participants_in_slot(slot, gender=Gender.MALE, confirmed=1)
 
         try:
             women = slot.participants.filter_by(gender=Gender.FEMALE).order_by(Participants.creation_timestamp).all()
