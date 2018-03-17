@@ -457,10 +457,11 @@ def manual_signup():
     form = SignupForm(request.form)
     try:
         event = Events.query.filter(Events.active).first()
-        if event is not None:
+        if event != None:
             eventid = event.id
-            timeslots = TimeSlots.query.filter(TimeSlots.event_id == eventid).all()
-            if timeslots is not None:
+            timeslots = TimeSlots.query.filter(
+                TimeSlots.event_id == eventid).all()
+            if timeslots != None:
                 [available_slots_choices, available_special_slots_choices] = get_slots_choices(
                     timeslots)
 
@@ -482,7 +483,7 @@ def manual_signup():
             address = str(request.form['address'])
             birthday = str(request.form['birthday'])
             studycourse = str(request.form['studycourse'])
-            studysemester = str(request.form['studysemester'])
+            studysemester = int(request.form['studysemester'])
             perfectdate = str(request.form['perfectdate'])
             fruit = str(request.form['fruit'])
             availablespecialslots = None
@@ -493,23 +494,21 @@ def manual_signup():
             confirmed = False
             present = False
             paid = False
-
             slots = 0
             if availableslots:
                 slots = int(availableslots[0])
             elif availablespecialslots:
                 slots = int(availablespecialslots[0])
             else:
-                message = 'Du hast kein passendes Datum ausgewählt! Bitte geh zurück und wähle ein dir passendes Datum aus.'
+                message = 'Du hast kein passendes Datum ausgewählt!\
+                Bitte geh zurück und wähle ein dir passendes Datum aus.'
                 return render_template('error.html', message=message)
-
             bday = datetime.strptime(birthday, '%d.%m.%Y')
             chosen_timeslot = TimeSlots.query.filter(
                 TimeSlots.id == int(slots)).first()
             chosen_datetime = str(
                 chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
                     chosen_timeslot.start_time)
-
             try:
                 new_participant = Participants(
                     creation_timestamp=timestamp,
@@ -531,23 +530,27 @@ def manual_signup():
                     paid=paid)
                 db.session.add(new_participant)
                 db.session.commit()
+                # The participant signed up successfully
+                # Emit signal and show success page
+                SIGNAL_NEW_SIGNUP.send(
+                    'signup view', participant=new_participant)
             except Participants.AlreadySignedUpException:
                 message = 'Die E-Mail Adresse ' + email + \
                     ' wurde bereits für das Speeddating angewendet.\
                     Bitte versuchen Sie es erneut mit einer neuen E-Mail Adresse.'
                 return render_template('error.html', message=message)
 
-        except Exception as exception:
-            print('Exception of type {} occurred:{}'.format(type(exception), str(exception)))
+        except Exception as e:
+            print('Exception of type {} occurred: {}'.format(type(e), str(e)))
             return render_template('error.html')
 
         return render_template(
             'success.html',
-            name=(prename + ' ' + name),
+            name=('{} {}'.format(prename, name)),
             mail=email,
             datetime=chosen_datetime)
-    return render_template('manual_signup.html', form=form, event=event)
 
+    return render_template('manual_signup.html', form=form, event=event)
 
 @app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
