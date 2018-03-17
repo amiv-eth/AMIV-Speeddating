@@ -39,3 +39,11 @@ def inform_matches(matches):
 
     for participant, matches in matches_ordered.items():
         send_matches_email(participant, matches)
+
+def check_date_nr_unique(nr, participants):
+    """ Checks that the entered datenr is unique under the participants. """
+    res = True
+    for participant in participants:
+        if nr == participant.date_nr:
+            res = False
+    return res

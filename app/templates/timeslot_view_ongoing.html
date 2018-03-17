@@ -1,4 +1,4 @@
-{% from "_formhelpers.html" import render_default_field, render_field %} {% extends 'base.html' %} {% block admin %}class="active"{%
+{% from "_formhelpers.html" import render_default_field, render_small_field, render_field %} {% extends 'base.html' %} {% block admin %}class="active"{%
 endblock %}
 
 <h1>{% block title %} TimeSlot {{ slot.date.strftime("%d. %B %Y") }} {{ slot.start_time }} - {{ slot.end_time }}{% endblock %}</h1>
@@ -8,39 +8,34 @@ endblock %}
 <h2>Alle Damen des TimeSlots:</h2>
 <table class="table table-striped table-hover">
   <tr>
-    <th> </th>
-    <th>Bezahlt</th>
     <th>Familienname</th>
     <th>Vorname</th>
-    <th>Geburtstag</th>
+    <th>EMail</th>
     <th>DateNr</th>
+    <th>Setze die DateNr</th>
+    <th>Likes</th>
     <th> </th>
   </tr>
   {% for w in women %}
   <tr>
-    <td>
-      {% if not w.paid %}
-      <button style="float:right" type="button" class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='paid') }}">
-        bezahlen
-      </button>
-      {% endif %}
-      <button class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('edit_likes', participant_id=w.id) }}'">
-        Likes
-      </button>
-    </td>
-    <td>
-      {% if w.paid %} Ja {% else %} Nein {% endif %}
-    </td>
     <td>{{ w.name }}</td>
     <td>{{ w.prename }}</td>
-    <td>{{ w.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ w.email }}</td>
     <td>{{ w.date_nr }}</td>
     <td>
-      <form action={{ url_for( 'timeslot_view_ongoing', timeslot_id=slot.id) }} method="POST">
-        {{ form.csrf_token }} {{ render_default_field(form.participant_id, w.id, false) }} {{ render_field(form.datenr, false) }}
-        <button type="submit" class="btn btn-default">Go</button>
+      <form class="form-inline" action={{ url_for( 'timeslot_view_ongoing', timeslot_id=slot.id) }} method="POST">
+        {{ form.csrf_token }} {{ render_default_field(form.participant_id, w.id, false) }}
+        {{ render_default_field(form.gender, 'w', false) }}
+        {{ render_small_field(form.datenr, false) }}
+        <button type="submit" class="btn btn-default btn-sm">Go</button>
       </form>
     </td>
+    <td> {{ w.likes }} </td>
+    <td>
+        <button class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('edit_likes', participant_id=w.id) }}'">
+          Go2Likes
+        </button>
+      </td>
   </tr>
   <tr>
   </tr>
@@ -63,39 +58,34 @@ endblock %}
 <h2>Alle Herren des TimeSlots:</h2>
 <table class="table table-striped table-hover">
   <tr>
-    <th> </th>
-    <th>Bezahlt</th>
     <th>Familienname</th>
     <th>Vorname</th>
-    <th>Geburtstag</th>
+    <th>EMail</th>
     <th>DateNr</th>
+    <th>Setze die DateNr</th>
+    <th>Likes</th>
     <th> </th>
   </tr>
   {% for m in men %}
   <tr>
-    <td>
-      {% if not m.paid %}
-      <button style="float:right" type="button" class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='paid') }}'">
-        bezahlen
-      </button>
-      {% endif %}
-      <button class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('edit_likes', participant_id=m.id) }}'">
-        Likes
-      </button>
-    </td>
-    <td>
-      {% if m.paid %} Ja {% else %} Nein {% endif %}
-    </td>
     <td>{{ m.name }}</td>
     <td>{{ m.prename }}</td>
-    <td>{{ m.birthday.strftime("%d.%m.%Y") }}</td>
+    <td>{{ m.email }}</td>
     <td>{{ m.date_nr }}</td>
     <td>
-      <form action={{ url_for( 'timeslot_view_ongoing', timeslot_id=slot.id) }} method="POST">
-        {{ form.csrf_token }} {{ render_default_field(form.participant_id, m.id, false) }} {{ render_field(form.datenr, false) }}
-        <button type="submit" class="btn btn-default">Go</button>
+      <form class="form-inline" action={{ url_for( 'timeslot_view_ongoing', timeslot_id=slot.id) }} method="POST"> 
+        {{ form.csrf_token }} {{ render_default_field(form.participant_id, m.id, false) }}
+        {{ render_default_field(form.gender, 'm', false) }}
+        {{ render_small_field(form.datenr, false) }}
+        <button type="submit" class="btn btn-default btn-sm">Go</button>
       </form>
     </td>
+    <td> {{ m.likes }} </td>
+    <td>
+        <button class="btn btn-default btn-sm" onclick="window.location.href='{{ url_for('edit_likes', participant_id=m.id) }}'">
+          Go2Likes
+        </button>
+      </td>
   </tr>
   <tr>
   </tr>
@@ -112,9 +102,12 @@ endblock %}
   {% endfor %}
 </table>
 
-<div style="text-align:center;">
+<div style="text-align:center;" class="btn-group">
   <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('export_slot', timeslot_id = slot.id) }}'">
     Exportieren
+  </button>
+  <button type="button" class="btn btn-default btn-m" onclick="window.location.href='{{ url_for('matches', timeslot_id = slot.id) }}'">
+    See Matches
   </button>
 </div>
 

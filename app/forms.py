@@ -165,6 +165,7 @@ class DateNrChangeForm(FlaskForm):
         [validators.DataRequired(),
          validators.NumberRange(min=0, max=20)])
     participant_id = HiddenField('Teilnehmer ID', [validators.DataRequired()])
+    gender = HiddenField('Geschlecht', [validators.DataRequired()])
 
 
 class LikeForm(FlaskForm):

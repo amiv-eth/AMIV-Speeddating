@@ -15,7 +15,7 @@ from flask_mail import Message
 from app.signals import SIGNAL_NEW_SIGNUP
 from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
 from app.signup import get_slots_choices
-from app.matcher import find_matches, inform_matches
+from app.matcher import find_matches, inform_matches, check_date_nr_unique
 
 
 @app.route('/')
@@ -300,20 +300,7 @@ def timeslot_view(timeslot_id):
 def timeslot_view_ongoing(timeslot_id):
     """ View to assign date numbers to participants """
     form = DateNrChangeForm(request.form)
-
-    if request.method == 'POST' and form.validate():
-        try:
-            participant_id = int(request.form['participant_id'])
-            datenr = int(request.form['datenr'])
-            if not change_datenr(participant_id, datenr):
-                return render_template('error.html', message='Datenr. konnte nicht geändert werden')
-        except Exception as e:
-            print(e)
-            return render_template('error.html')
-
-    # "GET":
     try:
-        form.datenr.data = ""
         slot = TimeSlots.query.get_or_404(timeslot_id)
         women = slot.get_participants(gender=Gender.FEMALE, present=True)
         men = slot.get_participants(gender=Gender.MALE, present=True)
@@ -323,6 +310,26 @@ def timeslot_view_ongoing(timeslot_id):
     except Exception as e:
         print(e)
         return render_template('error.html')
+
+    if request.method == 'POST' and form.validate():
+        try:
+            participant_id = int(request.form['participant_id'])
+            gender = str(request.form['gender'])
+            datenr = int(request.form['datenr'])
+            if gender == 'm':
+                if check_date_nr_unique(datenr, men):
+                    change_datenr(participant_id, datenr)
+                else:
+                    return render_template('error.html', message='Datenr. konnte nicht geändert werden, da sie in ihrem Geschlecht nicht unique ist.')
+
+            elif gender == 'w':
+                if check_date_nr_unique(datenr, women):
+                    change_datenr(participant_id, datenr)
+                else:
+                    return render_template('error.html', message='Datenr. konnte nicht geändert werden, da sie in ihrem Geschlecht nicht unique ist.')
+        except Exception as e:
+            print(e)
+            return render_template('error.html')
 
     return render_template(
         'timeslot_view_ongoing.html',
@@ -646,7 +653,7 @@ def edit_participant(timeslot_id, participant_id):
             return render_template('error.html')
         return redirect(request.referrer)
     return render_template('edit_participant.html', form=form, event=event, slot=slot,
-                            participant=participant)
+                           participant=participant)
 
 
 @app.route('/edit_timeslot/<int:timeslot_id>', methods=["GET", "POST"])
@@ -745,7 +752,7 @@ def edit_likes(participant_id):
             return redirect(url_for('timeslot_view_ongoing', timeslot_id=participant.slot))
 
     return render_template('likes.html', form=form, participant_id=participant_id,
-                            email=participant.email)
+                           email=participant.email)
 
 
 @app.route('/matches/<int:timeslot_id>', methods=['GET', 'POST'])
