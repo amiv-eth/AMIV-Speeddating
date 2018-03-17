@@ -13,9 +13,6 @@ endblock %}
     <th>Familienname</th>
     <th>Vorname</th>
     <th>Geburtstag</th>
-    <th>E-Mail</th>
-    <th>Mobile-Nr</th>
-    <th>Adresse</th>
     <th>DateNr</th>
     <th> </th>
   </tr>
@@ -37,9 +34,6 @@ endblock %}
     <td>{{ w.name }}</td>
     <td>{{ w.prename }}</td>
     <td>{{ w.birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ w.email }}</td>
-    <td>{{ w.mobile_nr }}</td>
-    <td>{{ w.address }}</td>
     <td>{{ w.date_nr }}</td>
     <td>
       <form action={{ url_for( 'timeslot_view_ongoing', timeslot_id=slot.id) }} method="POST">
@@ -53,9 +47,6 @@ endblock %}
   {% else %}
   <tr>
     <td>Noch keine Teilnehmer!</td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -77,9 +68,6 @@ endblock %}
     <th>Familienname</th>
     <th>Vorname</th>
     <th>Geburtstag</th>
-    <th>E-Mail</th>
-    <th>Mobile-Nr</th>
-    <th>Adresse</th>
     <th>DateNr</th>
     <th> </th>
   </tr>
@@ -101,9 +89,6 @@ endblock %}
     <td>{{ m.name }}</td>
     <td>{{ m.prename }}</td>
     <td>{{ m.birthday.strftime("%d.%m.%Y") }}</td>
-    <td>{{ m.email }}</td>
-    <td>{{ m.mobile_nr }}</td>
-    <td>{{ m.address }}</td>
     <td>{{ m.date_nr }}</td>
     <td>
       <form action={{ url_for( 'timeslot_view_ongoing', timeslot_id=slot.id) }} method="POST">
@@ -117,9 +102,6 @@ endblock %}
   {% else %}
   <tr>
     <td>Noch keine Teilnehmer!</td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
     <td></td>
     <td></td>

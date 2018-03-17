@@ -285,21 +285,28 @@ def timeslot_view_ongoing(timeslot_id):
     form = DateNrChangeForm(request.form)
 
     if request.method == 'POST' and form.validate():
-        participant_id = int(request.form['participant_id'])
-        datenr = int(request.form['datenr'])
-        if not change_datenr(participant_id, datenr):
-            return render_template('error.html', message='Datenr. konnte nicht geändert werden')
+        try:
+            participant_id = int(request.form['participant_id'])
+            datenr = int(request.form['datenr'])
+            if not change_datenr(participant_id, datenr):
+                return render_template('error.html', message='Datenr. konnte nicht geändert werden')
+        except Exception as e:
+            print(e)
+            return render_template('error.html')
 
     # "GET":
-    slot = TimeSlots.query.get_or_404(timeslot_id)
-    women = slot.get_participants(gender=Gender.FEMALE, present=True)
-    men = slot.get_participants(gender=Gender.MALE, present=True)
+    try:
+        form.datenr.data = ""
+        slot = TimeSlots.query.get_or_404(timeslot_id)
+        women = slot.get_participants(gender=Gender.FEMALE, present=True)
+        men = slot.get_participants(gender=Gender.MALE, present=True)
+        event = Events.query.get(slot.event_id)
+        if event is None:
+            return render_template('error.html', message='Timeslot has invalid event id')
+    except Exception as e:
+            print(e)
+            return render_template('error.html')
 
-    event = Events.query.get(slot.event_id)
-    if event is None:
-        return render_template('error.html', message='Timeslot has invalid event id')
-
-    form.datenr.data = ''
     return render_template(
         'timeslot_view_ongoing.html',
         event=event,
@@ -723,12 +730,14 @@ def edit_likes(participant_id):
 @login_required
 def matches(timeslot_id):
     """ Show the matches within a timeslot """
+    slot = TimeSlots.query.filter(TimeSlots.id == timeslot_id).first()
+
     if request.method == 'POST':
         form = SendMatchesForm(request.form)
         if form.validate():
-            inform_matches(find_matches(timeslot_id))
+            inform_matches(find_matches(slot))
             return redirect(url_for('timeslot_view', timeslot_id=timeslot_id))
 
-    matches = find_matches(timeslot_id)
+    matches = find_matches(slot)
     form = SendMatchesForm()
     return render_template('matches.html', matches=matches, form=form, timeslot_id=timeslot_id)

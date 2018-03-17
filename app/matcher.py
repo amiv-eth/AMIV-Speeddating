@@ -5,10 +5,9 @@ from app import db
 from app.models import Participants, TimeSlots
 from app.email import send_matches_email
 
-def find_matches(timeslot_id):
+def find_matches(slot):
     """ Finds all matches of a given timeslot """
     matches = []
-    slot = TimeSlots.get_or_404(timeslot_id)
     participants = slot.participants
 
     for participant in participants:
