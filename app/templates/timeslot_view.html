@@ -36,12 +36,13 @@
 <table class="table table-striped table-hover">
   <tr>
     <th>
-      <button style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('manual_signup') }}'">
+      <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('manual_signup') }}'">
 	<span class="glyphicon glyphicon-plus"></span>
       </button>
     </th>
-    <th></th>
-    <th>Bestätigt/<br>Anwesend/<br>Bezahlt</th>
+    <th>Best.</th>
+    <th>Anw.</th>
+    <th>Bez.</th>
     <th>Anmeldung</th>
     <th>Familien-<br>Namen</th>
     <th>Vorname</th>
@@ -59,45 +60,39 @@
  
   <tr{% if in == true %} class="in" {% endif %}>
     <td>
-        <button style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('edit_participant', timeslot_id = slot.id, participant_id = w.id) }}'">
-            <span class="glyphicon glyphicon-edit"></span>
-        </button>
+      <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('edit_participant', timeslot_id = slot.id, participant_id = w.id) }}'">
+          <span class="glyphicon glyphicon-edit"></span>
+      </button>
     </td>
-    <td>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='present') }}'">
-	{% if w.present %}
-	abwesend
-	{% else %}
-	anwesend
-	{% endif %}
+    <td> 
+      <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='register') }}'">
+          {% if w.confirmed %}
+          <span class="glyphicon glyphicon-ok"></span>
+          {% else %}
+          <span class="glyphicon glyphicon-minus"></span>
+          {% endif %}
       </button>
-      {% if w.present %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='paid') }}'">
-	{% if w.paid %}
-	nicht bezahlt
-	{% else %}
-	bezahlt
-	{% endif %}
-      </button>
-      {% endif %}
     </td>
     <td>
       {% if w.confirmed %}
-      <span class="glyphicon glyphicon-ok-circle"></span>
-      {% else %}
-      <span class="glyphicon glyphicon-remove-circle"></span>
+      <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='present') }}'">
+          {% if w.present %}
+          <span class="glyphicon glyphicon-ok"></span>
+          {% else %}
+          <span class="glyphicon glyphicon-minus"></span>
+          {% endif %}
+      </button>
       {% endif %}
-      /
+    </td>
+    <td >
       {% if w.present %}
-      <span class="glyphicon glyphicon-ok-circle"></span>
-      {% else %}
-      <span class="glyphicon glyphicon-remove-circle"></span>
-      {% endif %}
-      /
-      {% if w.paid %}
-      <span class="glyphicon glyphicon-ok-circle"></span>
-      {% else %}
-      <span class="glyphicon glyphicon-remove-circle"></span>
+        <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = w.id, action='paid') }}'">
+            {% if w.paid %}
+            <span class="glyphicon glyphicon-ok"></span>
+            {% else %}
+            <span class="glyphicon glyphicon-minus"></span>
+            {% endif %}
+        </button>
       {% endif %}
     </td>
     <td>{{ w.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
@@ -122,6 +117,7 @@
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
   </tr>
 
   {% endfor %}
@@ -133,12 +129,13 @@
 <table class="table table-striped table-hover">
   <tr>
     <th>
-      <button style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('manual_signup') }}'">
+      <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('manual_signup') }}'">
 	<span class="glyphicon glyphicon-plus"></span>
       </button>
     </th>
-    <th></th>
-    <th>Bestätigt/<br>Anwesend/<br>Bezahlt</th>
+    <th>Best.</th>
+    <th>Anw.</th>
+    <th>Bez.</th>
     <th>Anmeldung</th>
     <th>Familien-<br>Namen</th>
     <th>Vorname</th>
@@ -155,47 +152,41 @@
   {% endif %}
   <tr{% if in == true %} class="in" {% endif %}>
     <td>
-        <button style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('edit_participant', timeslot_id = slot.id, participant_id = m.id) }}'">
+        <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('edit_participant', timeslot_id = slot.id, participant_id = m.id) }}'">
             <span class="glyphicon glyphicon-edit"></span>
         </button>
     </td>
-    <td>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='present') }}'">
-	{% if m.present %}
-	abwesend
-	{% else %}
-	anwesend
-	{% endif %}
-      </button>
-      {% if m.present %}
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='paid') }}'">
-	{% if m.paid %}
-	nicht bezahlt
-	{% else %}
-	bezahlt
-	{% endif %}
-      </button>
-      {% endif %}
-    </td>
-    <td>
-      {% if m.confirmed %}
-      <span class="glyphicon glyphicon-ok-circle"></span>
-      {% else %}
-      <span class="glyphicon glyphicon-remove-circle"></span>
-      {% endif %}
-      /
-      {% if m.present %}
-      <span class="glyphicon glyphicon-ok-circle"></span>
-      {% else %}
-      <span class="glyphicon glyphicon-remove-circle"></span>
-      {% endif %}
-      /
-      {% if m.paid %}
-      <span class="glyphicon glyphicon-ok-circle"></span>
-      {% else %}
-      <span class="glyphicon glyphicon-remove-circle"></span>
-      {% endif %}
-    </td>
+    <td> 
+        <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='register') }}'">
+            {% if m.confirmed %}
+            <span class="glyphicon glyphicon-ok"></span>
+            {% else %}
+            <span class="glyphicon glyphicon-minus"></span>
+            {% endif %}
+        </button>
+      </td>
+      <td>
+        {% if m.confirmed %}
+        <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='present') }}'">
+            {% if m.present %}
+            <span class="glyphicon glyphicon-ok"></span>
+            {% else %}
+            <span class="glyphicon glyphicon-minus"></span>
+            {% endif %}
+        </button>
+        {% endif %}
+      </td>
+      <td >
+        {% if m.present %}
+          <button style="float:left" type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('change_participant_on_timeslot', slot_id = slot.id, participant_id = m.id, action='paid') }}'">
+              {% if m.paid %}
+              <span class="glyphicon glyphicon-ok"></span>
+              {% else %}
+              <span class="glyphicon glyphicon-minus"></span>
+              {% endif %}
+          </button>
+        {% endif %}
+      </td>
     <td>{{ m.creation_timestamp.strftime("%d.%m %H:%M") }}</td>
     <td>{{ m.name }}</td>
     <td>{{ m.prename }}</td>
@@ -209,6 +200,7 @@
   {% else %}
   <tr>
     <td>Noch keine Teilnehmer!</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

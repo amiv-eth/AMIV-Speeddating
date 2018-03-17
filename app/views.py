@@ -336,6 +336,8 @@ def change_participant_on_timeslot(slot_id, participant_id, action):
             changed = change_present(participant_id)
         elif action == 'paid':
             changed = change_paid(participant_id)
+        elif action == 'register':
+            changed = event_change_register_status(participant_id)
     except Exception as e:
         print(e)
         return render_template('error.html')
