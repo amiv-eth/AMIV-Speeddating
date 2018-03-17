@@ -5,51 +5,63 @@
 <h1>{% block title %}Event {{ event.name }}{% endblock %}</h1>
 
 {% block content %}
-
+{{nr_women}}
+{{nr_men}}
 <h2>All Timeslots of {{ event.name }}:</h2>
 <table class="table table-striped table-hover">
   <tr>
-    <th>ID</th>
-    <th>Date</th>
-    <th>Start <br> Time</th>
-    <th>End <br> Time</th>
-    <th>Nr <br> Couples</th>
-    <th>Age <br> Range</th>
-    <th>Special <br> Slot</th>
     <th>
-      <button style="float:right" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('create_timeslot', event_id = event.id) }}'">
-	<span class="glyphicon glyphicon-plus"></span>
+      <button type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('create_timeslot', event_id = event.id) }}'">
+        <span class="glyphicon glyphicon-plus"></span>
       </button>
     </th>
+    <th>ID</th>
+    <th>Datum</th>
+    <th>Start- <br> Zeit</th>
+    <th>End- <br> Zeit</th>
+    <th>Spezial- <br> Slot</th>
+    <th>Alters- <br> Gruppe</th>
+    <th># Frauen Anm.<br> bestätigt / verf. Plätze</th>
+    <th># Herren Anm.<br> bestätigt / verf. Plätze</th>
   </tr>
   {% for s in slots %}
-  <tr onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">
-    <td>{{ s.id }}</td>
-    <td>{{ s.date.strftime("%A %d. %B %Y") }}</td>
-    <td>{{ s.start_time.strftime('%H:%M') }}</td>
-    <td>{{ s.end_time.strftime('%H:%M') }}</td>
-    <td>{{ s.nr_couples }}</td>
-    {% if s.age_range == 0 %}
-    <td> < 22 </td>
-    {% elif s.age_range == 1 %}
-    <td> 22-25 </td>
-    {% elif s.age_range == 2 %}
-    <td> > 25 </td>
-    {% else %}
-    <td> does not matter </td>
-    {% endif %}
-    {% if not s.special_slot %}
-      <td>no</td>
-    {% elif s.special_slot %}
-      <td>yes</td>
-    {% endif %}
-    <td></td>
+  <tr>
+    <td>
+      <button type="button" class="btn btn-default btn-xs" onclick="window.location.href='{{ url_for('edit_timeslot', timeslot_id = s.id) }}'">
+          <span class="glyphicon glyphicon-edit"></span>
+      </button>
+    </td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">{{ s.id }}</td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">{{ s.date.strftime("%d.%m.%Y") }}</td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">{{ s.start_time.strftime('%H:%M') }}</td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">{{ s.end_time.strftime('%H:%M') }}</td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">
+        {% if not s.special_slot %}
+        no
+        {% elif s.special_slot %}
+        yes
+        {% endif %}
+    </td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">
+      {% if s.age_range == 0 %}
+      < 22
+      {% elif s.age_range == 1 %}
+      22-25
+      {% elif s.age_range == 2 %}
+      > 25 
+      {% else %}
+      does not matter 
+      {% endif %}
+    </td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">{{ nr_women_confirmed[loop.index-1] }} / {{ s.nr_couples }}</td>
+    <td onclick="window.location.href='{{ url_for('timeslot_view', timeslot_id = s.id) }}'">{{ nr_men_confirmed[loop.index-1] }} / {{ s.nr_couples }}</td>
   </tr>
   <tr>
   </tr>
   {% else %}
   <tr>
     <td>No existing timeslots!</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>

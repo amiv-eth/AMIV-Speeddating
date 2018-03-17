@@ -109,7 +109,17 @@ def event_view(event_id):
     if request.method == 'GET':
         event = Events.query.get_or_404(event_id)
         slots = TimeSlots.query.filter(TimeSlots.event_id == event_id)
-        return render_template('event_view.html', slots=slots, event=event)
+        nr_women_total = []
+        nr_women_confirmed = []
+        nr_men_total = []
+        nr_men_confirmed = []
+        if slots != None:
+            for slot in slots:
+                nr_women_total.append(slot.participants.filter_by(gender=Gender.FEMALE).count())
+                nr_women_confirmed.append(slot.participants.filter_by(confirmed=True, gender=Gender.FEMALE).count())
+                nr_men_total.append(slot.participants.filter_by(gender=Gender.MALE).count())
+                nr_men_confirmed.append(slot.participants.filter_by(confirmed=True, gender=Gender.MALE).count())
+        return render_template('event_view.html', slots=slots, event=event, nr_women_total=nr_women_total, nr_women_confirmed=nr_women_confirmed, nr_men_total=nr_men_total, nr_men_confirmed=nr_men_confirmed)
 
 
 @app.route('/event_participants/<int:event_id>', methods=["GET", "POST"])
@@ -207,16 +217,17 @@ def create_event():
 def create_timeslot(event_id):
     """ Timeslot create view """
     form = CreateTimeSlotForm(request.form)
-    eventid = event_id
+    event = Events.query.get_or_404(event_id)
     if request.method == 'POST' and form.validate():
         try:
-            date = str(request.form['date'])
-            starttime = str(request.form['starttime'])
-            endtime = str(request.form['endtime'])
-            nrcouples = int(request.form['nrcouples'])
-            agerange = int(request.form['agerange'])
-            specialslot = int(request.form['specialslot'])
-            slot = TimeSlots(event_id=eventid, date=date, start_time=starttime, end_time=endtime,
+            d = str(request.form['date'])
+            date = datetime.strptime(d, '%d.%m.%Y')
+            starttime = str(request.form['start_time'])
+            endtime = str(request.form['end_time'])
+            nrcouples = int(request.form['nr_couples'])
+            agerange = int(request.form['age_range'])
+            specialslot = int(request.form['special_slot'])
+            slot = TimeSlots(event_id=event.id, date=date, start_time=starttime, end_time=endtime,
                              nr_couples=nrcouples, age_range=agerange, special_slot=specialslot)
             db.session.add(slot)
             db.session.commit()
@@ -225,8 +236,8 @@ def create_timeslot(event_id):
             print(e)
             return render_template('error.html')
 
-        return redirect(url_for('event_view', event_id=eventid))
-    return render_template('create_timeslot.html', eid=eventid, form=form)
+        return redirect(url_for('event_view', event_id=event.id))
+    return render_template('create_timeslot.html', event=event, form=form)
 
 
 @app.route('/timeslot_view/<int:timeslot_id>', methods=["GET", "POST"])
@@ -373,8 +384,6 @@ def signup():
 
     if request.method == 'POST' and form.validate():
         try:
-            #new_participant = Participants()
-            #form.populate_obj(new_participant)
             timestamp = datetime.now()
             name = str(request.form['name'])
             prename = str(request.form['prename'])
@@ -612,6 +621,30 @@ def edit_participant(timeslot_id, participant_id):
             return render_template('error.html')
         return redirect(request.referrer)
     return render_template('edit_participant.html', form=form, event=event, slot=slot, participant=participant)
+
+@app.route('/edit_timeslot/<int:timeslot_id>', methods=["GET", "POST"])
+@login_required
+def edit_timeslot(timeslot_id):
+    """ Admin edit timeslots, allows to do changes
+        on an already created timeslot """
+    event = Events.query.filter(Events.active).first()
+    slot = TimeSlots.query.get_or_404(timeslot_id)
+    form = CreateTimeSlotForm(request.form, obj=slot)
+    form.special_slot.data = str(int(slot.special_slot))
+    form.date.data = slot.date.strftime("%d.%m.%Y")
+    if request.method == 'POST' and form.validate():
+        try:
+            form.populate_obj(slot)
+            special_slot = int(request.form['special_slot'])
+            date = str(request.form['date'])
+            slot.special_slot = special_slot
+            slot.date = datetime.strptime(date, '%d.%m.%Y')
+            db.session.commit()
+        except Exception as e:
+            print('Exception of type {} occurred: {}'.format(type(e), str(e)))
+            return render_template('error.html')
+        return redirect(request.referrer)
+    return render_template('edit_timeslot.html', form=form, slot=slot, event=event)
 
 @app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required

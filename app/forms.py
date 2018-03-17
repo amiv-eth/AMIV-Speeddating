@@ -57,20 +57,28 @@ class CreateEventForm(FlaskForm):
 
 class CreateTimeSlotForm(FlaskForm):
     """ For admins to create a new time slot """
-    date = DateField('Datum', [validators.DataRequired()], format='%Y-%m-%d')
-    starttime = TimeField('Start-Zeit', [validators.DataRequired()])
-    endtime = TimeField('End-Zeit', [validators.DataRequired()])
-    nrcouples = IntegerField(
+    date = StringField('Datum', [validators.DataRequired()],
+                       render_kw={"placeholder": "DD.MM.YYYY"})
+    start_time = TimeField('Start-Zeit', [validators.DataRequired()])
+    end_time = TimeField('End-Zeit', [validators.DataRequired()])
+    nr_couples = IntegerField(
         'Anzahl Paare',
         [validators.DataRequired(),
          validators.NumberRange(min=0, max=25)])
-    agerange = RadioField(
+    age_range = RadioField(
         'Altersgruppe', [validators.DataRequired()],
         choices=[('0', '<22'), ('1', '22 - 25'), ('2', '> 25'),
                  ('3', 'does not matter')])
-    specialslot = RadioField(
+    special_slot = RadioField(
         'Spezieller Timeslot', [validators.DataRequired()],
         choices=[('0', 'No'), ('1', 'Yes')])
+
+    def validate_date(form, field):
+        """ Make sure the date field is a valid date """
+        try:
+            datetime.strptime(field.data, '%d.%m.%Y')
+        except:
+            raise ValidationError("Falsches Datum Format: DD.MM.YYYY")
 
 
 class SignupForm(FlaskForm):
