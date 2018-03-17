@@ -26,6 +26,7 @@ def participants_in_slot(slot, gender=None, confirmed=None):
         return [participants_list[:nr_couples], participants_list[nr_couples:]]
     return [participants_list, []]
 
+
 def get_string_of_date_list(date_list):
     """ Create list of timeslots as a string """
     dates_string = ''

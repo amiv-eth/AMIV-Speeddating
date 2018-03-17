@@ -19,13 +19,15 @@ logger.addHandler(file_handler)
 
 # E-Mail handler will only handle warnings and worse
 email_handler = SMTPHandler(
-    mailhost='{}:{}'.format(app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
+    mailhost='{}:{}'.format(
+        app.config['MAIL_SERVER'], app.config['MAIL_PORT']),
     fromaddr=app.config['MAIL_DEFAULT_SENDER'],
     toaddrs=app.config['MAIL_ADMINS'],
     subject='[AMIV-Speeddating] Issue',
     credentials=(app.config['MAIL_USERNAME'], app.config['MAIL_PASSWORD']))
 email_handler.setLevel(logging.WARNING)
 logger.addHandler(email_handler)
+
 
 def send_post_signup_email(participant):
     """Send e-mail to participant after successful signup
@@ -58,7 +60,8 @@ def send_post_signup_email(participant):
         mail.send(msg)
         logging.info('E-Mail sent to {}'.format(participant.email))
     except BadHeaderError:
-        logging.error('Failed to send e-mail to {}: BadHeaderError'.format(participant.email))
+        logging.error(
+            'Failed to send e-mail to {}: BadHeaderError'.format(participant.email))
 
 
 def send_matches_email(participant, matches):
@@ -83,4 +86,5 @@ def send_matches_email(participant, matches):
         mail.send(msg)
         logging.info('E-Mail sent to {}'.format(participant.email))
     except BadHeaderError:
-        logging.error('Failed to send e-mail to {}: BadHeaderError'.format(participant.email))
+        logging.error(
+            'Failed to send e-mail to {}: BadHeaderError'.format(participant.email))

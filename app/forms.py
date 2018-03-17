@@ -3,7 +3,7 @@ All forms are in this file.
 """
 from datetime import datetime
 from wtforms import TextField, DateField, RadioField, StringField, IntegerField, PasswordField,\
-                    DateTimeField, validators, HiddenField, widgets, SelectMultipleField
+    DateTimeField, validators, HiddenField, widgets, SelectMultipleField
 from wtforms.validators import ValidationError, DataRequired, Regexp
 from wtforms_components import TimeField
 from flask_wtf import FlaskForm
@@ -11,6 +11,7 @@ from app.models import Semester, Gender
 
 # Format string as used by HTML5's datetime-local input type
 DATETIME_LOCAL_FORMAT_STRING = '%Y-%m-%dT%H:%M'
+
 
 class MultiCheckboxField(SelectMultipleField):
     """ Field containing multiple checkboxes. """
@@ -52,7 +53,7 @@ class CreateEventForm(FlaskForm):
         format=DATETIME_LOCAL_FORMAT_STRING)
     place = StringField('Ort', [validators.DataRequired()])
     participation_fee = StringField('Teilnahmegebühr',
-                                   [validators.DataRequired()])
+                                    [validators.DataRequired()])
 
 
 class CreateTimeSlotForm(FlaskForm):
@@ -136,8 +137,7 @@ class SignupForm(FlaskForm):
         if form.availableslots.data and form.availablespecialslots.data:
             raise ValidationError(
                 'Du kannst dich für genau einen Termin anmelden')
-        if (not form.availableslots.data
-            ) and not (form.availablespecialslots.data):
+        if (not form.availableslots.data) and not (form.availablespecialslots.data):
             raise ValidationError(
                 'Du musst dich für genau einen Termin anmelden')
         if len(form.availableslots.data) != 1 and len(
@@ -170,6 +170,7 @@ class DateNrChangeForm(FlaskForm):
 class LikeForm(FlaskForm):
     """ Represents a form to update a participant's likes """
     likes = StringField('Likes', validators=[Regexp(r'^(\d+(,\d+)*)?$')])
+
 
 class SendMatchesForm(FlaskForm):
     """ Allows an admin to send out matches via email """

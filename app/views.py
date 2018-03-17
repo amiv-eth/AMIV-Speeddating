@@ -3,14 +3,14 @@ Contains all views, i.e. anything that is routed to a url
 
 """
 
-from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user, current_user
+from datetime import datetime
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 from flask import Flask, render_template, request, redirect, url_for, flash, abort
 from app.models import Events, TimeSlots, Participants, AdminUser, Gender, Semester
 from app.forms import LoginForm, CreateEventForm, CreateTimeSlotForm, SignupForm, DateNrChangeForm, LikeForm, SendMatchesForm
 from app.help_queries import participants_in_slot, get_string_of_date_list
 from app.admin import export, change_datenr, change_paid, change_present, event_change_register_status, event_change_active_status
 from app import app, db, login_manager, bcrypt, mail
-from datetime import datetime
 from flask_mail import Message
 from app.signals import SIGNAL_NEW_SIGNUP
 from app.participants import confirm_participation as _confirm_participation, cancel_participation as _cancel_participation
@@ -27,7 +27,8 @@ def index():
         event = Events.query.filter(Events.active).first()
         dates = None
         if event is not None:
-            timeslots = TimeSlots.query.filter(TimeSlots.event_id == event.id).all()
+            timeslots = TimeSlots.query.filter(
+                TimeSlots.event_id == event.id).all()
             dates = list(set(list(slot.date for slot in timeslots)))
         dates_string = get_string_of_date_list(dates)
     except Exception as exception:
@@ -115,10 +116,14 @@ def event_view(event_id):
         nr_men_confirmed = []
         if slots != None:
             for slot in slots:
-                nr_women_total.append(slot.participants.filter_by(gender=Gender.FEMALE).count())
-                nr_women_confirmed.append(slot.participants.filter_by(confirmed=True, gender=Gender.FEMALE).count())
-                nr_men_total.append(slot.participants.filter_by(gender=Gender.MALE).count())
-                nr_men_confirmed.append(slot.participants.filter_by(confirmed=True, gender=Gender.MALE).count())
+                nr_women_total.append(slot.participants.filter_by(
+                    gender=Gender.FEMALE).count())
+                nr_women_confirmed.append(slot.participants.filter_by(
+                    confirmed=True, gender=Gender.FEMALE).count())
+                nr_men_total.append(slot.participants.filter_by(
+                    gender=Gender.MALE).count())
+                nr_men_confirmed.append(slot.participants.filter_by(
+                    confirmed=True, gender=Gender.MALE).count())
         return render_template('event_view.html', slots=slots, event=event, nr_women_total=nr_women_total, nr_women_confirmed=nr_women_confirmed, nr_men_total=nr_men_total, nr_men_confirmed=nr_men_confirmed)
 
 
@@ -144,14 +149,20 @@ def event_participants(event_id):
                 women.append(slot.get_participants(gender=Gender.FEMALE))
                 men.append(slot.get_participants(gender=Gender.MALE))
 
-                inw.extend(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.FEMALE))
-                inm.extend(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.MALE))
+                inw.extend(p.email for p in slot.get_participants(
+                    on_waiting_list=False, gender=Gender.FEMALE))
+                inm.extend(p.email for p in slot.get_participants(
+                    on_waiting_list=False, gender=Gender.MALE))
 
                 # Create email strings
-                mailinw.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.FEMALE)))
-                mailoutw.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=True, gender=Gender.FEMALE)))
-                mailinm.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=False, gender=Gender.MALE)))
-                mailoutm.append('; '.join(p.email for p in slot.get_participants(on_waiting_list=True, gender=Gender.MALE)))
+                mailinw.append('; '.join(p.email for p in slot.get_participants(
+                    on_waiting_list=False, gender=Gender.FEMALE)))
+                mailoutw.append('; '.join(p.email for p in slot.get_participants(
+                    on_waiting_list=True, gender=Gender.FEMALE)))
+                mailinm.append('; '.join(p.email for p in slot.get_participants(
+                    on_waiting_list=False, gender=Gender.MALE)))
+                mailoutm.append('; '.join(p.email for p in slot.get_participants(
+                    on_waiting_list=True, gender=Gender.MALE)))
 
     return render_template(
         'event_participants.html',
@@ -198,10 +209,12 @@ def create_event():
                 'error.html', message=str(request.form['opensignuptimestamp']))
 
         try:
-            event = Events(name=name, year=year, special_slots=specialslot, special_slots_name=specialslotname,
-                           special_slots_description=specialslotdescription, place=place, semester=semester,
-                           creation_timestamp=timestamp, signup_open=signup_open, active=active,
-                           participation_fee=participationfee, open_signup_timestamp=opensignuptimestamp,
+            event = Events(name=name, year=year, special_slots=specialslot,
+                           special_slots_name=specialslotname,
+                           special_slots_description=specialslotdescription, place=place,
+                           semester=semester, creation_timestamp=timestamp, signup_open=signup_open,
+                           active=active, participation_fee=participationfee,
+                           open_signup_timestamp=opensignuptimestamp,
                            close_signup_timestamp=closesignuptimestamp)
             db.session.add(event)
             db.session.commit()
@@ -247,12 +260,16 @@ def timeslot_view(timeslot_id):
     if request.method == 'GET':
         slot = TimeSlots.query.get_or_404(timeslot_id)
 
-        [w_in, w_out] = participants_in_slot(slot, gender=Gender.FEMALE, confirmed=1)
-        [m_in, m_out] = participants_in_slot(slot, gender=Gender.MALE, confirmed=1)
+        [w_in, w_out] = participants_in_slot(
+            slot, gender=Gender.FEMALE, confirmed=1)
+        [m_in, m_out] = participants_in_slot(
+            slot, gender=Gender.MALE, confirmed=1)
 
         try:
-            women = slot.participants.filter_by(gender=Gender.FEMALE).order_by(Participants.creation_timestamp).all()
-            men = slot.participants.filter_by(gender=Gender.MALE).order_by(Participants.creation_timestamp).all()
+            women = slot.participants.filter_by(gender=Gender.FEMALE).order_by(
+                Participants.creation_timestamp).all()
+            men = slot.participants.filter_by(gender=Gender.MALE).order_by(
+                Participants.creation_timestamp).all()
             event = Events.query.filter(Events.id == slot.event_id).first()
         except Exception as e:
             print(e)
@@ -304,8 +321,8 @@ def timeslot_view_ongoing(timeslot_id):
         if event is None:
             return render_template('error.html', message='Timeslot has invalid event id')
     except Exception as e:
-            print(e)
-            return render_template('error.html')
+        print(e)
+        return render_template('error.html')
 
     return render_template(
         'timeslot_view_ongoing.html',
@@ -572,6 +589,7 @@ def manual_signup():
 
     return render_template('manual_signup.html', form=form, event=event)
 
+
 @app.route('/edit_participant/<int:timeslot_id>/<int:participant_id>', methods=["GET", "POST"])
 @login_required
 def edit_participant(timeslot_id, participant_id):
@@ -592,11 +610,11 @@ def edit_participant(timeslot_id, participant_id):
             form.availablespecialslots.choices = available_special_slots_choices
     form.birthday.data = participant.birthday.strftime("%d.%m.%Y")
     if len(available_slots_choices) > 0:
-        for i in range(0,len(available_slots_choices)):
+        for i in range(0, len(available_slots_choices)):
             if participant.slot in available_slots_choices[i]:
                 form.availableslots.data = [participant.slot]
     if len(available_special_slots_choices) > 0:
-        for i in range(0,len(available_special_slots_choices)):
+        for i in range(0, len(available_special_slots_choices)):
             if participant.slot in available_special_slots_choices[i]:
                 form.availablespecialslots.data = [participant.slot]
 
@@ -627,7 +645,9 @@ def edit_participant(timeslot_id, participant_id):
             print('Exception of type {} occurred: {}'.format(type(e), str(e)))
             return render_template('error.html')
         return redirect(request.referrer)
-    return render_template('edit_participant.html', form=form, event=event, slot=slot, participant=participant)
+    return render_template('edit_participant.html', form=form, event=event, slot=slot,
+                            participant=participant)
+
 
 @app.route('/edit_timeslot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
@@ -674,6 +694,7 @@ def edit_event(event_id):
             return render_template('error.html')
         return redirect(request.referrer)
     return render_template('edit_event.html', form=form, event=event)
+
 
 @app.route('/export_slot/<int:timeslot_id>', methods=["GET", "POST"])
 @login_required
@@ -723,7 +744,8 @@ def edit_likes(participant_id):
             db.session.commit()
             return redirect(url_for('timeslot_view_ongoing', timeslot_id=participant.slot))
 
-    return render_template('likes.html', form=form, participant_id=participant_id, email=participant.email)
+    return render_template('likes.html', form=form, participant_id=participant_id,
+                            email=participant.email)
 
 
 @app.route('/matches/<int:timeslot_id>', methods=['GET', 'POST'])

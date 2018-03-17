@@ -80,7 +80,8 @@ class Participants(db.Model):
         except KeyError as key_error:
             raise key_error
 
-        participant = Participants.query.filter_by(event_id=event_id, email=email).first()
+        participant = Participants.query.filter_by(
+            event_id=event_id, email=email).first()
         if participant is not None:
             raise self.AlreadySignedUpException()
         super(Participants, self).__init__(*args, **kwargs)
@@ -100,7 +101,8 @@ class TimeSlots(db.Model):
     age_range = Column(Integer, primary_key=False)
     special_slot = Column(Boolean, unique=False)
 
-    participants = relationship('Participants', backref='timeslot', lazy='dynamic')
+    participants = relationship(
+        'Participants', backref='timeslot', lazy='dynamic')
 
     def get_participants(self, on_waiting_list=None, **kwargs):
         """ Get list of participants that are signed up for the event
@@ -109,7 +111,8 @@ class TimeSlots(db.Model):
         Optionally, the 'on_waiting_list' parameter allows to only show participants
         who 'made' the slot.
         """
-        participants = self.participants.order_by(Participants.creation_timestamp)
+        participants = self.participants.order_by(
+            Participants.creation_timestamp)
         # Optional filtering by kwargs
         if kwargs is not None:
             participants = participants.filter_by(**kwargs)
@@ -151,7 +154,8 @@ class Events(db.Model):
     active = Column(Boolean, unique=False)
     participation_fee = Column(String(80), unique=False)
 
-    participants = relationship('Participants', backref='event', lazy='dynamic')
+    participants = relationship(
+        'Participants', backref='event', lazy='dynamic')
     slots = relationship('TimeSlots', backref='event', lazy='dynamic')
 
     def get_string_open_signup_timestamp(self, format):
@@ -161,7 +165,7 @@ class Events(db.Model):
         return str(self.close_signup_timestamp.strftime(format))
 
     def is_open(self):
-        """ Check if we're in the signup timeslot 
+        """ Check if we're in the signup timeslot
         Registration status should only be checked via this method.
         """
 

@@ -5,6 +5,7 @@ from app import db
 from app.models import Participants, TimeSlots
 from app.email import send_matches_email
 
+
 def find_matches(slot):
     """ Finds all matches of a given timeslot """
     matches = []
@@ -15,7 +16,8 @@ def find_matches(slot):
         interest_ids = participant.likes.split(',')
         # Iterate over participant's interests
         for interest_id in interest_ids:
-            interest = Participants.query.filter_by(date_nr=interest_id, gender=target_gender).first()
+            interest = Participants.query.filter_by(
+                date_nr=interest_id, gender=target_gender).first()
             if interest is None:
                 break
             # Check if the interest is interested too
@@ -23,6 +25,7 @@ def find_matches(slot):
             if str(participant.date_nr) in interest_like_ids:
                 matches.append((participant, interest))
     return matches
+
 
 def inform_matches(matches):
     """ Informs each participant of their matches, but only if there is at least one match. """
@@ -33,6 +36,6 @@ def inform_matches(matches):
         if match[0] not in matches_ordered.keys():
             matches_ordered[match[0]] = []
         matches_ordered[match[0]].append(match[1])
-    
+
     for participant, matches in matches_ordered.items():
         send_matches_email(participant, matches)
