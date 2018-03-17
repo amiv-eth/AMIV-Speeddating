@@ -43,6 +43,7 @@
       </td></tr>
       <tr><td style="text-align: right;">Ort </td><td style="text-align: left; font-weight: bold;"> {{ event.place }} </td></tr>
       <tr><td style="text-align: right;">Kosten </td><td style="text-align: left; font-weight: bold;"> {{ event.participation_fee }} </td></tr>
+      <tr><td style="text-align: right;">Öffnung der Anmeldung </td><td style="text-align: left; font-weight: bold;"> {{ event.get_string_open_signup_timestamp("%d. %B %Y um %H:%M Uhr") }}</td></tr>
       <tr><td style="text-align: right;">Anmeldeschluss </td><td style="text-align: left; font-weight: bold;"> {{ event.get_string_close_signup_timestamp("%d. %B %Y um %H:%M Uhr") }}</td></tr>
     </table>
     {% endif %}

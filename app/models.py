@@ -154,6 +154,9 @@ class Events(db.Model):
     participants = relationship('Participants', backref='event', lazy='dynamic')
     slots = relationship('TimeSlots', backref='event', lazy='dynamic')
 
+    def get_string_open_signup_timestamp(self, format):
+        return str(self.open_signup_timestamp.strftime(format))
+
     def get_string_close_signup_timestamp(self, format):
         return str(self.close_signup_timestamp.strftime(format))
 
