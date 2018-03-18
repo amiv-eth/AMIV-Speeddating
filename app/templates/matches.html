@@ -1,8 +1,26 @@
 {% extends 'base.html' %}
+
+<h1>{% block title %} Matches für TimeSlot {{ slot.date.strftime("%d. %B %Y") }} {{ slot.start_time }} - {{ slot.end_time }}{% endblock %}</h1>
+
 {% block content %}
+
+<div class="row">
+    <div class="col-sm-6"> 
+        <h2>Frauen</h2>
+
+
+    </div>
+
+    <div class="col-sm-6">
+        <h2>Männer</h2>
+
+    </div>
+</div>
+
+
+
 <div class="row">
     <div class="col">
-            <h2>Matches für Timeslot {{ timeslot_id }}</h2>
             {% if matches|length <= 0 %}
                 <p>Es gibt keine Matches in diesem Timeslot :(</p>
             {% else %}
@@ -14,9 +32,12 @@
             {% endif %}
     </div>
 </div>
+
+
+
 <div class="row">
     <div class="col">
-        <form action="/matches/{{ timeslot_id }}" method="post">
+        <form action="/matches/{{ slot.id }}" method="post">
             {{ form.csrf_token }}
             <button class="btn btn-default">
                 Matches verschicken

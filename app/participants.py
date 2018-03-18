@@ -36,13 +36,19 @@ def post_signup(sender, **kwargs):
         # https://gitlab.ethz.ch/amiv/AMIV-Speeddating/issues/13
         return
 
+    if 'slot_datetime' in kwargs:
+        slot_datetime_string = kwargs['slot_datetime']
+    else:
+        # https://gitlab.ethz.ch/amiv/AMIV-Speeddating/issues/13
+        return
+
     # Create tokens
     create_confirm_token(participant)
     create_edit_token(participant)
     create_cancel_token(participant)
 
     # Send email
-    send_post_signup_email(participant)
+    send_post_signup_email(participant, slot_datetime_string)
 
 def confirm_participation(confirm_token):
     " Check if confirm_token is valid and, if yes, sets Confirmed to True. "

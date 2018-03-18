@@ -29,7 +29,7 @@ email_handler.setLevel(logging.WARNING)
 logger.addHandler(email_handler)
 
 
-def send_post_signup_email(participant):
+def send_post_signup_email(participant, slot_datetime_string):
     """Send e-mail to participant after successful signup
 
     Participants will receive an email containing links to confirm or cancel their participation
@@ -44,6 +44,7 @@ def send_post_signup_email(participant):
 
     context = {
         'name': participant.prename,
+        'slot': slot_datetime_string,
         'confirm_link': url_for('confirm_participation',
                                 confirm_token=participant.confirm_token,
                                 _external=True),
@@ -54,7 +55,7 @@ def send_post_signup_email(participant):
 
     msg = Message(
         html=template.render(**context),
-        subject='Deine AMIV-Speeddating Anmeldung',
+        subject='AMIV-Speeddating Anmeldung: ' + slot_datetime_string,
         recipients=[participant.email])
     try:
         mail.send(msg)

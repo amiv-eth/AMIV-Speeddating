@@ -473,8 +473,9 @@ def signup():
                 db.session.commit()
                 # The participant signed up successfully
                 # Emit signal and show success page
+                slot_datetime = str(chosen_timeslot.date.strftime("%A %d. %B %Y")) + '  ' + str(chosen_timeslot.start_time.strftime("%H:%M"))
                 SIGNAL_NEW_SIGNUP.send(
-                    'signup view', participant=new_participant)
+                    'signup view', participant=new_participant, slot_datetime=slot_datetime)
             except Participants.AlreadySignedUpException:
                 message = 'Die E-Mail Adresse ' + email + \
                     ' wurde bereits für das Speeddating angewendet.\
@@ -576,8 +577,9 @@ def manual_signup():
                 db.session.commit()
                 # The participant signed up successfully
                 # Emit signal and show success page
+                slot_datetime = str(chosen_timeslot.date.strftime("%A %d. %B %Y")) + '  ' + str(chosen_timeslot.start_time.strftime("%H:%M"))
                 SIGNAL_NEW_SIGNUP.send(
-                    'signup view', participant=new_participant)
+                    'signup view', participant=new_participant, slot_datetime=slot_datetime)
             except Participants.AlreadySignedUpException:
                 message = 'Die E-Mail Adresse ' + email + \
                     ' wurde bereits für das Speeddating angewendet.\
