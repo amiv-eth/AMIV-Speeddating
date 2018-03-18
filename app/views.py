@@ -447,9 +447,8 @@ def signup():
             bday = datetime.strptime(birthday, '%d.%m.%Y')
             chosen_timeslot = TimeSlots.query.filter(
                 TimeSlots.id == int(slots)).first()
-            chosen_datetime = str(
-                chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
-                    chosen_timeslot.start_time)
+            slot_datetime = str(chosen_timeslot.date.strftime(
+                "%A %d. %B %Y")) + '  ' + str(chosen_timeslot.start_time.strftime("%H:%M"))
             try:
                 new_participant = Participants(
                     creation_timestamp=timestamp,
@@ -473,7 +472,6 @@ def signup():
                 db.session.commit()
                 # The participant signed up successfully
                 # Emit signal and show success page
-                slot_datetime = str(chosen_timeslot.date.strftime("%A %d. %B %Y")) + '  ' + str(chosen_timeslot.start_time.strftime("%H:%M"))
                 SIGNAL_NEW_SIGNUP.send(
                     'signup view', participant=new_participant, slot_datetime=slot_datetime)
             except Participants.AlreadySignedUpException:
@@ -490,7 +488,7 @@ def signup():
             'success.html',
             name=('{} {}'.format(prename, name)),
             mail=email,
-            datetime=chosen_datetime)
+            datetime=slot_datetime)
 
     return render_template('signup.html', form=form, event=event)
 
@@ -551,9 +549,8 @@ def manual_signup():
             bday = datetime.strptime(birthday, '%d.%m.%Y')
             chosen_timeslot = TimeSlots.query.filter(
                 TimeSlots.id == int(slots)).first()
-            chosen_datetime = str(
-                chosen_timeslot.date.strftime("%a %d. %b %y")) + '  ' + str(
-                    chosen_timeslot.start_time)
+            slot_datetime = str(chosen_timeslot.date.strftime(
+                    "%A %d. %B %Y")) + '  ' + str(chosen_timeslot.start_time.strftime("%H:%M"))
             try:
                 new_participant = Participants(
                     creation_timestamp=timestamp,
@@ -577,7 +574,6 @@ def manual_signup():
                 db.session.commit()
                 # The participant signed up successfully
                 # Emit signal and show success page
-                slot_datetime = str(chosen_timeslot.date.strftime("%A %d. %B %Y")) + '  ' + str(chosen_timeslot.start_time.strftime("%H:%M"))
                 SIGNAL_NEW_SIGNUP.send(
                     'signup view', participant=new_participant, slot_datetime=slot_datetime)
             except Participants.AlreadySignedUpException:
@@ -594,7 +590,7 @@ def manual_signup():
             'success.html',
             name=('{} {}'.format(prename, name)),
             mail=email,
-            datetime=chosen_datetime)
+            datetime=slot_datetime)
 
     return render_template('manual_signup.html', form=form, event=event)
 
