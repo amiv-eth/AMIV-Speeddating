@@ -23,21 +23,14 @@
 {% endif %}
 
 {% block content %}
-<div id="logo" style="display: inline-flex">
 
-  <img src="static/images/logo_new.png" style="margin-left: 50px;" width=25% height=25% />
-  
-  <div>
-    <h1
-      {% if active %}
-      style="margin-top: 20px; margin-left: 80px;">
-      {% else %}
-      style="margin-top: 70px; margin-left: 80px;">
-      {% endif %}
-      Speeddating ETHZ und UZH
-    </h1>
+<div style="text-align: center">
+  <div style="text-align: center">
+    <img src="static/images/title_speeddating.svg"  width=75% />
+    <br>
+    <br>
     {% if active %}
-    <table style="border-collapse: collapse; cell-padding:2px; border-spacing:2px; border:0; width: 500; margin-top: 20px; margin-left: 120px;">
+    <table style="border-collapse: collapse; cell-padding:2px; border-spacing:2px; border:0; width: 500; margin: 0 auto">
       <tr><td style="text-align: right;">Datum </td><td style="text-align: left; font-weight: bold;">
 	  {{ dates }}
       </td></tr>
@@ -48,7 +41,6 @@
     </table>
     {% endif %}
   </div>
-  
 </div>
 
 <div id="content-wrapper">

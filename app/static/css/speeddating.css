@@ -1,8 +1,8 @@
 body {
     padding-top: 70px;
     padding-bottom: 30px;
-    background: #14537c url('/static/images/background.png') repeat-x top;
-    color: #eeeede;
+    background: #7d140c url('/static/images/background_new.png') top;
+    color: #ffffff;
     font-size: 1.8em;
     font-family: "Arial", "Lucida Grande", "Tahoma", sans-serif;
 }
