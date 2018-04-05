@@ -12,22 +12,40 @@ td, th {
 }
 
 th {
-    background-color: #0f486b;
+    background-color: #b10000;
     height: 500%;
 }
 
 .table-hover tbody tr:hover td {
-    background-color: #4F94CD;
+    background-color: #cc4646;
 }
 
 .in {
-    background-color: #00CD66;
-}
-
-#impressum:hover {
-  color: #4F94CD;
+    background-color: rgb(80, 170, 124);
 }
 
 .notbold{
     font-weight:normal
 }​
+
+a:link {
+    color: white;
+}
+
+a:visited {
+    color: white;
+}
+
+a:hover {
+    color: rgb(255, 123, 123);
+}
+
+a:active {
+    color: rgb(255, 123, 123);
+}
+
+.has-error .control-label,
+.has-error .help-block,
+.has-error .form-control-feedback {
+    color: red;
+}

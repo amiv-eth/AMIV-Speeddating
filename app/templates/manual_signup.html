@@ -34,13 +34,15 @@
   {{ render_field(form.perfect_date) }}
   {{ render_field(form.fruit) }}
   
-  <div class="btn-group"> 
-      <button id="btn-space" style="float:left" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_view', event_id=event.id) }}'">
+  <div style="text-align:center;">
+    <div class="btn-group"> 
+      <button id="btn-space" type="button" class="btn btn-default btn-s" onclick="window.location.href='{{ url_for('event_view', event_id=event.id) }}'">
           <span class="glyphicon glyphicon-arrow-left"></span> Zurück
       </button>
   
       <button type = "submit" class="btn btn-default">Anmelden</button>
     </div>
+  </div>
 </form>
 
 {% endblock %}

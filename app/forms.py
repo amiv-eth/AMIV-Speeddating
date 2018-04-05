@@ -112,7 +112,7 @@ class SignupForm(FlaskForm):
         validators=[validators.Optional()],
         coerce=int)
     availablespecialslots = MultiCheckboxField(
-        'Verfügbare Daten <span class="text-danger">Spezial Speeddating</span> (siehe Beschreibung\
+        'Verfügbare Daten <span><i>Spezial Speeddating</i></span> (siehe Beschreibung\
         auf der Startseite) (*) <br> <span class="notbold">(Bitte achte auf die Altersgruppe und\
         die Anzahl der bereits angemeldeten Personen (# angemeldete Personen) / (# verfügbare\
         Plätze))</span>',
