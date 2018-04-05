@@ -692,6 +692,7 @@ def edit_event(event_id):
         try:
             form.populate_obj(event)
             semester = Semester(int(request.form['semester']))
+            event.special_slots = int(request.form['special_slots'])
             event.semester = semester
             db.session.commit()
         except Exception as e:
