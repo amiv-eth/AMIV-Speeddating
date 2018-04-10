@@ -90,6 +90,10 @@ class SignupForm(FlaskForm):
         'E-Mail Adresse (*)',
         validators=[validators.DataRequired(),
                     validators.Email()])
+    email2 = TextField(
+        'Wiederhole deine E-Mail Adresse (*)',
+        validators=[validators.DataRequired(),
+                    validators.Email()])
     mobile_nr = StringField('Handynummer (*)', [validators.DataRequired()])
     address = TextField('Adresse (*)', [validators.DataRequired()])
     birthday = StringField(

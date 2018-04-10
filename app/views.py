@@ -420,6 +420,11 @@ def signup():
             prename = str(request.form['prename'])
             gender = Gender(int(request.form['gender']))
             email = str(request.form['email'])
+            email2 = str(request.form['email2'])
+            if email != email2:
+                message = 'Deine Mailadressen stimmen nicht überein!\
+                Bitte geh zurück und korrigiere deine Mailadresse.'
+                return render_template('error.html', message=message)
             mobile = str(request.form['mobile_nr'])
             address = str(request.form['address'])
             birthday = str(request.form['birthday'])
@@ -522,6 +527,11 @@ def manual_signup():
             prename = str(request.form['prename'])
             gender = Gender(int(request.form['gender']))
             email = str(request.form['email'])
+            email2 = str(request.form['email2'])
+            if email != email2:
+                message = 'Deine Mailadressen stimmen nicht überein!\
+                Bitte geh zurück und korrigiere deine Mailadresse.'
+                return render_template('error.html', message=message)
             mobile = str(request.form['mobile_nr'])
             address = str(request.form['address'])
             birthday = str(request.form['birthday'])
@@ -614,6 +624,7 @@ def edit_participant(timeslot_id, participant_id):
             form.availableslots.choices = available_slots_choices
             form.availablespecialslots.choices = available_special_slots_choices
     form.birthday.data = participant.birthday.strftime("%d.%m.%Y")
+    form.email2.data = participant.email
     if len(available_slots_choices) > 0:
         for i in range(0, len(available_slots_choices)):
             if participant.slot in available_slots_choices[i]:
@@ -626,6 +637,12 @@ def edit_participant(timeslot_id, participant_id):
     if request.method == 'POST' and form.validate():
         try:
             form.populate_obj(participant)
+            email = str(request.form['email'])
+            email2 = str(request.form['email2'])
+            if email != email2:
+                message = 'Deine Mailadressen stimmen nicht überein!\
+                Bitte geh zurück und korrigiere die Mailadresse.'
+                return render_template('error.html', message=message)
             gender = Gender(int(request.form['gender']))
             birthday = str(request.form['birthday'])
             participant.birthday = datetime.strptime(birthday, '%d.%m.%Y')

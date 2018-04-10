@@ -3,8 +3,9 @@
 
 <h1>{% block title %}Error.{% endblock %}</h1>
 {% block content %}
-<p>Something went wrong.</p>
+<p>
 {% if message %}
 {{ message }}
 {% endif %}
 {% endblock %}
+</p>
