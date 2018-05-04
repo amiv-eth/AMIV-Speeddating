@@ -726,8 +726,8 @@ def export_slot(timeslot_id):
     slot = TimeSlots.query.get_or_404(timeslot_id)
 
     # Fetch list of confirmed participants
-    women = participants_in_slot(slot, Gender.FEMALE)[0]
-    men = participants_in_slot(slot, Gender.MALE)[0]
+    women = participants_in_slot(slot, Gender.FEMALE, confirmed=1)[0]
+    men = participants_in_slot(slot, Gender.MALE, confirmed=1)[0]
 
     exported = export(women, men, slot)
     if exported != '':
