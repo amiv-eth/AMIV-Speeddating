@@ -1,24 +1,40 @@
 stages:
+  - build
   - deploy
+
+build_master:
+  stage: build
+  
+  image: docker:latest
+  services:
+    - docker:dind
+  
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" ./
+    - docker push "$CI_REGISTRY_IMAGE"
+  
+  only:
+    - master
+
+# On branches except master: verify that build works, do not push to registry
+build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build --pull ./
+  except:
+    - master
 
 deploy:
   stage: deploy
-  image: tetraweb/php:7.1
-  when: manual
-  before_script:
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
-    - mkdir -p ~/.ssh
-    - eval $(ssh-agent -s)
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh-add <(echo "$DEPLOY_PRIVATE_KEY")
-    - apt-get install rsync
+  image: amiveth/service-update-helper
   script:
-    - ssh -p22 speeddating@login.ee.ethz.ch "mkdir -p ~/app_tmp/"
-    - rsync -rav -e ssh --exclude='.git/' --exclude='.gitlab-ci.yml' --delete-excluded ./ speeddating@login.ee.ethz.ch:~/app_tmp
-    - ssh -p22 speeddating@login.ee.ethz.ch "cp ~/app/app/config.py ~/app_tmp/app/"
-    - ssh -p22 speeddating@login.ee.ethz.ch "mv ~/app ~/app_old && mv ~/app_tmp ~/app && chmod -R 700 ~/app"
-    - ssh -p22 speeddating@login.ee.ethz.ch "touch ~/app-touch-reload.gg"
-    - ssh -p22 speeddating@login.ee.ethz.ch "rm -rf ~/app_old"
-  environment:
-    name: production
-    url: https://speeddating.ethz.ch
+    - export CI_DEPLOY_SERVICE="$CI_DEPLOY_SERVICE"
+    - /update.py
+  only:
+    - master
