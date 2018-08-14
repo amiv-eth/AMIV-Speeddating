@@ -9,7 +9,7 @@ EXPOSE 8080
 # Install bjoern and dependencies for install (we need to keep libev)
 RUN apk add --no-cache --virtual .deps \
         musl-dev python-dev gcc git && \
-    apk add --no-cache libev-dev libffi libffi-dev openssl openssl-dev && \
+    apk add --no-cache libev-dev libffi-dev openssl-dev && \
     pip install bjoern
 
 # Copy files to /speeddating directory, install requirements
