@@ -12,7 +12,7 @@ RUN apk add --no-cache --virtual .deps \
     apk add --no-cache libev-dev libffi libffi-dev openssl openssl-dev && \
     pip install bjoern
 
-# Copy files to /api directory, install requirements
+# Copy files to /speeddating directory, install requirements
 COPY ./ ./
 RUN pip install -r ./requirements.txt
 
